@@ -24,7 +24,7 @@ public class Main extends Application {
         Group root = new Group();
         
         // load the image for the background
-        Image image = new Image("file:///D:/workspace/eclipse/Game (Merlin)/data/field.png");
+        Image image = new Image(getClass().getResource("/ressources/field.png").toURI().toString());
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         // add the image to the root

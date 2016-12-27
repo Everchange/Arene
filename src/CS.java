@@ -5,6 +5,8 @@ public class CS {
 	// 0 - FOR, 1 - DEX, 2 - CON, 3 - INT, 4 - SAG, 5 - CHA
 	private int[] attributs = new int[6];
 	private int[] mods = new int[6];
+	private int BBA=1, reductionDegats;
+	private int[] vitesse = {6,1};		// La première valeur est la vitesse, la deuxième un booléen indiquant si les armures réduisent la vitesse ou non
 	private Weapon arme;
 	private Armor armure;
 	private Race race;
@@ -21,9 +23,11 @@ public class CS {
 			
 		}
 		
-		this.mods = getMods(this.attributs);
+		this.mods = getMods(this.attributs);						//On obtient les modificateurs des attributs
 		
-		this.armure = new Armor(armr,this.mods[1]);
+		this.armure = new Armor(armr,this.mods[1]);					//On créée l'armure
+		
+		this.vitesse = this.armure.getSpeed(this.vitesse);			//On calcule la vitesse après ralentissement ou non de l'armure
 		
 	}
 	

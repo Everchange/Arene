@@ -17,18 +17,18 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		// dÃ©finit la largeur et la hauteur de la fenÃªtre
-        // en pixels, le (0, 0) se situe en haut Ã  gauche de la fenÃªtre
+		// définit la largeur et la hauteur de la fenêtre
+        // en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
         stage.setWidth(800);
         stage.setHeight(600);
-        // met un titre dans la fenÃªtre
+        // met un titre dans la fenêtre
         stage.setTitle("Truc");
 
         // la racine du sceneGraph est le root
         Group root = new Group();
         
         // load the image for the background
-        Image image = new Image("file:///D:/workspace/eclipse/Game (Merlin)/data/field.png");
+        Image image = new Image("file:///C:/Users/Merlin/workspace/Arene/src/field.png");
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         // add the image to the root

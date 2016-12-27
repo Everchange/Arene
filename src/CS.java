@@ -6,11 +6,5 @@ public class CS {
 	private Weapon arme;
 	private Armor armure;
 	private Race race;
-	
-	public CS(int[6]) {
-		
-		
-		
-	}
 
 }

@@ -17,7 +17,6 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		System.out.println("test");
 		// définit la largeur et la hauteur de la fenêtre
         // en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
         stage.setWidth(735);

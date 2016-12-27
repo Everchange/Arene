@@ -1,7 +1,13 @@
 package graphics;
 
 import javafx.application.*;
-
+import javafx.stage.*;
+import javafx.scene.image.*;
+import javafx.scene.*;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 
 public class Main extends Application {
 
@@ -48,4 +54,3 @@ public class Main extends Application {
 	}
 
 }
->>>>>>> f6a20181d0459b51301b0b87d931206573871f63

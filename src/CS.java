@@ -23,7 +23,7 @@ public class CS {
 		
 		this.mods = getMods(this.attributs);
 		
-		this.armure = new Armor(armr);
+		this.armure = new Armor(armr,this.mods[1]);
 		
 	}
 	

@@ -1,14 +1,13 @@
 package graphics;
 
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.*;
 
 
@@ -21,7 +20,7 @@ public class Main extends Application {
         stage.setWidth(800);
         stage.setHeight(600);
         // met un titre dans la fenêtre
-        stage.setTitle("Joli décor!");
+        stage.setTitle("Truc");
 
         // la racine du sceneGraph est le root
         Group root = new Group();
@@ -32,14 +31,20 @@ public class Main extends Application {
         imageView.setImage(image);
         root.getChildren().add(imageView);
         
+        Button btn = new Button();
+        btn.setText("Quit");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);;
+            }
+        });
+        
+        root.getChildren().add(btn);
+        
         Scene scene = new Scene(root);
-        
-        
-              
-        
-        scene.setFill(Color.GREY);
-        
-       
+        scene.setFill(Color.GREY);       
         
         stage.setScene(scene);
         // ouvrir le rideau

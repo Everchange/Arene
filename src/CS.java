@@ -6,22 +6,24 @@ public class CS {
 	private int[] attributs = new int[6];
 	private int[] mods = new int[6];
 	private int BBA=1, reductionDegats;
-	private int[] vitesse = {6,1};		// La première valeur est la vitesse, la deuxième un booléen indiquant si les armures réduisent la vitesse ou non
+	private int[] vitesse;		// La première valeur est la vitesse, la deuxième un booléen indiquant si les armures réduisent la vitesse ou non
 	private Weapon arme;
 	private Armor armure;
 	private Race race;
 	
-	public int getDexMod() {
-		return this.mods[1];
-	}
-	
-	public CS(int[] att, int armr) {
+	public CS(int[] att, int armr, int ra) {
 		
 		for (int k=0 ; k<6 ; k++) {
 			
 			this.attributs[k] = att[k];
 			
-		}
+		}	
+		
+		this.race = new Race(ra);
+		
+		this.vitesse = race.getSpeed();
+		
+		this.attributs = race.changeStats(this.attributs);
 		
 		this.mods = getMods(this.attributs);						//On obtient les modificateurs des attributs
 		

@@ -1,9 +1,3 @@
-/**
- * 
- *@author Clément
- *@version 1.0
- */
-
 public class Race {
 	
 	// 0 - FOR, 1 - DEX, 2 - CON, 3 - INT, 4 - SAG, 5 - CHA

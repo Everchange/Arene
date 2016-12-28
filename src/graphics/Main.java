@@ -3,6 +3,8 @@ package graphics;
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.image.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,7 +14,12 @@ import javafx.event.EventHandler;
 import javafx.scene.paint.Color;
 
 public class Main extends Application {
-
+	
+	
+	
+	public static boolean escapeOn=false;
+	static Menu menu=new Menu();
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		// définit la largeur et la hauteur de la fenêtre
@@ -37,10 +44,6 @@ public class Main extends Application {
         gc.drawImage(bg, 0, 0);
         
         
-        
-        // add the image to the root
-        //root.getChildren().add(imageView);
-        
         //(Rage)Quit button
         Button btn = new Button();
         btn.setText("Quit");
@@ -52,7 +55,7 @@ public class Main extends Application {
  
             @Override
             public void handle(ActionEvent event) {
-                System.exit(0);;
+                System.exit(0);
             }
         });
         
@@ -62,6 +65,32 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.setFill(Color.GREY);
         stage.setScene(scene);
+        
+        
+        //key events (menu)
+        
+        
+        scene.setOnKeyPressed(
+        	new EventHandler<KeyEvent>()
+            {
+                public void handle(KeyEvent e)
+                {
+                	System.out.println(e.getCode());
+                    if(e.getCode()==KeyCode.ESCAPE && !escapeOn){
+                    	System.out.println("menu on");
+                        root.getChildren().add(Main.menu.getMenuGroup());
+                        Main.escapeOn=true;
+                    }
+                    else if(e.getCode()==KeyCode.ESCAPE && escapeOn){
+                    	System.out.println("menu off");
+                        root.getChildren().remove(Main.menu.getMenuGroup());
+                        Main.escapeOn=false;
+                    	
+                    }
+                    return;
+                }
+        });
+        
         // ouvrir le rideau
         stage.show();
 

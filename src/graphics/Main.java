@@ -24,7 +24,7 @@ public class Main extends Application {
         Group root = new Group();
         
         // load the image for the background
-        Image image = new Image(getClass().getResource("/ressources/field.png").toURI().toString());
+        Image image = new Image("field.png");
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         // add the image to the root

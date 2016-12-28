@@ -33,6 +33,9 @@ public class Main extends Application {
         //(Rage)Quit button
         Button btn = new Button();
         btn.setText("Quit");
+        // ajout des coordonnées pour que le bouton ne soit pas sur l'image
+        btn.setLayoutX(735);
+        btn.setLayoutY(10);
         //defines the action when the button is pressed
         btn.setOnAction(new EventHandler<ActionEvent>() {
  

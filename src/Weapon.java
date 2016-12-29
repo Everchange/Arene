@@ -1,8 +1,9 @@
-
+import java.util.Random;
 
 public abstract class Weapon {
 	
 	private int bonusToucher;
+	private Random RNG;
 	private Damage degats;
 	private int critMultiplicateur;
 	private int critRange;
@@ -35,6 +36,14 @@ public abstract class Weapon {
 		
 	}
 	
-	
+	public boolean jetTouche(Armor armure){
+		
+		int resultat = 0;
+		resultat += RNG.nextInt(20)+1;
+		resultat += this.bonusToucher;
+		
+		return armure.hit(resultat);
+		
+	}
 	
 }

@@ -17,7 +17,8 @@ public class Main extends Application {
 	
 	static Menu menu=new Menu();
 	private static boolean dev=true;
-	public static String version="0.1.1.c"; 
+	public static String version="0.1.1.c";
+	private Console console=new Console();
 	
 	public static void main(String[] args) {
         launch(args);
@@ -32,7 +33,10 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		
 		//si l'application est en dev, on affiche la console
-		Console console=new Console();
+		if (dev){
+			console.show();
+		}
+		console.print("hello");
 		
 		
 		
@@ -86,6 +90,16 @@ public class Main extends Application {
                     }
                     return;
                 }
+        });
+        
+        
+        //action si la fenetre est fermée
+        
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent ev) {
+            	System.exit(0);
+            	// if the main window is closed, the application stops
+            }
         });
         
         // ouvrir le rideau

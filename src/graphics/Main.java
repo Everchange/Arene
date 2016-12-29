@@ -15,13 +15,27 @@ import javafx.scene.paint.Color;
 
 public class Main extends Application {
 	
+	static Menu menu=new Menu();
+	private static boolean dev=true;
+	public static String version="0.1.1.c"; 
+	
+	public static void main(String[] args) {
+        launch(args);
+    }
+	
 	
 	
 	public static boolean escapeOn=false;
-	static Menu menu=new Menu();
+	
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		//si l'application est en dev, on affiche la console
+		Console console=new Console();
+		
+		
+		
 		// définit la largeur et la hauteur de la fenêtre
         // en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
         stage.setWidth(800);
@@ -43,23 +57,6 @@ public class Main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(bg, 0, 0);
         
-        
-        //(Rage)Quit button
-        Button btn = new Button();
-        btn.setText("Quit");
-        // ajout des coordonn�es pour que le bouton ne soit pas sur l'image
-        btn.setLayoutX(735);
-        btn.setLayoutY(10);
-        //defines the action when the button is pressed
-        btn.setOnAction(new EventHandler<ActionEvent>() {
- 
-            @Override
-            public void handle(ActionEvent event) {
-                System.exit(0);
-            }
-        });
-        
-        root.getChildren().add(btn);
         
         //set the scene
         Scene scene = new Scene(root);

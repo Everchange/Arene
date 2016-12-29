@@ -12,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 public class Menu {
 	
 	protected Group menuGroup=new Group();
+	private static OptionStage optSta=new OptionStage();
 	
 	public Menu(){
 		
@@ -25,7 +26,8 @@ public class Menu {
 		//(Rage)Quit button
         Button bQuit = new Button();
         bQuit.setText("Quit");
-        // ajout des coordonnées pour que le bouton ne soit pas sur l'image
+        // ajout des coordonnées pour que le bouton soit bien placé
+        //NB: les coordonée sont fonction du groupe menuGroup
         bQuit.relocate(80, 10);
         //defines the action when the button is pressed
         bQuit.setOnAction(new EventHandler<ActionEvent>() {
@@ -37,6 +39,23 @@ public class Menu {
         });
         
         this.menuGroup.getChildren().add(bQuit);
+        
+        
+      //Option button
+        Button bOption = new Button();
+        bOption.setText("Option");
+        // ajout des coordonnées pour que le bouton soit en dessous du premier
+        bOption.relocate(73, 50);
+        //defines the action when the button is pressed
+        bOption.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+                 Menu.optSta.show();
+            }
+        });
+        
+        this.menuGroup.getChildren().add(bOption);
         
 	}
 	

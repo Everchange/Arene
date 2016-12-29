@@ -21,7 +21,7 @@ public class Main extends Application {
 	public static String version="0.1.1.c";
 	private static boolean dev=true;
 	private static Menu menu=new Menu();
-	private Console console=new Console();
+	private static Console console=new Console();
 	private Group root = new Group();
 	private static Stage stage; 
 	
@@ -97,6 +97,11 @@ public class Main extends Application {
                         Main.escapeOn=false;
                     	
                     }
+                    if(e.getCode()==KeyCode.F11){
+                    	if (!dev){
+                    		Main.getConsole().show();
+                    	}
+                    }
                     return;
                 }
         });
@@ -116,6 +121,10 @@ public class Main extends Application {
 
 	}
 	
+	
+	public static Console getConsole(){
+		return Main.console;
+	}
 	
 	
 

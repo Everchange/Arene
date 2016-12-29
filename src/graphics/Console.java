@@ -51,13 +51,31 @@ public class Console extends Stage {
 	                public void handle(KeyEvent e)
 	                {
 	                    if(e.getCode()==KeyCode.ENTER){
-	                    	switch(Console.this.getEntry().getText().toString().toLowerCase()){
-	                    	
+	                    	String enteredCommand=Console.this.getEntry().getText().toString().toLowerCase();
+	                    	switch(enteredCommand){
 	                    	case("quit"):
 	                    		System.exit(0);
 	                    		break;
 	                    	case("clear"):
 	                    		Console.this.getOutput().clear();
+	                    		break;
+	                    	case("help"):
+	                    		switch(enteredCommand){
+	                    		
+	                    		default:
+	                    			//by default we print all the commands available
+	                    			Console.this.println("Commands available :\n");
+	                    			for (int k=0 ; k<Console.command.length;k++){
+	                    				System.out.println(k);
+	                    				Console.this.print(Console.command[k]);
+	                    				if (k%7==0 && k>0){
+	                    					Console.this.println("");
+	                    				}
+	                    				else if(k<Console.command.length-1){
+	                    					Console.this.print(", ");
+	                    				}
+	                    			}
+	                    		}
 	                    		break;
 	                    	default:
 	                    		Console.this.println("Unknow command");

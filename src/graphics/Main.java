@@ -17,7 +17,7 @@ public class Main extends Application {
 	
 	static Menu menu=new Menu();
 	private static boolean dev=true;
-	public static String version="0.2"; 
+	public static String version="0.1.1.c"; 
 	
 	public static void main(String[] args) {
         launch(args);

@@ -11,6 +11,7 @@ public class OptionStage extends Stage {
 	
 	public OptionStage(){
 		
+		
 		Group root = new Group();
 		
 		//(Rage)Quit button

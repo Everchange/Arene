@@ -15,10 +15,18 @@ import javafx.scene.paint.Color;
 
 public class Main extends Application {
 	
-	static Menu menu=new Menu();
-	private static boolean dev=true;
+	
+	public static int sizeW=800;
+	public static int sizeH=600;
 	public static String version="0.1.1.c";
+	private static boolean dev=true;
+	private static Menu menu=new Menu();
 	private Console console=new Console();
+	private Group root = new Group();
+	private static Stage stage; 
+	
+	
+	
 	
 	public static void main(String[] args) {
         launch(args);
@@ -28,10 +36,9 @@ public class Main extends Application {
 	
 	public static boolean escapeOn=false;
 	
-	
 	@Override
 	public void start(Stage stage) throws Exception {
-		
+		Main.stage=stage;
 		//si l'application est en dev, on affiche la console
 		if (dev){
 			console.show();
@@ -42,15 +49,17 @@ public class Main extends Application {
 		
 		// définit la largeur et la hauteur de la fenêtre
         // en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(sizeW);
+        stage.setHeight(sizeH);
         // met un titre dans la fenêtre
         stage.setTitle("Project Arena");
 
         // la racine du sceneGraph est le root
-        Group root = new Group();
+        
         
         Canvas canvas =new Canvas(735,600);
+        for (int k=0; k<1000;k++){
+        console.print("\ntest");}
         canvas.setLayoutX(0);
         canvas.setLayoutY(0);
         
@@ -106,5 +115,8 @@ public class Main extends Application {
         stage.show();
 
 	}
+	
+	
+	
 
 }

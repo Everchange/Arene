@@ -1,10 +1,8 @@
 package graphics;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -35,21 +33,50 @@ public class Console extends Stage {
 		this.output.relocate(0, 40);
 		
 		this.output.setPrefSize(size[0]-16,size[1]-110);
+		//border style
 		this.output.setStyle("-fx-border-color: black; -fx-border-width: 0; "
                 + "-fx-border-radius: 0; -fx-focus-color: transparent");
 		this.output.setBorder(null);
+		this.output.setFocusTraversable(false);
+		//when F11 pressed we move the window to the back
+		this.output.setOnKeyPressed(
+	        	new EventHandler<KeyEvent>()
+	            {
+	                @Override
+					public void handle(KeyEvent e)
+	                {
+	                	
+		                    if(e.getCode()==KeyCode.F11){
+		                    	Main.console.toBack();
+		                    	Main.stage.toFront();
+		                    }
+		                    else{
+		                    	//if the user try to type something
+		                    	Console.this.entry.requestFocus();
+		                    }
+	                }
+	            });
 		
 		root.getChildren().add(output);
 		
 		//command field and execution
+		entry.requestFocus();
 		entry.relocate(0, size[1]-67);
 		entry.setPrefWidth(size[0]-16);
-		//when the ehter key is pressed we commit the command
+		//when key pressed
 		entry.setOnKeyPressed(
 	        	new EventHandler<KeyEvent>()
 	            {
-	                public void handle(KeyEvent e)
+	                @Override
+					public void handle(KeyEvent e)
 	                {
+	                	//when F11 pressed we move the window to the back
+		                    if(e.getCode()==KeyCode.F11){
+		                    	Main.console.toBack();
+		                    	Main.stage.toFront();
+		                    }
+		                
+		                  //when the ehter key is pressed we commit the command
 	                    if(e.getCode()==KeyCode.ENTER){
 	                    	String enteredCommand=Console.this.getEntry().getText().toString().toLowerCase();
 	                    	switch(enteredCommand){
@@ -91,10 +118,13 @@ public class Console extends Stage {
 		
 		Scene optionScene =new Scene(root);
 		
+		
+		
 		optionScene.setFill(Color.WHITE);
 		this.setScene(optionScene);
 		this.setHeight(size[1]);
 		this.setWidth(size[0]);
+		
 	}
 	
 	public void print(String txt){

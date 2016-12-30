@@ -14,6 +14,7 @@ public class FieldScene {
 	private Scene scene;
 	private Group root=new Group();
 	private boolean escapeOn=false;
+	private static Menu menu=new Menu();
 	
 	public FieldScene(){
 		
@@ -36,8 +37,7 @@ public class FieldScene {
         
         
         //key events (menu)
-        
-        
+
         scene.setOnKeyPressed(
         	new EventHandler<KeyEvent>()
             {
@@ -46,12 +46,12 @@ public class FieldScene {
                 	System.out.println(e.getCode());
                     if(e.getCode()==KeyCode.ESCAPE && !FieldScene.this.escapeOn){
                     	System.out.println("menu on");
-                        FieldScene.this.root.getChildren().add(Main.menu.getMenuGroup());
+                        FieldScene.this.root.getChildren().add(FieldScene.this.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }
                     else if(e.getCode()==KeyCode.ESCAPE && FieldScene.this.escapeOn){
                     	System.out.println("menu off");
-                        FieldScene.this.root.getChildren().remove(Main.menu.getMenuGroup());
+                        FieldScene.this.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
                         FieldScene.this.escapeOn=false;
                     	
                     }

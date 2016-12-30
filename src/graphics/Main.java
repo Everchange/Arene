@@ -18,7 +18,7 @@ public class Main extends Application {
 	static Stage stage; 
 	static Scene[] scene=new Scene[4];
 	static Menu menu=new Menu();
-	private static boolean dev=true;
+	static boolean dev=true;
 	static Console console=new Console();
 
 

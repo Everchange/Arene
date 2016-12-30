@@ -46,14 +46,20 @@ public class FieldScene {
                 	System.out.println(e.getCode());
                     if(e.getCode()==KeyCode.ESCAPE && !FieldScene.this.escapeOn){
                     	System.out.println("menu on");
-                        root.getChildren().add(Main.menu.getMenuGroup());
+                        FieldScene.this.root.getChildren().add(Main.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }
                     else if(e.getCode()==KeyCode.ESCAPE && FieldScene.this.escapeOn){
                     	System.out.println("menu off");
-                        root.getChildren().remove(Main.menu.getMenuGroup());
+                        FieldScene.this.root.getChildren().remove(Main.menu.getMenuGroup());
                         FieldScene.this.escapeOn=false;
                     	
+                    }
+                    if(e.getCode()==KeyCode.F11){
+                    	if (!Main.dev){
+                    		Main.console.show();
+                    	}
+                    	Main.console.toFront();
                     }
                     
                 }

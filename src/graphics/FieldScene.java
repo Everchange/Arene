@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import ressources.Beacon;
 
 public class FieldScene extends Scene {
 	private static Group root=new Group();
@@ -25,6 +26,8 @@ public class FieldScene extends Scene {
         
      // load the image for the background
         Image bg = new Image("field.png");
+        Image test =new Image(Beacon.class.getResourceAsStream("field.png"));
+        System.out.println();
         
         this.root.getChildren().add(canvas);
         GraphicsContext gc = canvas.getGraphicsContext2D();

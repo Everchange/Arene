@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class OptionScene extends Scene{
 	
@@ -39,8 +41,21 @@ public class OptionScene extends Scene{
 		
 		
 		
-		
-		
+		// when the F11 key is pressed, the console pops at the foreground
+		this.setOnKeyPressed(
+	        	new EventHandler<KeyEvent>()
+	            {
+	                public void handle(KeyEvent e)
+	                {
+	                    if(e.getCode()==KeyCode.F11){
+	                    	if (!Main.dev){
+	                    		Main.console.show();
+	                    	}
+	                    	Main.console.toFront();
+	                    }
+	                    
+	                }
+	        });
 		
 		
 	}

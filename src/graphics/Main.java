@@ -32,7 +32,6 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		
 		//version number
 		if (dev){
 			Main.version+="/dev-"+System.getProperty("user.name");
@@ -65,7 +64,9 @@ public class Main extends Application {
 		stage.setTitle("Project Arena "+version);
 		//full screen mode
 		stage.setFullScreen(Main.fullScreen);
-
+		
+		
+		
 		//action si la fenetre est fermée
 
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

@@ -35,26 +35,25 @@ public class FieldScene extends Scene {
         this.setFill(Color.GREY);
         
         
-        //key events (menu)
-
+        //key events 
         this.setOnKeyPressed(
         	new EventHandler<KeyEvent>()
             {
                 public void handle(KeyEvent e)
                 {
-                	System.out.println(e.getCode());
                     if(e.getCode()==KeyCode.ESCAPE && !FieldScene.this.escapeOn){
-                    	System.out.println("menu on");
+                    	//if menu off and escpe pressed
                         FieldScene.this.root.getChildren().add(FieldScene.this.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }
                     else if(e.getCode()==KeyCode.ESCAPE && FieldScene.this.escapeOn){
-                    	System.out.println("menu off");
+                    	// if escape pressed and menu on
                         FieldScene.this.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
                         FieldScene.this.escapeOn=false;
                     	
                     }
                     if(e.getCode()==KeyCode.F11){
+                    	// console
                     	if (!Main.dev){
                     		Main.console.show();
                     	}

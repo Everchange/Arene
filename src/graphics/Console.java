@@ -20,8 +20,12 @@ public class Console extends Stage {
 	private static int[] size={800,500};
 	private TextFlow output=new TextFlow();
 	private TextField entry=new TextField();
-	private static final String[] command={"quit","clear","scene <scene number>"};
-	private static final String[] commandLegend={"quit","clear","Set the scene number <scene number>"};
+	private static final String[] command={"quit","clear","scene","help"};
+	// please note that the "help" name must always be at the end of this array !!!
+	private static final String[] commandLegend={"Close the game","Clear the console (delete all the text (can't be undone))"
+												,"change te scene of the main window (stage) to a specified number.\n Syntax : "
+														+ "scene <number> or scene <name of the scene>",
+														"display a help (could be use like this : help <command's first word>"};
 	private ScrollPane outputScroll=new ScrollPane(output);
 	
 	/*I use the ScrollPane as the text area cannot contain colored text
@@ -98,20 +102,37 @@ public class Console extends Stage {
 	                    		discriminant="help";
 	                    	}
 	                    	if(enteredCommand.startsWith("scene")){
-	                    		try{
-	                    			enteredCommand.substring(0, 6);
-	                    			//we take into account only the first number
+	                    		if (enteredCommand.length()>7){
+	                    			if(enteredCommand.contains("option")){
+	                    				enteredCommand="scene 3";
+	                    				discriminant="scene";
+	                    				
+	                    			}
+	                    			if(enteredCommand.contains("start")){
+	                    				enteredCommand="scene 0";
+	                    				discriminant="scene";
+	                    			}
+	                    			if(enteredCommand.contains("field")){
+	                    				enteredCommand="scene 1";
+	                    				discriminant="scene";
+	                    			}
 	                    		}
-	                    		catch(StringIndexOutOfBoundsException exception){}
-                    			finally{}
-	                    		if (enteredCommand.length()==7){
-	                    			//if the command is correct
-	                    			discriminant="scene";
-	                    		}
-	                    		else{
-	                    			//else we print that the syntax is incorrect
-	                    			Console.this.println("Invalid syntax : "+Console.command[2],Color.RED);
-	                    			discriminant="false";
+	                    		if(discriminant.contentEquals("none")){
+	                    			try{
+	                    				enteredCommand=enteredCommand.substring(0, 7);
+	                    				//we take into account only the first number
+	                    			}
+	                    			catch(StringIndexOutOfBoundsException exception){}
+	                    			finally{}
+	                    			if (enteredCommand.length()==7){
+	                    				//if the command is correct
+	                    				discriminant="scene";
+	                    			}
+	                    			else{
+	                    				//else we print that the syntax is incorrect
+	                    				Console.this.println("Invalid syntax : "+Console.command[2],Color.RED);
+	                    				discriminant="false";
+	                    			}
 	                    		}
 	                    	}
 	                    	if(enteredCommand.contentEquals("clear") || enteredCommand.contentEquals("quit")){
@@ -129,24 +150,29 @@ public class Console extends Stage {
 	                    		break;
 	                    	
 	                    	case("help"):
-	                    		switch(enteredCommand){
-	                    		
-	                    		default:
-	                    			//by default we print all the commands available
-	                    			Console.this.println("Commands available :\n");
-	                    			for (int k=0 ; k<Console.command.length;k++){
-	                    				System.out.println(k);
-	                    				Console.this.print(Console.command[k]);
-	                    				if (k%7==0 && k>0){
-	                    					Console.this.println("");
-	                    				}
-	                    				else if(k<Console.command.length-1){
-	                    					Console.this.print(", ");
-	                    				}
+	                    		Console.this.println("---- Help ----");
+	                    		boolean test=false;
+	                    		for (int j=0 ; j<command.length ; j++){
+	                    			if (enteredCommand.contains(command[j])&&enteredCommand.length()>4){
+	                    				// >4 in provide a bug with "help help" command
+	                    				test=true;
+	                    				Console.this.println("Help on command \""+command[j]+"\" : "+commandLegend[j]);
+	                    				Console.this.println("---- end of Help ----");
+	                    				break;
 	                    			}
+	                    		}
+
+	                    		//by default we print all the commands available
+	                    		if (!test){
+	                    			Console.this.println("Commands available :");
+	                    			for (int k=0 ; k<Console.command.length;k++){
+	                    				Console.this.println(Console.command[k]);
+	                    			}
+	                    			Console.this.println("---- end of Help ----");
 	                    		}
 	                    		break;
 	                    	case("quit"):
+	                    		System.out.println("console command");
 	                    		System.exit(0);
 	                    		break;
 	                    	case("scene"):
@@ -196,13 +222,7 @@ public class Console extends Stage {
 	public void print(String txt,Paint color){
 		Text txtT=new Text(txt);
 		txtT.setFill(color);
-		if(this.output.getChildren().size()<1){
-			this.output.getChildren().add(txtT);
-			return;
-		}
-		Node end=this.output.getChildren().get(this.output.getChildren().size()-1);
-		this.output.getChildren().remove(end);
-		end.setAccessibleText(end.getAccessibleText()+txtT);
+		this.output.getChildren().add(txtT);
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}
@@ -216,16 +236,7 @@ public class Console extends Stage {
 	}
 	
 	public void print(String txt){
-		if(this.output.getChildren().size()<1){
-			this.output.getChildren().add(new Text(txt));
-			//auto scroll
-			this.outputScroll.setVvalue(1.0);
-			
-			return;
-		}
-		Node end=this.output.getChildren().get(this.output.getChildren().size()-1);
-		this.output.getChildren().remove(end);
-		end.setAccessibleText(end.getAccessibleText()+txt);
+		this.output.getChildren().add(new Text(txt));
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}

@@ -24,8 +24,6 @@ public class Menu {
 		int buttonsCenter=(int)(Main.sizeH/2-buttonHeight);
 		this.buttonWidth=(int)(Main.sizeW/4);
 		
-		System.out.println("Main.sizeW = "+Main.sizeW);
-		System.out.println("button width : "+Main.sizeW/4);
 		
 		this.menuGroup.resizeRelocate(0,0,Main.sizeW,Main.sizeH);
 		

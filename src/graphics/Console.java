@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -14,6 +15,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import ressources.Beacon;
 
 public class Console extends Stage {
 	
@@ -35,6 +37,7 @@ public class Console extends Stage {
 	
 	
 	public Console(){
+		this.getIcons().add(new Image(Beacon.class.getResourceAsStream("console.png")));
 		
 		Group root = new Group();
 		
@@ -114,6 +117,10 @@ public class Console extends Stage {
 	                    			}
 	                    			if(enteredCommand.contains("field")){
 	                    				enteredCommand="scene 1";
+	                    				discriminant="scene";
+	                    			}
+	                    			if(enteredCommand.contains("charcrea")){
+	                    				enteredCommand="scene 2";
 	                    				discriminant="scene";
 	                    			}
 	                    		}

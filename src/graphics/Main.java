@@ -3,9 +3,7 @@ package graphics;
 
 import javafx.application.*;
 import javafx.stage.*;
-
 import javafx.scene.*;
-
 import javafx.event.EventHandler;
 
 
@@ -42,6 +40,7 @@ public class Main extends Application {
 		fieldScene = new FieldScene();
 		Main.scene[0]=new HomeScene();
 		Main.scene[1]=fieldScene;
+		Main.scene[2]=new CharacterCreationScene();
 		Main.scene[3]=new OptionScene();
 		// even if the dev mode is not enable, we create a console
 		Main.console=new Console();

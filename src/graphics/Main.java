@@ -14,25 +14,21 @@ public class Main extends Application {
 
 	static final int sizeW=800;
 	static int sizeH=600;
-	static String version="0.2.1";
+	static String version="0.3.1";
 	static Stage stage; 
 	static Scene[] scene=new Scene[4];
+	static FieldScene fieldScene;
 	static boolean dev=true;
-	static Console console=new Console();
+	static Console console;
+	static boolean escapeOn=false;
+	static boolean fullScreen=false;
 
 
-
-
-
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		launch(args);
-		
-
-	}
+	}*/
 
 
-
-	public static boolean escapeOn=false;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -43,12 +39,19 @@ public class Main extends Application {
 		}
 		
 		Main.stage=stage;
-		Main.scene[1]=new FieldScene().getScene();
+		
+		fieldScene = new FieldScene();
+		Main.scene[0]=new HomeScene();
+		Main.scene[1]=fieldScene;
+		Main.scene[3]=new OptionScene();
+		// even if the dev mode is not enable, we create a console
+		Main.console=new Console();
 		//si l'application est en dev, on affiche la console
+		
 		if (dev){
 			console.show();
 		}
-		console.print("Started Project Arena v"+version);
+		console.println("Started Project Arena v"+version);
 
 		//console.print(.class.getName().replace(".", "/") + ".java");
 
@@ -57,9 +60,11 @@ public class Main extends Application {
 		stage.setWidth(sizeW);
 		stage.setHeight(sizeH);
 		//ajout de la scene de base
-		stage.setScene(Main.scene[1]);
+		Main.setScene(0,false);
 		// met un titre dans la fenÃªtre
-		stage.setTitle("Project Arena");
+		stage.setTitle("Project Arena "+version);
+		//full screen mode
+		stage.setFullScreen(Main.fullScreen);
 
 		//action si la fenetre est fermée
 
@@ -74,6 +79,19 @@ public class Main extends Application {
 		// ouvrir le rideau
 		stage.show();
 
+	}
+	
+	public static void setScene(int k,boolean print){
+		if (k<Main.scene.length){
+			Main.stage.setScene(Main.scene[k]);
+			if (print){
+				Main.console.println("Set scene number "+k);
+			}
+		}
+		else {
+			Main.console.println("Incorect scene number (get : "+k+", expected : between 0 and"
+								+(Main.scene.length-1));
+		}
 	}
 
 }

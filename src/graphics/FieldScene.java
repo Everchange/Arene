@@ -10,14 +10,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
-public class FieldScene {
-	private Scene scene;
-	private Group root=new Group();
+public class FieldScene extends Scene {
+	private static Group root=new Group();
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
 	
 	public FieldScene(){
 		
+		super(root);
 		
 		Canvas canvas =new Canvas(735,600);
         canvas.setLayoutX(0);
@@ -31,14 +31,13 @@ public class FieldScene {
         gc.drawImage(bg, 0, 0);
         
         
-        //set the scene
-        this.scene = new Scene(this.root);
-        scene.setFill(Color.GREY);
+        //set background
+        this.setFill(Color.GREY);
         
         
         //key events (menu)
 
-        scene.setOnKeyPressed(
+        this.setOnKeyPressed(
         	new EventHandler<KeyEvent>()
             {
                 public void handle(KeyEvent e)
@@ -68,7 +67,9 @@ public class FieldScene {
 	}
 	
 	
-	public Scene getScene(){
-		return this.scene;
+	
+	public void closeMenu(){
+		this.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
+        this.escapeOn=false;
 	}
 }

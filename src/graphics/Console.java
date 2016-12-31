@@ -1,22 +1,34 @@
 package graphics;
 
+
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class Console extends Stage {
 	
 	private static int[] size={800,500};
-	private TextArea output=new TextArea();
+	private TextFlow output=new TextFlow();
 	private TextField entry=new TextField();
-	private static final String[] command={"quit","clear"};
+	private static final String[] command={"quit","clear","scene <scene number>"};
+	private static final String[] commandLegend={"quit","clear","Set the scene number <scene number>"};
+	private ScrollPane outputScroll=new ScrollPane(output);
+	
+	/*I use the ScrollPane as the text area cannot contain colored text
+	 * So I used this ScrollPane with a TextFlow
+	*/
+	
+	
 	
 	public Console(){
 		
@@ -29,17 +41,17 @@ public class Console extends Stage {
 		root.getChildren().add(heading);
 		
 		
-		this.output.setEditable(false);
-		this.output.relocate(0, 40);
 		
-		this.output.setPrefSize(size[0]-16,size[1]-110);
-		//border style
-		this.output.setStyle("-fx-border-color: black; -fx-border-width: 0; "
-                + "-fx-border-radius: 0; -fx-focus-color: transparent");
-		this.output.setBorder(null);
-		this.output.setFocusTraversable(false);
+		
+		//we relocate the outputScroll
+		this.outputScroll.relocate(0, 40);
+		this.outputScroll.setPrefSize(size[0]-16,size[1]-110);
+		
+		//we resize the output textFlow
+		this.output.setPrefSize(size[0]-33,size[1]-110);
+		this.outputScroll.setFocusTraversable(false);
 		//when F11 pressed we move the window to the back
-		this.output.setOnKeyPressed(
+		this.outputScroll.setOnKeyPressed(
 	        	new EventHandler<KeyEvent>()
 	            {
 	                @Override
@@ -57,7 +69,7 @@ public class Console extends Stage {
 	                }
 	            });
 		
-		root.getChildren().add(output);
+		root.getChildren().add(outputScroll);
 		
 		//command field and execution
 		entry.requestFocus();
@@ -79,13 +91,43 @@ public class Console extends Stage {
 		                  //when the ehter key is pressed we commit the command
 	                    if(e.getCode()==KeyCode.ENTER){
 	                    	String enteredCommand=Console.this.getEntry().getText().toString().toLowerCase();
-	                    	switch(enteredCommand){
-	                    	case("quit"):
-	                    		System.exit(0);
+	                    	//we use the discriminant for the switch
+	                    	String discriminant="none";
+	                    	//we set the value of the discriminant
+	                    	if (enteredCommand.startsWith("help")){
+	                    		discriminant="help";
+	                    	}
+	                    	if(enteredCommand.startsWith("scene")){
+	                    		try{
+	                    			enteredCommand.substring(0, 6);
+	                    			//we take into account only the first number
+	                    		}
+	                    		catch(StringIndexOutOfBoundsException exception){}
+                    			finally{}
+	                    		if (enteredCommand.length()==7){
+	                    			//if the command is correct
+	                    			discriminant="scene";
+	                    		}
+	                    		else{
+	                    			//else we print that the syntax is incorrect
+	                    			Console.this.println("Invalid syntax : "+Console.command[2],Color.RED);
+	                    			discriminant="false";
+	                    		}
+	                    	}
+	                    	if(enteredCommand.contentEquals("clear") || enteredCommand.contentEquals("quit")){
+	                    		discriminant=enteredCommand;
+	                    	}
+	                    	
+	                    	//switch that execute the command
+	                    	switch(discriminant){
+	                    	case("false"):
+	                    		//we print nothing
 	                    		break;
 	                    	case("clear"):
-	                    		Console.this.getOutput().clear();
+	                    		//we clear the TextAea
+	                    		Console.this.getOutput().getChildren().clear();
 	                    		break;
+	                    	
 	                    	case("help"):
 	                    		switch(enteredCommand){
 	                    		
@@ -103,6 +145,30 @@ public class Console extends Stage {
 	                    				}
 	                    			}
 	                    		}
+	                    		break;
+	                    	case("quit"):
+	                    		System.exit(0);
+	                    		break;
+	                    	case("scene"):
+	                    		int num=99; 
+	                    		char numC='A';
+	                    		//we try to get the probable scene number
+	                    		numC=enteredCommand.charAt(6);
+	                    		// we try to cast the probable scene number 
+	                    		try{
+	                    			num=Character.getNumericValue(numC);
+	                    		}catch(ClassCastException exception){
+	                    			// if the char is not a number
+	                    			Console.this.println("Invalid scene number");
+	                    		}
+	                    		if (num<Main.scene.length){
+	                    			Main.setScene(num,true);
+	                    		}
+	                    		else{
+	                    			Console.this.println("Scene number to hight, must be between 0 and "+(Main.scene.length-1));
+	                    		}
+	                    		
+	                    		
 	                    		break;
 	                    	default:
 	                    		Console.this.println("Unknow command");
@@ -127,15 +193,50 @@ public class Console extends Stage {
 		
 	}
 	
+	public void print(String txt,Paint color){
+		Text txtT=new Text(txt);
+		txtT.setFill(color);
+		if(this.output.getChildren().size()<1){
+			this.output.getChildren().add(txtT);
+			return;
+		}
+		Node end=this.output.getChildren().get(this.output.getChildren().size()-1);
+		this.output.getChildren().remove(end);
+		end.setAccessibleText(end.getAccessibleText()+txtT);
+		//auto scroll
+		this.outputScroll.setVvalue(1.0);
+	}
+	
+	public void println(String txt,Paint color){
+		Text txtT=new Text(txt+"\n");
+		txtT.setFill(color);
+		this.output.getChildren().add(txtT);
+		//auto scroll
+		this.outputScroll.setVvalue(1.0);
+	}
+	
 	public void print(String txt){
-		this.output.appendText(txt);
+		if(this.output.getChildren().size()<1){
+			this.output.getChildren().add(new Text(txt));
+			//auto scroll
+			this.outputScroll.setVvalue(1.0);
+			
+			return;
+		}
+		Node end=this.output.getChildren().get(this.output.getChildren().size()-1);
+		this.output.getChildren().remove(end);
+		end.setAccessibleText(end.getAccessibleText()+txt);
+		//auto scroll
+		this.outputScroll.setVvalue(1.0);
 	}
 	
 	public void println(String txt){
-		this.output.appendText("\n"+txt);
+		this.output.getChildren().add(new Text(txt+"\n"));
+		//auto scroll
+		this.outputScroll.setVvalue(1.0);
 	}
 	
-	public TextArea getOutput(){
+	public TextFlow getOutput(){
 		return this.output;
 	}
 	

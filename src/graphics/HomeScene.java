@@ -51,6 +51,19 @@ public class HomeScene extends Scene{
 			                    
 			                }
 			        });
+				// When select and enter pressed
+				bStart.setOnKeyPressed(new EventHandler<KeyEvent>()
+		        {
+		            public void handle(KeyEvent e)
+		            {
+		                if(e.getCode()==KeyCode.ENTER){
+		                	bStart.fire();
+		                }
+		                
+		            }
+		        });
+
+				
 		
 	}
 	

@@ -137,7 +137,8 @@ public class Console extends Stage {
 	                    			}
 	                    			else{
 	                    				//else we print that the syntax is incorrect
-	                    				Console.this.println("Invalid syntax : "+Console.command[2],Color.RED);
+	                    				Console.this.println("Invalid syntax : "+Console.command[2]+
+	                    						"\n Use : scene <number or name>",Color.RED);
 	                    				discriminant="false";
 	                    			}
 	                    		}
@@ -179,7 +180,7 @@ public class Console extends Stage {
 	                    		}
 	                    		break;
 	                    	case("quit"):
-	                    		System.out.println("console command");
+	                    		System.out.println("quit command from console");
 	                    		System.exit(0);
 	                    		break;
 	                    	case("scene"):
@@ -192,13 +193,13 @@ public class Console extends Stage {
 	                    			num=Character.getNumericValue(numC);
 	                    		}catch(ClassCastException exception){
 	                    			// if the char is not a number
-	                    			Console.this.println("Invalid scene number");
+	                    			Console.this.println("Invalid scene number",Color.RED);
 	                    		}
 	                    		if (num<Main.scene.length){
 	                    			Main.setScene(num,true);
 	                    		}
 	                    		else{
-	                    			Console.this.println("Scene number to hight, must be between 0 and "+(Main.scene.length-1));
+	                    			Console.this.println("Scene number to hight, must be between 0 and "+(Main.scene.length-1),Color.RED);
 	                    		}
 	                    		
 	                    		

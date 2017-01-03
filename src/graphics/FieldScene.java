@@ -44,7 +44,7 @@ public class FieldScene extends Scene {
                 public void handle(KeyEvent e)
                 {
                     if(e.getCode()==KeyCode.ESCAPE && !FieldScene.this.escapeOn){
-                    	//if menu off and escpe pressed
+                    	//if menu off and escape pressed
                         FieldScene.this.root.getChildren().add(FieldScene.this.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }

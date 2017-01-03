@@ -50,6 +50,17 @@ public class OptionScene extends Scene{
                 Main.setScene(1, false);
             }
         });
+     // When select and enter pressed
+        bBack.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bBack.fire();
+                }
+                
+            }
+        });
 		
 		OptionScene.buttons.getChildren().add(this.bBack);
 		
@@ -68,6 +79,18 @@ public class OptionScene extends Scene{
  
             @Override
             public void handle(ActionEvent event) {
+                
+            }
+        });
+		
+		// When select and enter pressed
+		bGraphics.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bGraphics.fire();
+                }
                 
             }
         });

@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -47,7 +49,19 @@ public class Menu {
 				Main.fieldScene.closeMenu();
 			}
 		});
-
+		// When select and enter pressed
+		bBack.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bBack.fire();
+                }
+                
+            }
+        });
+		
+		
 		this.menuGroup.getChildren().add(bBack);
 
 
@@ -65,6 +79,17 @@ public class Menu {
 				Main.setScene(3,false);;
 			}
 		});
+		// When select and enter pressed
+		bOption.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bOption.fire();
+                }
+                
+            }
+        });
 
 		this.menuGroup.getChildren().add(bOption);
 
@@ -82,6 +107,17 @@ public class Menu {
 
 			}
 		});
+		// When select and enter pressed
+		bCreate.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bCreate.fire();
+                }
+                
+            }
+        });
 
 		this.menuGroup.getChildren().add(bCreate);
 
@@ -101,6 +137,17 @@ public class Menu {
 
 			}
 		});
+		// When select and enter pressed
+		bRestart.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bRestart.fire();
+                }
+                
+            }
+        });
 
 		this.menuGroup.getChildren().add(bRestart);
 
@@ -122,6 +169,18 @@ public class Menu {
 				System.exit(0);
 			}
 		});
+		// When select and enter pressed
+		bQuit.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bQuit.fire();
+                }
+                
+            }
+        });
+		
 		bQuit.onMouseEnteredProperty();
 
 

@@ -4,13 +4,14 @@ package graphics;
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.*;
+import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 
 
 public class Main extends Application {
 
 
-	static final int sizeW=800;
+	static int sizeW=800;
 	static int sizeH=600;
 	static String version="0.3.1";
 	static Stage stage; 
@@ -57,6 +58,8 @@ public class Main extends Application {
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
 		stage.setWidth(sizeW);
 		stage.setHeight(sizeH);
+		//the stage is not resizable for the moment.
+		stage.setResizable(false);
 		//ajout de la scene de base
 		Main.setScene(0,false);
 		// met un titre dans la fenêtre
@@ -90,7 +93,7 @@ public class Main extends Application {
 		}
 		else {
 			Main.console.println("Incorect scene number (get : "+k+", expected : between 0 and"
-								+(Main.scene.length-1));
+								+(Main.scene.length-1),Color.RED);
 		}
 	}
 

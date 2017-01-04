@@ -104,6 +104,9 @@ public class Console extends Stage {
 	                    	if (enteredCommand.startsWith("help")){
 	                    		discriminant="help";
 	                    	}
+	                    	if (enteredCommand.startsWith("export")){
+	                    		discriminant="export";
+	                    	}
 	                    	if(enteredCommand.startsWith("scene")){
 	                    		if (enteredCommand.length()>7){
 	                    			if(enteredCommand.contains("option")){
@@ -152,6 +155,10 @@ public class Console extends Stage {
 	                    	case("false"):
 	                    		//we print nothing
 	                    		break;
+	                    	case("export"):
+	                    		
+	                    		//Console.this.println("Console log exported",Color.GREEN);
+	                    		break;
 	                    	case("clear"):
 	                    		//we clear the TextAea
 	                    		Console.this.getOutput().getChildren().clear();
@@ -180,10 +187,10 @@ public class Console extends Stage {
 	                    		}
 	                    		break;
 	                    	case("quit"):
-					if (Main.dev){
+	                    		if (Main.dev){
 	                    			System.out.println("quit command from console");
-					}
-	                    		System.exit(0);
+	                    		}
+
 	                    		break;
 	                    	case("scene"):
 	                    		int num=99; 

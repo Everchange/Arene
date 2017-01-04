@@ -180,7 +180,9 @@ public class Console extends Stage {
 	                    		}
 	                    		break;
 	                    	case("quit"):
-	                    		System.out.println("quit command from console");
+					if (Main.dev){
+	                    			System.out.println("quit command from console");
+					}
 	                    		System.exit(0);
 	                    		break;
 	                    	case("scene"):

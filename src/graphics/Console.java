@@ -190,7 +190,7 @@ public class Console extends Stage {
 	                    		if (Main.dev){
 	                    			System.out.println("quit command from console");
 	                    		}
-
+	                    		System.exit(0);
 	                    		break;
 	                    	case("scene"):
 	                    		int num=99; 

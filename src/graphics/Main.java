@@ -22,13 +22,20 @@ public class Main extends Application {
 	static boolean escapeOn=false;
 	static boolean fullScreen=false;
 
-
+	/**
+	 * Just use to launch the application
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 
-
+	/**
+	 * Creation of the main stage
+	 * 
+	 * @param stage a new Stage not initialized
+	 */
 	@Override
 	public void start(Stage stage) throws Exception {
 		//version number
@@ -83,7 +90,12 @@ public class Main extends Application {
 		stage.show();
 
 	}
-	
+	/**
+	 * change the scene of the main stage
+	 * 
+	 * @param k the number of the scene
+	 * @param print if this change has to be printed in the console or not
+	 */
 	public static void setScene(int k,boolean print){
 		if (k<Main.scene.length){
 			Main.stage.setScene(Main.scene[k]);

@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 
 public class OptionStage extends Stage {
 	
+	
+	/**
+	 * Creation of the OptionStage
+	 */
 	public OptionStage(){
 		
 		

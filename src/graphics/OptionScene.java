@@ -17,6 +17,9 @@ public class OptionScene extends Scene{
 	private int buttonWidth=(int)(Main.sizeW/4-20);
 	private int buttonHeight=(int)(Main.sizeH/4-5*10);
 	
+	/**
+	 * Creation of the option scene
+	 */
 	public OptionScene(){
 		
 		super(root);

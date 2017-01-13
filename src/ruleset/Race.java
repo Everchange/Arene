@@ -1,10 +1,12 @@
+package ruleset;
+
 public class Race {
 	
 	// 0 - FOR, 1 - DEX, 2 - CON, 3 - INT, 4 - SAG, 5 - CHA
 	private String nom;
 	private int[] mods;
 	private int[] celerite;
-	private static String[] noms={"Humain","Elfe","Nain","Orque","Gnome","Zombie","Halfelin","Homme lézard", "Elfe noir", "Squelette", "Gobelin", "Hobgobelin"};
+	private static final String[] noms={"Humain","Elfe","Nain","Orque","Gnome","Zombie","Halfelin","Homme lézard", "Elfe noir", "Squelette", "Gobelin", "Hobgobelin"};
 	// pour les modificateurs la premiere valeur correspond à l'indice du bonus, la deuxième du malus
 	private int[][] modificateurs={{0,0},{1,2},{2,1},{0,3},{3,0},{0,1},{1,0},{2,3},{3,2},{0,2},{2,0},{0,0}};
 	private int[][] vitesses={{6,1},{6,1},{4,0},{6,1},{4,1},{4,1},{4,1},{6,0},{6,1},{6,1},{4,1},{6,1}};
@@ -40,6 +42,20 @@ public class Race {
 		
 		return this.nom;
 		
+	}
+	/**
+	 * return the average size of a character that belong to the specified race
+	 * 
+	 * @param index an integer that represent the race of a character
+	 * @return a double array of two elements, the width (index 0) and the height (index 1)
+	 */
+	public static double[] getRaceSize(int index){
+		switch(index){
+		case(0):
+			return new double[] {0.5,1.8};
+		default:
+			return new double[] {1,1};
+		}
 	}
 
 }

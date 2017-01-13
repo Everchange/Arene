@@ -3,7 +3,6 @@ package graphics;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -35,7 +34,11 @@ public class Console extends Stage {
 	*/
 	
 	
-	
+	/**
+	 * Creates a new console
+	 * <\br><\br>
+	 * Please note that can be only one console per game 
+	 */
 	public Console(){
 		this.getIcons().add(new Image(Beacon.class.getResourceAsStream("console.png")));
 		
@@ -236,6 +239,12 @@ public class Console extends Stage {
 		
 	}
 	
+	/**
+	 * Prints in the console a colored text. It will not add a line break at the end of the text printed
+	 * 
+	 * @param txt the text to print
+	 * @param color the color of the text. This should be a color from the javafx.scene.paint.Color class
+	 */
 	public void print(String txt,Paint color){
 		Text txtT=new Text(txt);
 		txtT.setFill(color);
@@ -243,7 +252,13 @@ public class Console extends Stage {
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}
-	
+	/**
+	 * 
+	 * Prints a colored text inside the console and jump to the next line of it.
+	 * 
+	 * @param txt the text to print
+	 * @param color the color of the text. This should be a color from the javafx.scene.paint.Color class
+	 */
 	public void println(String txt,Paint color){
 		Text txtT=new Text(txt+"\n");
 		txtT.setFill(color);
@@ -251,23 +266,40 @@ public class Console extends Stage {
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}
-	
+	/**
+	 * Prints a black text inside the console without jumping to the next line
+	 * 
+	 * @param txt the text to print
+	 */
 	public void print(String txt){
 		this.output.getChildren().add(new Text(txt));
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}
-	
+	/**
+	 * Prints a black text inside the console and jump to the next line
+	 * 
+	 * @param txt the text to print
+	 */
 	public void println(String txt){
 		this.output.getChildren().add(new Text(txt+"\n"));
 		//auto scroll
 		this.outputScroll.setVvalue(1.0);
 	}
 	
+	/**
+	 * Returns the output text zone
+	 * 
+	 * @return the TextFlow (output) attribute
+	 */
 	public TextFlow getOutput(){
 		return this.output;
 	}
-	
+	/**
+	 * Returns the entry text zone
+	 * 
+	 * @return the TextField (entry) attribute
+	 */
 	public TextField getEntry(){
 		return this.entry;
 	}

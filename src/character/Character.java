@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javafx.scene.image.Image;
 import ressources.Beacon;
-import utilities.CS;
+import ruleset.CS;
 
 public class Character extends CS {
 
@@ -25,10 +25,14 @@ public class Character extends CS {
 		super(att, armr, raceIndex);
 		this.name=name;
 		try{
-			this.img=new Image(imgPath,utilities.Race.getRaceSize(raceIndex));
+			double[] size=ruleset.Race.getRaceSize(raceIndex);
+			//path 
+			this.img=new Image(imgPath,size[0],size[1],true,true);
 		}catch(NullPointerException e){
 			//if the specified image doesn't exist
-			this.img=new Image(Beacon.class.getResourceAsStream("field.png"));	
+			this.img=new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"));	
+		}catch(IllegalArgumentException e){
+			
 		}
 	}
 

@@ -14,6 +14,9 @@ public class HomeScene extends Scene{
 	private static Group root=new Group();
 	private Button bStart = new Button();
 	
+	/**
+	 * Creation of the welcome scene 
+	 */
 	public HomeScene(){
 		super(root);
 		
@@ -66,7 +69,11 @@ public class HomeScene extends Scene{
 				
 		
 	}
-	
+	/**
+	 * Returns the scene
+	 * 
+	 * @return the Scene (scene) attribute
+	 */
 	public Scene getScene(){
 		return this.scene;
 	}

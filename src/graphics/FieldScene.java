@@ -16,6 +16,10 @@ public class FieldScene extends Scene {
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
 	
+	
+	/**
+	 * Creation of the scene where the combat takes place
+	 */
 	public FieldScene(){
 		
 		super(root);
@@ -68,7 +72,9 @@ public class FieldScene extends Scene {
 	}
 	
 	
-	
+	/**
+	 * Removes the escape menu node of the scene
+	 */
 	public void closeMenu(){
 		this.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
         this.escapeOn=false;

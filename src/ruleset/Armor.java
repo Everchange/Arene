@@ -1,3 +1,5 @@
+package ruleset;
+
 public class Armor {
 
 	private int CA, maxDex, dexBonus, weight;

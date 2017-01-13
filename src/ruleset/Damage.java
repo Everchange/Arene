@@ -1,3 +1,5 @@
+package ruleset;
+
 import java.util.Random;
 
 public class Damage {

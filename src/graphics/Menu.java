@@ -19,7 +19,9 @@ public class Menu {
 	private int buttonHeight=24;
 	private Button bQuit = new Button(), bOption = new Button(), bBack=new Button(),bCreate=new Button(), bRestart=new Button();
 
-
+	/**
+	 * Creates the escape menu node
+	 */
 	public Menu(){
 
 
@@ -187,7 +189,11 @@ public class Menu {
 		this.menuGroup.getChildren().add(bQuit);
 
 	}
-
+	/**
+	 * Returns the group that contains all of the nodes of this menu
+	 * 
+	 * @return the Group (menuGroup) attribute
+	 */
 	public Group getMenuGroup(){
 		return this.menuGroup;
 	}

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -15,6 +16,7 @@ public class FieldScene extends Scene {
 	private static Group root=new Group();
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
+	private static Group characterGp=new Group();
 	
 	
 	/**
@@ -28,14 +30,25 @@ public class FieldScene extends Scene {
         canvas.setLayoutX(0);
         canvas.setLayoutY(0);
         
+        
      // load the image for the background
         Image bg =new Image(Beacon.class.getResourceAsStream("field.png"));
         System.out.println();
         
         this.root.getChildren().add(canvas);
+        
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(bg, 0, 0);
         
+        
+        Image test =new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"));
+        ImageView etsimg =new ImageView(test);
+        etsimg.relocate(50, 50);
+        etsimg.setOnMouseEntered(evt -> {System.out.println("ok");});
+        
+        //characterGp.getChildren().addAll(etsimg);
+        this.root.getChildren().add(characterGp);
+        characterGp.toFront();
         
         //set background
         this.setFill(Color.GREY);
@@ -68,6 +81,9 @@ public class FieldScene extends Scene {
                     
                 }
         });
+        
+        canvas.toBack();
+        //just to be sure that canvas is the back ground
 		
 	}
 	

@@ -1,6 +1,7 @@
 package graphics;
 
 
+import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.*;
@@ -45,6 +46,7 @@ public class Main extends Application {
 		
 		Main.stage=stage;
 		
+		
 		fieldScene = new FieldScene();
 		Main.scene[0]=new HomeScene();
 		Main.scene[1]=fieldScene;
@@ -58,8 +60,11 @@ public class Main extends Application {
 			console.show();
 		}
 		console.println("Started Project Arena v"+version);
-
-		//console.print(.class.getName().replace(".", "/") + ".java");
+		
+		//test pour un perso
+		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"test","testpath");
+		
+		((FieldScene) Main.scene[1]).addCharacterToField(test);
 
 		// définit la largeur et la hauteur de la fenêtre
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre

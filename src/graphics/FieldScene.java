@@ -1,5 +1,6 @@
 package graphics;
 
+import character.ArenaCharacter;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,7 +17,8 @@ public class FieldScene extends Scene {
 	private static Group root=new Group();
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
-	private static Group characterGp=new Group();
+	private Group characterGp=new Group();
+	private Group characterGUIGroup=new Group();
 	
 	
 	/**
@@ -35,18 +37,12 @@ public class FieldScene extends Scene {
         Image bg =new Image(Beacon.class.getResourceAsStream("field.png"));
         System.out.println();
         
-        this.root.getChildren().add(canvas);
+        FieldScene.root.getChildren().add(canvas);
         
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.drawImage(bg, 0, 0);
         
         
-        Image test =new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"));
-        ImageView etsimg =new ImageView(test);
-        etsimg.relocate(50, 50);
-        etsimg.setOnMouseEntered(evt -> {System.out.println("ok");});
-        
-        //characterGp.getChildren().addAll(etsimg);
         this.root.getChildren().add(characterGp);
         characterGp.toFront();
         
@@ -92,7 +88,24 @@ public class FieldScene extends Scene {
 	 * Removes the escape menu node of the scene
 	 */
 	public void closeMenu(){
-		this.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
+		FieldScene.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
         this.escapeOn=false;
+	}
+	/**
+	 * Getter for the attribute characterGp that contains the character that are currently displayed
+	 * @return A Group obkect
+	 */
+	public Group getCharacterGroup(){
+		return this.characterGp;
+	}
+	/**
+	 * Allows to add a character on the field
+	 * 
+	 * @param charact an ArenaCharacter object to display
+	 */
+	public void addCharacterToField(ArenaCharacter charact){
+		this.characterGp.getChildren().add(charact.getRepresentationOnField());
+		this.characterGp.getChildren().get(this.characterGp.getChildren().size()-1).relocate(50, 50);
+		this.characterGp.toFront();
 	}
 }

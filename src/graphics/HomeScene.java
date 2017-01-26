@@ -65,8 +65,6 @@ public class HomeScene extends Scene{
 		                
 		            }
 		        });
-
-				
 		
 	}
 	/**

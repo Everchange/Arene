@@ -24,9 +24,9 @@ public class Console extends Stage {
 	private static final String[] command={"quit","clear","scene","help"};
 	// please note that the "help" name must always be at the end of this array !!!
 	private static final String[] commandLegend={"Close the game","Clear the console (delete all the text (can't be undone))"
-												,"change te scene of the main window (stage) to a specified number.\n Syntax : "
+												,"change the scene of the main window (stage) to a specified number.\n Syntax : "
 														+ "scene <number> or scene <name of the scene>",
-														"display a help (could be use like this : help <command's first word>"};
+														"display a help (could be use like this : help <command's first word>)"};
 	private ScrollPane outputScroll=new ScrollPane(output);
 	
 	/*I use the ScrollPane as the text area cannot contain colored text
@@ -41,6 +41,15 @@ public class Console extends Stage {
 	 */
 	public Console(){
 		this.getIcons().add(new Image(Beacon.class.getResourceAsStream("console.png")));
+		
+		//we don't want the user to resize the window
+		this.setResizable(false);
+		
+		//just to prevent the loss of the console
+		this.setOnCloseRequest(evt->{
+			Main.stage.toFront();
+			evt.consume();
+		});
 		
 		Group root = new Group();
 		
@@ -203,6 +212,7 @@ public class Console extends Stage {
 	                    		// we try to cast the probable scene number 
 	                    		try{
 	                    			num=Character.getNumericValue(numC);
+	                    			System.out.println(num);
 	                    		}catch(ClassCastException exception){
 	                    			// if the char is not a number
 	                    			Console.this.println("Invalid scene number",Color.RED);

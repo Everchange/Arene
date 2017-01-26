@@ -1,7 +1,5 @@
 package graphics;
 
-import javafx.application.*;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
@@ -14,7 +12,6 @@ import javafx.scene.shape.Rectangle;
 public class Menu {
 
 	protected Group menuGroup=new Group();
-	private OptionStage optSta=new OptionStage();
 	private int buttonWidth=100;
 	private int buttonHeight=24;
 	private Button bQuit = new Button(), bOption = new Button(), bBack=new Button(),bCreate=new Button(), bRestart=new Button();

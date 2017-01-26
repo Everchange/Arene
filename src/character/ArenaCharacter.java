@@ -1,9 +1,11 @@
 package character;
 
-import java.io.IOException;
 
+import graphics.FieldScene;
+import graphics.Main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import ressources.Beacon;
 import ruleset.CS;
 
@@ -12,6 +14,8 @@ public class ArenaCharacter extends CS {
 	
 	private Image img;
 	private String name;
+	private int[] position;
+	
 	/**
 	 * Create a new character that can be displayed on the field as an image is associated with him.
 	 * 
@@ -22,8 +26,9 @@ public class ArenaCharacter extends CS {
 	 * 				character menu 
 	 * @param imgName path to the character's image
 	 */
-	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath) {
+	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath,int[] position) {
 		super(att, armr, raceIndex);
+		this.position=position;
 		this.name=name;
 		try{
 			double[] size=ruleset.Race.getRaceSize(raceIndex);
@@ -46,20 +51,29 @@ public class ArenaCharacter extends CS {
 	public ImageView getRepresentationOnField(){
 		ImageView ret=new ImageView(this.img);
 		ret.setOnMouseEntered(evt -> {
-        	System.out.print("Name of the overflown character : "+this.name);
+			// implement quick view here
+        	System.out.println("Name of the overflown character : "+this.name);
         });
 		
 		ret.setOnMouseExited(evt -> {
-        	System.out.println(" (mouse exited)");
+        	System.out.println("(mouse exited)");
         });
 		
 		ret.setOnMouseClicked(evt -> {
-        	System.out.println("out");
+			//if this is the lrft button
+			if(evt.getButton().equals(MouseButton.SECONDARY)){
+				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
+			}
+        	
         });
 		
 		return ret;
 		
 		
+	}
+	
+	public int[] getPosition(){
+		return this.position;
 	}
 
 }

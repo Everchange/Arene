@@ -14,12 +14,13 @@ public class Main extends Application {
 
 	static int sizeW=800;
 	static int sizeH=600;
-	static String version="0.3.1";
+	static String version="0.4.1";
 	static Stage stage; 
 	static Scene[] scene=new Scene[4];
 	static FieldScene fieldScene;
 	static boolean dev=true;
-	static Console console;
+	// even if the dev mode is not enable, we create a console
+	public static final Console console=new Console();
 	static boolean escapeOn=false;
 	static boolean fullScreen=false;
 
@@ -52,8 +53,7 @@ public class Main extends Application {
 		Main.scene[1]=fieldScene;
 		Main.scene[2]=new CharacterCreationScene();
 		Main.scene[3]=new OptionScene();
-		// even if the dev mode is not enable, we create a console
-		Main.console=new Console();
+		
 		//si l'application est en dev, on affiche la console
 		
 		if (dev){
@@ -62,9 +62,11 @@ public class Main extends Application {
 		console.println("Started Project Arena v"+version);
 		
 		//test pour un perso
-		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"test","testpath");
+		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"test","testpath",new int[] {50,50});
+		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new int[] {300,50});
 		
-		((FieldScene) Main.scene[1]).addCharacterToField(test);
+		((FieldScene) Main.scene[1]).addCharacterToField(test,test.getPosition());
+		((FieldScene) Main.scene[1]).addCharacterToField(testB,testB.getPosition());
 
 		// définit la largeur et la hauteur de la fenêtre
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
@@ -113,5 +115,15 @@ public class Main extends Application {
 								+(Main.scene.length-1),Color.RED);
 		}
 	}
+	
+	public static Scene getScene(int k){
+		return Main.scene[k];
+	}
+	
+	public static int getH(){
+		return Main.sizeH;
+	}
+	
+
 
 }

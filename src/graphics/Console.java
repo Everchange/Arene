@@ -47,7 +47,7 @@ public class Console extends Stage {
 		
 		//just to prevent the loss of the console
 		this.setOnCloseRequest(evt->{
-			Main.stage.toFront();
+			Main.getStage().toFront();
 			evt.consume();
 		});
 		
@@ -79,7 +79,7 @@ public class Console extends Stage {
 	                	
 		                    if(e.getCode()==KeyCode.F11){
 		                    	Main.console.toBack();
-		                    	Main.stage.toFront();
+		                    	Main.getStage().toFront();
 		                    }
 		                    else{
 		                    	//if the user try to type something
@@ -104,14 +104,14 @@ public class Console extends Stage {
 	                	//when F11 pressed we move the window to the back
 		                    if(e.getCode()==KeyCode.F11){
 		                    	Main.console.toBack();
-		                    	Main.stage.toFront();
+		                    	Main.getStage().toFront();
 		                    }
 		                
 		                  //when the ehter key is pressed we commit the command
 	                    if(e.getCode()==KeyCode.ENTER){
 	                    	String enteredCommand=Console.this.getEntry().getText().toString().toLowerCase();
 	                    	//we use the discriminant for the switch
-	                    	String discriminant="none";
+	                    	String discriminant="false";
 	                    	//we set the value of the discriminant
 	                    	if (enteredCommand.startsWith("help")){
 	                    		discriminant="help";
@@ -158,7 +158,7 @@ public class Console extends Stage {
 	                    			}
 	                    		}
 	                    	}
-	                    	if(enteredCommand.contentEquals("clear") || enteredCommand.contentEquals("quit")){
+	                    	if(enteredCommand.contentEquals("clear") || enteredCommand.contentEquals("quit") ||enteredCommand.contentEquals("reset size")){
 	                    		discriminant=enteredCommand;
 	                    	}
 	                    	
@@ -166,6 +166,10 @@ public class Console extends Stage {
 	                    	switch(discriminant){
 	                    	case("false"):
 	                    		//we print nothing
+	                    		break;
+	                    	case("reset size"):
+	                    		//we resize the Main stage
+	                    		Main.resetSize();
 	                    		break;
 	                    	case("export"):
 	                    		

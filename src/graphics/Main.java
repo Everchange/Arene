@@ -5,6 +5,7 @@ import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 
@@ -15,7 +16,7 @@ public class Main extends Application {
 	static int sizeW=800;
 	static int sizeH=600;
 	static String version="0.4.1";
-	static Stage stage; 
+	private static Stage stage; 
 	static Scene[] scene=new Scene[4];
 	static FieldScene fieldScene;
 	static boolean dev=true;
@@ -23,6 +24,9 @@ public class Main extends Application {
 	public static final Console console=new Console();
 	static boolean escapeOn=false;
 	static boolean fullScreen=false;
+	
+	//the first one should be the "escape key"
+	private static KeyCode[] controlsCodes={KeyCode.ESCAPE};
 
 	/**
 	 * Just use to launch the application
@@ -72,8 +76,10 @@ public class Main extends Application {
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
 		stage.setWidth(sizeW);
 		stage.setHeight(sizeH);
-		//the stage is not resizable for the moment.
+		//the stage is not resizable if it's a release
+		if (!dev){
 		stage.setResizable(false);
+		}
 		//ajout de la scene de base
 		Main.setScene(0,false);
 		// met un titre dans la fenêtre
@@ -124,6 +130,40 @@ public class Main extends Application {
 		return Main.sizeH;
 	}
 	
+	public static KeyCode getControlCode(int k){
+		if (k<Main.controlsCodes.length){
+			return Main.controlsCodes[k];
+		}
+		else{
+			return Main.controlsCodes[0];
+		}
+	}
+	
+	public static int setControlCode(int k, KeyCode x){
+		int ret = 1;
+		if (k<Main.controlsCodes.length){
+			for (int l=0;l<Main.controlsCodes.length;l++){
+				if (x==Main.controlsCodes[l]){
+					ret=2;
+				}
+			}
+			Main.controlsCodes[k]=x;
+		}
+		else{
+			ret=1;
+		}
+		return ret;
+	}
+	
+	public static void resetSize(){
+		Main.stage.setWidth(sizeW);
+		Main.stage.setHeight(sizeH);
+		Main.console.println("Stage size reseted");
+	}
+	
+	public static Stage getStage(){
+		return Main.stage;
+	}
 
 
 }

@@ -13,9 +13,10 @@ import javafx.scene.shape.Rectangle;
 public class OptionScene extends Scene{
 	
 	private static Group root=new Group(), buttons=new Group(), options=new Group();
-	private Button bBack = new Button(),bGraphics=new Button();
+	private Button bBack = new Button(),bGraphics=new Button(), bControls =new Button();
 	private int buttonWidth=(int)(Main.sizeW/4-20);
-	private int buttonHeight=(int)(Main.sizeH/4-5*10);
+	//-20 to let a little space between the end of the button and the border
+	private int buttonHeight=(int)(40), buttonGap=10;
 	
 	/**
 	 * Creation of the option scene
@@ -29,8 +30,8 @@ public class OptionScene extends Scene{
 		panel.setFill(Color.GREY);
 		buttons.getChildren().add(panel);
 		
-		options.resizeRelocate(0, 0, (int)(Main.sizeW/4), Main.sizeH);
-		Rectangle panel2 = new Rectangle(0,0,(int)(Main.sizeW/4),Main.sizeH);
+		options.resizeRelocate(Main.sizeW/4, 0, Main.sizeW*(3/4), Main.sizeH );
+		Rectangle panel2 = new Rectangle(0,0,(int)((Main.sizeW*3)/4),Main.sizeH);
 		panel2.setFill(Color.LAVENDER);
 		options.getChildren().add(panel2);
 		
@@ -44,12 +45,16 @@ public class OptionScene extends Scene{
         
         
         
-        bBack.relocate(10,10);
+        bBack.relocate(10,buttonGap);
         //defines the action when the button is pressed
         bBack.setOnAction(new EventHandler<ActionEvent>() {
  
             @Override
             public void handle(ActionEvent event) {
+            	options.getChildren().clear();
+            	Rectangle panel2 = new Rectangle(0,0,(int)((Main.sizeW*3)/4),Main.sizeH);
+        		panel2.setFill(Color.LAVENDER);
+        		options.getChildren().add(panel2);
                 Main.setScene(1, false);
             }
         });
@@ -67,6 +72,42 @@ public class OptionScene extends Scene{
 		
 		OptionScene.buttons.getChildren().add(this.bBack);
 		
+		//the following button allows to enter the menu where we can change the controls
+		
+		bControls.setText("controls");
+		bControls.setPrefWidth(buttonWidth);
+		bControls.setPrefHeight(buttonHeight);
+        // ajout des coordonnées pour que le bouton soit bien placé
+        //NB: les coordonée sont fonction du groupe menuGroup
+        
+        
+        
+		bControls.relocate(10,2*buttonHeight+3*buttonGap);
+        //defines the action when the button is pressed
+		bControls.setOnAction(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+                OptionScene.options.getChildren().clear();
+                Rectangle panel = new Rectangle(0,0,(int)(Main.sizeW*3/4),Main.sizeH);
+        		panel.setFill(Color.RED);
+                OptionScene.options.getChildren().add(panel);
+            }
+        });
+     // When select and enter pressed
+		bControls.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            public void handle(KeyEvent e)
+            {
+                if(e.getCode()==KeyCode.ENTER){
+                	bControls.fire();
+                }
+                
+            }
+        });
+		
+		OptionScene.buttons.getChildren().add(this.bControls);
+		
 		//graphics
 		bGraphics.setText("Graphics");
 		bGraphics.setPrefWidth(buttonWidth);
@@ -76,7 +117,7 @@ public class OptionScene extends Scene{
         
         
         
-		bGraphics.relocate(10,20+buttonHeight);
+		bGraphics.relocate(10,2*buttonGap+buttonHeight);
         //defines the action when the button is pressed
 		bGraphics.setOnAction(new EventHandler<ActionEvent>() {
  
@@ -118,7 +159,7 @@ public class OptionScene extends Scene{
 	                }
 	        });
 		
-		OptionScene.root.getChildren().add(buttons);
+		OptionScene.root.getChildren().addAll(buttons,options);
 		
 		
 	}

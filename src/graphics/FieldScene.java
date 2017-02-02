@@ -20,6 +20,7 @@ public class FieldScene extends Scene {
 	private static Menu menu=new Menu();
 	private Group characterGp=new Group();
 	private CharacterGUI characterGUIGroup=new CharacterGUI();
+	private static KeyCode[] controlsCodes={KeyCode.ESCAPE};
 	
 	
 	/**
@@ -58,12 +59,14 @@ public class FieldScene extends Scene {
             {
                 public void handle(KeyEvent e)
                 {
-                    if(e.getCode()==KeyCode.ESCAPE && !FieldScene.this.escapeOn){
+                    if(e.getCode()==FieldScene.controlsCodes[0] && !FieldScene.this.escapeOn){
+                    	// we reset the character GUI
+                    	FieldScene.this.characterGUIGroup.getChildren().clear();
                     	//if menu off and escape pressed
                         FieldScene.root.getChildren().add(FieldScene.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }
-                    else if(e.getCode()==KeyCode.ESCAPE && FieldScene.this.escapeOn){
+                    else if(e.getCode()==FieldScene.controlsCodes[0] && FieldScene.this.escapeOn){
                     	// if escape pressed and menu on
                         FieldScene.root.getChildren().remove(FieldScene.menu.getMenuGroup());
                         FieldScene.this.escapeOn=false;

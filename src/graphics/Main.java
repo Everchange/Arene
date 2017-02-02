@@ -1,6 +1,8 @@
 package graphics;
 
 
+//import java.awt.Toolkit;
+
 import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
@@ -13,8 +15,10 @@ import javafx.event.EventHandler;
 public class Main extends Application {
 
 
-	static int sizeW=800;
-	static int sizeH=600;
+	/*static double sizeW=Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	static double sizeH=Toolkit.getDefaultToolkit().getScreenSize().getHeight();*/
+	static double sizeW=800;
+	static double sizeH=600;
 	static String version="0.4.1";
 	private static Stage stage; 
 	static Scene[] scene=new Scene[4];
@@ -86,6 +90,7 @@ public class Main extends Application {
 		stage.setTitle("Project Arena "+version);
 		//full screen mode
 		stage.setFullScreen(Main.fullScreen);
+		//stage.initStyle(StageStyle.UNDECORATED);
 		
 		
 		
@@ -126,7 +131,7 @@ public class Main extends Application {
 		return Main.scene[k];
 	}
 	
-	public static int getH(){
+	public static double getH(){
 		return Main.sizeH;
 	}
 	
@@ -148,10 +153,12 @@ public class Main extends Application {
 				}
 			}
 			Main.controlsCodes[k]=x;
+			Main.console.print("Key code "+k+" set to "+Main.controlsCodes[k].toString());
 		}
 		else{
 			ret=1;
 		}
+		
 		return ret;
 	}
 	

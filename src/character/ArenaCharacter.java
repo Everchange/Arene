@@ -61,9 +61,9 @@ public class ArenaCharacter extends CS {
 		
 		ret.setOnMouseClicked(evt -> {
 			//if this is the lrft button
-			if(evt.getButton().equals(MouseButton.SECONDARY)){
+			
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
-			}
+			
         	
         });
 		

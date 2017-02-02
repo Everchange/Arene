@@ -1,6 +1,9 @@
 package graphics;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 //import java.awt.Toolkit;
 
 import character.ArenaCharacter;
@@ -19,7 +22,7 @@ public class Main extends Application {
 	static double sizeH=Toolkit.getDefaultToolkit().getScreenSize().getHeight();*/
 	static double sizeW=800;
 	static double sizeH=600;
-	static String version="0.4.1";
+	static String version="v unknowed";
 	private static Stage stage; 
 	static Scene[] scene=new Scene[4];
 	static FieldScene fieldScene;
@@ -28,7 +31,7 @@ public class Main extends Application {
 	public static final Console console=new Console();
 	static boolean escapeOn=false;
 	static boolean fullScreen=false;
-	
+
 	//the first one should be the "escape key"
 	private static KeyCode[] controlsCodes={KeyCode.ESCAPE,KeyCode.F11};
 
@@ -49,30 +52,31 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		//version number
+		version=getVersion();
 		if (dev){
 			Main.version+="/dev-"+System.getProperty("user.name");
 		}
-		
+
 		Main.stage=stage;
-		
-		
+
+
 		fieldScene = new FieldScene();
 		Main.scene[0]=new HomeScene();
 		Main.scene[1]=fieldScene;
 		Main.scene[2]=new CharacterCreationScene();
 		Main.scene[3]=new OptionScene();
-		
+
 		//si l'application est en dev, on affiche la console
-		
+
 		if (dev){
 			console.show();
 		}
 		console.println("Started Project Arena v"+version);
-		
+
 		//test pour un perso
 		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"test","testpath",new int[] {50,50});
 		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new int[] {300,50});
-		
+
 		((FieldScene) Main.scene[1]).addCharacterToField(test,test.getPosition());
 		((FieldScene) Main.scene[1]).addCharacterToField(testB,testB.getPosition());
 
@@ -82,7 +86,7 @@ public class Main extends Application {
 		stage.setHeight(sizeH);
 		//the stage is not resizable if it's a release
 		if (!dev){
-		stage.setResizable(false);
+			stage.setResizable(false);
 		}
 		//ajout de la scene de base
 		Main.setScene(0,false);
@@ -91,9 +95,9 @@ public class Main extends Application {
 		//full screen mode
 		stage.setFullScreen(Main.fullScreen);
 		//stage.initStyle(StageStyle.UNDECORATED);
-		
-		
-		
+
+
+
 		//action si la fenetre est fermée
 
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -123,18 +127,18 @@ public class Main extends Application {
 		}
 		else {
 			Main.console.println("Incorect scene number (get : "+k+", expected : between 0 and"
-								+(Main.scene.length-1),Color.RED);
+					+(Main.scene.length-1),Color.RED);
 		}
 	}
-	
+
 	public static Scene getScene(int k){
 		return Main.scene[k];
 	}
-	
+
 	public static double getH(){
 		return Main.sizeH;
 	}
-	
+
 	public static KeyCode getControlCode(int k){
 		if (k<Main.controlsCodes.length){
 			return Main.controlsCodes[k];
@@ -143,11 +147,11 @@ public class Main extends Application {
 			return Main.controlsCodes[0];
 		}
 	}
-	
+
 	public static int getControlCodeLength(){
 		return Main.controlsCodes.length;
 	}
-	
+
 	public static int setControlCode(int k, KeyCode x){
 		int ret = 1;
 		if (k<Main.controlsCodes.length){
@@ -162,10 +166,12 @@ public class Main extends Application {
 		else{
 			ret=1;
 		}
-		
+
 		return ret;
 	}
-	
+	/**
+	 * reset the size of the window to the default size
+	 */
 	public static void resetSize(){
 		Main.stage.setWidth(sizeW);
 		Main.stage.setHeight(sizeH);
@@ -174,6 +180,39 @@ public class Main extends Application {
 	
 	public static Stage getStage(){
 		return Main.stage;
+	}
+	/**
+	 * the following method allows to synchronize the version number from README.md file
+	 *
+	 * @return versionNumber
+	 */
+	private static String getVersion(){
+		//if enable to find the version number, here is the default value
+		String v="v unknowed";
+		//we prepare everything to read the file
+		BufferedReader reader;
+		FileReader fileReader ;
+		try{
+			//relative path
+			fileReader =new FileReader("./README.md");
+			reader =new BufferedReader(fileReader);
+
+			//used to read the file
+			String ligne;
+
+			//we read the file
+			while((ligne=reader.readLine())!=null){
+				//will there is still something
+				if (ligne.startsWith("**")){
+					//if the line start match the one of the one of the line that contains the version number
+					v=ligne.replace("**", "");
+					//we remove the stars
+				}
+			}
+		}catch(Exception e){
+			Main.console.println("Unable to find the README.md file !");
+		}
+		return v;
 	}
 
 

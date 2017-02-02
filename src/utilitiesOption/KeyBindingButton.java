@@ -27,7 +27,7 @@ public class KeyBindingButton extends Button{
 		super();
 		this.setText(Main.getControlCode(k).getName());
 		
-		this.relocate(xOffset, spaceBetween*(k+1));
+		this.relocate(xOffset, spaceBetween*(k+1)+buttonH*k);
 		this.setPrefSize(buttonW, buttonH);
 		
 		
@@ -45,7 +45,9 @@ public class KeyBindingButton extends Button{
 					public void handle(KeyEvent e)
 					{
 						//we change the key code
-						Main.setControlCode(0, e.getCode());
+						Main.setControlCode(k, e.getCode());
+						//just not to trigger the event
+						e.consume();
 						//we reset the text
 						KeyBindingButton.this.setText(Main.getControlCode(0).getName());
 						// we remove the focus from the button

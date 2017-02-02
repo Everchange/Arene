@@ -1,7 +1,7 @@
 #Arene
 
 
-**V 0.4.1/dev**
+**V 0.4.2/dev**
 
 
 ###On the subject of Main.console.print/println

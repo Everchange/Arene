@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import utilitiesOption.KeyBinding;
 
 public class OptionScene extends Scene{
 
@@ -17,6 +18,9 @@ public class OptionScene extends Scene{
 	private int buttonWidth=(int)(Main.sizeW/4-20);
 	//-20 to let a little space between the end of the button and the border
 	private int buttonHeight=(int)(40), buttonGap=10;
+	/*//keySet is used as a security that will disable all the buttons when the player want to reset a key
+	private static boolean keySet=false;*/
+	private static KeyBinding kB=new KeyBinding();
 
 	/**
 	 * Creation of the option scene
@@ -51,11 +55,13 @@ public class OptionScene extends Scene{
 
 			@Override
 			public void handle(ActionEvent event) {
+				
 				options.getChildren().clear();
 				Rectangle panel2 = new Rectangle(0,0,(int)((Main.sizeW*3)/4),Main.sizeH);
 				panel2.setFill(Color.LAVENDER);
 				options.getChildren().add(panel2);
 				Main.setScene(1, false);
+				
 			}
 		});
 		// When select and enter pressed
@@ -88,52 +94,21 @@ public class OptionScene extends Scene{
 
 			@Override
 			public void handle(ActionEvent event) {
+				
 				//we remove everything 
 				OptionScene.options.getChildren().clear();
+				
 				//background
 				Rectangle panel = new Rectangle(0,0,(int)(Main.sizeW*3/4),Main.sizeH);
 				panel.setFill(Color.LIGHTSKYBLUE);
 				OptionScene.options.getChildren().add(panel);
 				
-				//create button for key selection
-				Button bescape=new Button();
-				bescape.relocate(10,buttonGap);
-				//set the text to the key
-				bescape.setText("escape key :"+Main.getControlCode(0).getName());
-				//resize
-				bescape.setPrefWidth(buttonWidth);
-				bescape.setPrefHeight(buttonHeight);
 				//ad to the option group
-				OptionScene.options.getChildren().add(bescape);
-				//set what to do on fired
-				bescape.setOnAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						//we are waiting for a new key 
-						bescape.setText("escape key : ?");
-						bescape.setOnKeyPressed(new EventHandler<KeyEvent>()
-						{
-							public void handle(KeyEvent e)
-							{
-								//we change the key code
-								Main.setControlCode(0, e.getCode());
-								//we reset the text
-								bescape.setText("escape key :"+Main.getControlCode(0).getName());
-								// we remove the focus from the button
-								options.requestFocus();
-
-
-
-							}
-						});
-					}
-				});
-
-
-
+				OptionScene.options.getChildren().add(kB);
+				
 			}
 		});
+		
 		// When select and enter pressed
 		bControls.setOnKeyPressed(new EventHandler<KeyEvent>()
 		{
@@ -183,13 +158,13 @@ public class OptionScene extends Scene{
 
 
 
-		// when the F11 key is pressed, the console pops at the foreground
+		// when the "console key" is pressed, the console pops at the foreground
 		this.setOnKeyPressed(
 				new EventHandler<KeyEvent>()
 				{
 					public void handle(KeyEvent e)
 					{
-						if(e.getCode()==KeyCode.F11){
+						if(e.getCode()==Main.getControlCode(1)){
 							if (!Main.dev){
 								Main.console.show();
 							}
@@ -202,6 +177,10 @@ public class OptionScene extends Scene{
 		OptionScene.root.getChildren().addAll(buttons,options);
 
 
+	}
+
+	public static void removeFocus(){
+		OptionScene.root.requestFocus();
 	}
 
 

@@ -30,7 +30,7 @@ public class Main extends Application {
 	static boolean fullScreen=false;
 	
 	//the first one should be the "escape key"
-	private static KeyCode[] controlsCodes={KeyCode.ESCAPE};
+	private static KeyCode[] controlsCodes={KeyCode.ESCAPE,KeyCode.F11};
 
 	/**
 	 * Just use to launch the application
@@ -142,6 +142,10 @@ public class Main extends Application {
 		else{
 			return Main.controlsCodes[0];
 		}
+	}
+	
+	public static int getControlCodeLength(){
+		return Main.controlsCodes.length;
 	}
 	
 	public static int setControlCode(int k, KeyCode x){

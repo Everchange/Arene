@@ -71,7 +71,7 @@ public class FieldScene extends Scene {
                         FieldScene.this.escapeOn=false;
                     	
                     }
-                    if(e.getCode()==KeyCode.F11){
+                    if(e.getCode()==Main.getControlCode(1)){
                     	// console
                     	if (!Main.dev){
                     		Main.console.show();

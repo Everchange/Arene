@@ -45,7 +45,7 @@ public class HomeScene extends Scene{
 			            {
 			                public void handle(KeyEvent e)
 			                {
-			                    if(e.getCode()==KeyCode.F11){
+			                    if(e.getCode()==Main.getControlCode(1)){
 			                    	if (!Main.dev){
 			                    		Main.console.show();
 			                    	}

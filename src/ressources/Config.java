@@ -195,7 +195,7 @@ public abstract class Config {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			SavedConfig result = (SavedConfig) ois.readObject();
 			ois.close();
-			//we set the config
+			//we set the config from the saved config.ser file
 			Config.controlsCodes=result.getControlsCodes();
 			Config.sizeH=result.getsizeH();
 			Config.sizeW=result.getsizeW();
@@ -203,8 +203,14 @@ public abstract class Config {
 			Main.console.println(Double.valueOf(result.getsizeH()).toString()+Double.valueOf(result.getsizeW()).toString());
 			
 			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				// the config.ser file is missing, so we create it
+				try {
+					FileOutputStream fos = new FileOutputStream("./config.ser");
+					fos.close();
+				} catch (IOException e) {
+					//if an exception occurs, i don't know yet how to solve it :(
+					e.printStackTrace();
+				}
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block

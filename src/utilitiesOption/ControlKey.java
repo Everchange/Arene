@@ -3,13 +3,24 @@
  */
 package utilitiesOption;
 
+import java.io.Serializable;
+
 import javafx.scene.input.KeyCode;
 
 /**
  * @author Clément
  *
+ *
+ *
  */
-public class ControlKey {
+public class ControlKey implements Serializable{
+	//implements serializable allows to save the config
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private String name;
 	private KeyCode code = null;

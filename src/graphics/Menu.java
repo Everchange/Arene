@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import ressources.Config;
 
 public class Menu {
 
@@ -22,13 +23,13 @@ public class Menu {
 	public Menu(){
 
 
-		int buttonsCenter=(int)(Main.sizeH/2-buttonHeight);
-		this.buttonWidth=(int)(Main.sizeW/4);
+		int buttonsCenter=(int)(Config.getSizeH()/2-buttonHeight);
+		this.buttonWidth=(int)(Config.getSizeW()/4);
 
 
-		this.menuGroup.resizeRelocate(0,0,Main.sizeW,Main.sizeH);
+		this.menuGroup.resizeRelocate(0,0,Config.getSizeW(),Config.getSizeH());
 
-		Rectangle panel = new Rectangle(0,0,Main.sizeW,Main.sizeH);
+		Rectangle panel = new Rectangle(0,0,Config.getSizeW(),Config.getSizeH());
 		//the panel is the filter applied to the field scene when the escape menu is on
 		panel.setFill(Color.rgb(0,0,0,0.7));
 		//0.7 is the transparency
@@ -39,7 +40,7 @@ public class Menu {
 		bBack.setText("Back to game");
 		bBack.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du second
-		bBack.relocate((int)(Main.sizeW/2-(buttonWidth/2)), buttonsCenter-80);
+		bBack.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-80);
 		//defines the action when the button is pressed
 		bBack.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -69,7 +70,7 @@ public class Menu {
 		bOption.setText("Option");
 		bOption.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
-		bOption.relocate((int)(Main.sizeW/2-(buttonWidth/2)), buttonsCenter-40);
+		bOption.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-40);
 		//defines the action when the button is pressed
 		bOption.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -97,7 +98,7 @@ public class Menu {
 		bCreate.setText("Create character");
 		bCreate.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
-		bCreate.relocate((int)(Main.sizeW/2-(buttonWidth/2)), buttonsCenter);
+		bCreate.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter);
 		//defines the action when the button is pressed
 		bCreate.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -127,7 +128,7 @@ public class Menu {
 		bRestart.setText("Restart");
 		bRestart.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
-		bRestart.relocate((int)(Main.sizeW/2-(buttonWidth/2)), buttonsCenter+40);
+		bRestart.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter+40);
 		//defines the action when the button is pressed
 		bRestart.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -159,13 +160,13 @@ public class Menu {
 
 
 
-		bQuit.relocate((int)(Main.sizeW/2-buttonWidth/2), buttonsCenter+80);
+		bQuit.relocate((int)(Config.getSizeW()/2-buttonWidth/2), buttonsCenter+80);
 		//defines the action when the button is pressed
 		bQuit.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.exit(0);
+				Main.quit();
 			}
 		});
 		// When select and enter pressed

@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import ressources.Beacon;
+import ressources.Config;
 
 public class Console extends Stage {
 	
@@ -53,7 +54,7 @@ public class Console extends Stage {
 		
 		Group root = new Group();
 		
-		Text heading =new Text("Project arena (V"+Main.version+")");
+		Text heading =new Text("Project arena (V"+Config.getVersion()+")");
 		
 		heading.relocate((int)(size[0]/2-heading.getBoundsInLocal().getWidth()/2), 10);
 		
@@ -77,7 +78,7 @@ public class Console extends Stage {
 					public void handle(KeyEvent e)
 	                {
 	                	
-		                    if(e.getCode()==Main.getDevControlCodes(0)){
+		                    if(e.getCode()==Config.getDevControlCode(0)){
 		                    	Main.console.toBack();
 		                    	Main.getStage().toFront();
 		                    }
@@ -102,7 +103,7 @@ public class Console extends Stage {
 					public void handle(KeyEvent e)
 	                {
 	                	//when F11 pressed we move the window to the back
-		                    if(e.getCode()==Main.getDevControlCodes(0)){
+		                    if(e.getCode()==Config.getDevControlCode(0)){
 		                    	Main.console.toBack();
 		                    	Main.getStage().toFront();
 		                    }
@@ -203,10 +204,10 @@ public class Console extends Stage {
 	                    		}
 	                    		break;
 	                    	case("quit"):
-	                    		if (Main.dev){
+	                    		if (Config.inDev){
 	                    			System.out.println("quit command from console");
 	                    		}
-	                    		System.exit(0);
+	                    		Main.quit();
 	                    		break;
 	                    	case("scene"):
 	                    		int num=99; 

@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import ressources.Config;
 
 public class CharacterCreationScene extends Scene {
 	
@@ -12,7 +13,7 @@ public class CharacterCreationScene extends Scene {
 	public CharacterCreationScene(){
 		super(root);
 		
-		Rectangle bg=new Rectangle(Main.sizeW,Main.sizeH);
+		Rectangle bg=new Rectangle(Config.getSizeW(),Config.getSizeH());
 		bg.setFill(Color.BLACK);
 		
 		root.getChildren().add(bg);

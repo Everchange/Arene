@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import ressources.Beacon;
+import ressources.Config;
 
 public class FieldScene extends Scene {
 	private static Group root=new Group();
@@ -57,22 +58,22 @@ public class FieldScene extends Scene {
             {
                 public void handle(KeyEvent e)
                 {
-                    if(e.getCode()==Main.getControlCode(0) && !FieldScene.this.escapeOn){
+                    if(e.getCode()==Config.getControlCode(0) && !FieldScene.this.escapeOn){
                     	// we reset the character GUI
                     	FieldScene.this.characterGUIGroup.getChildren().clear();
                     	//if menu off and escape pressed
                         FieldScene.root.getChildren().add(FieldScene.menu.getMenuGroup());
                         FieldScene.this.escapeOn=true;
                     }
-                    else if(e.getCode()==Main.getControlCode(0) && FieldScene.this.escapeOn){
+                    else if(e.getCode()==Config.getControlCode(0) && FieldScene.this.escapeOn){
                     	// if escape pressed and menu on
                         FieldScene.root.getChildren().remove(FieldScene.menu.getMenuGroup());
                         FieldScene.this.escapeOn=false;
                     	
                     }
-                    if(e.getCode()==Main.getDevControlCodes(0)){
+                    if(e.getCode()==Config.getDevControlCode(0)){
                     	// console
-                    	if (!Main.dev){
+                    	if (!Config.inDev){
                     		Main.console.show();
                     	}
                     	Main.console.toFront();

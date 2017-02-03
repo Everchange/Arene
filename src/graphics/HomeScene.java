@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import ressources.Config;
 
 public class HomeScene extends Scene{
 	
@@ -45,8 +46,8 @@ public class HomeScene extends Scene{
 			            {
 			                public void handle(KeyEvent e)
 			                {
-			                    if(e.getCode()==Main.getDevControlCodes(0)){
-			                    	if (!Main.dev){
+			                    if(e.getCode()==Config.getDevControlCode(0)){
+			                    	if (!Config.inDev){
 			                    		Main.console.show();
 			                    	}
 			                    	Main.console.toFront();

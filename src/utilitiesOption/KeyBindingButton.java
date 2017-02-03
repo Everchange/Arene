@@ -3,13 +3,13 @@ package utilitiesOption;
 
 import java.util.Arrays;
 
-import graphics.Main;
 import graphics.OptionScene;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import ressources.Config;
 
 public class KeyBindingButton extends Button{
 
@@ -26,7 +26,7 @@ public class KeyBindingButton extends Button{
 	public KeyBindingButton(int k){
 
 		super();
-		this.setText(Main.getControlCode(k).getName());
+		this.setText(Config.getControlCode(k).getName());
 
 		this.relocate(xOffset, spaceBetween*(k+1)+buttonH*k);
 		this.setPrefSize(buttonW, buttonH);
@@ -45,14 +45,14 @@ public class KeyBindingButton extends Button{
 				{
 					public void handle(KeyEvent e)
 					{
-						if (!Arrays.asList(Main.blackList).contains(e.getCode())){
+						if (!Arrays.asList(Config.blackList).contains(e.getCode())){
 							//if the key is not in the black list
 							//we change the key code
-							Main.setControlCode(k, e.getCode());
+							Config.setControlCode(k, e.getCode());
 							//just not to trigger the event
 							e.consume();
 							//we reset the text
-							KeyBindingButton.this.setText(Main.getControlCode(0).getName());
+							KeyBindingButton.this.setText(Config.getControlCode(k).getName());
 							// we remove the focus from the button
 							OptionScene.removeFocus();
 						}
@@ -61,7 +61,7 @@ public class KeyBindingButton extends Button{
 
 				//when the focus is lost and the user had to press a new key but he didn't, we reset the text
 				KeyBindingButton.this.focusedProperty().addListener((observable, oldValue, newValue) -> {
-					KeyBindingButton.this.setText(Main.getControlCode(k).getName());
+					KeyBindingButton.this.setText(Config.getControlCode(k).getName());
 				});
 
 			}

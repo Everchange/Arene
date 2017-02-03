@@ -10,12 +10,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import utilitiesOption.KeyBinding;
+import ressources.Config;
 
 public class OptionScene extends Scene{
 
 	private static Group root=new Group(), buttons=new Group(), options=new Group();
 	private Button bBack = new Button(),bGraphics=new Button(), bControls =new Button();
-	private int buttonWidth=(int)(Main.sizeW/4-20);
+	private int buttonWidth=(int)(Config.getSizeW()/4-20);
 	//-20 to let a little space between the end of the button and the border
 	private int buttonHeight=(int)(40), buttonGap=10;
 	/*//keySet is used as a security that will disable all the buttons when the player want to reset a key
@@ -29,13 +30,13 @@ public class OptionScene extends Scene{
 
 		super(root);
 
-		buttons.resizeRelocate(0, 0, (int)(Main.sizeW/4), Main.sizeH);
-		Rectangle panel = new Rectangle(0,0,(int)(Main.sizeW/4),Main.sizeH);
+		buttons.resizeRelocate(0, 0, (int)(Config.getSizeW()/4), Config.getSizeH());
+		Rectangle panel = new Rectangle(0,0,(int)(Config.getSizeW()/4),Config.getSizeH());
 		panel.setFill(Color.GREY);
 		buttons.getChildren().add(panel);
 
-		options.resizeRelocate(Main.sizeW/4, 0, Main.sizeW*(3/4), Main.sizeH );
-		Rectangle panel2 = new Rectangle(0,0,(int)((Main.sizeW*3)/4),Main.sizeH);
+		options.resizeRelocate(Config.getSizeW()/4, 0, Config.getSizeW()*(3/4), Config.getSizeH() );
+		Rectangle panel2 = new Rectangle(0,0,(int)((Config.getSizeW()*3)/4),Config.getSizeH());
 		panel2.setFill(Color.LAVENDER);
 		options.getChildren().add(panel2);
 
@@ -57,7 +58,7 @@ public class OptionScene extends Scene{
 			public void handle(ActionEvent event) {
 				
 				options.getChildren().clear();
-				Rectangle panel2 = new Rectangle(0,0,(int)((Main.sizeW*3)/4),Main.sizeH);
+				Rectangle panel2 = new Rectangle(0,0,(int)((Config.getSizeW()*3)/4),Config.getSizeH());
 				panel2.setFill(Color.LAVENDER);
 				options.getChildren().add(panel2);
 				Main.setScene(1, false);
@@ -99,7 +100,7 @@ public class OptionScene extends Scene{
 				OptionScene.options.getChildren().clear();
 				
 				//background
-				Rectangle panel = new Rectangle(0,0,(int)(Main.sizeW*3/4),Main.sizeH);
+				Rectangle panel = new Rectangle(0,0,(int)(Config.getSizeW()*3/4),Config.getSizeH());
 				panel.setFill(Color.LIGHTSKYBLUE);
 				OptionScene.options.getChildren().add(panel);
 				
@@ -164,8 +165,8 @@ public class OptionScene extends Scene{
 				{
 					public void handle(KeyEvent e)
 					{
-						if(e.getCode()==Main.getDevControlCodes(0)){
-							if (!Main.dev){
+						if(e.getCode()==Config.getDevControlCode(0)){
+							if (!Config.inDev){
 								Main.console.show();
 							}
 							Main.console.toFront();

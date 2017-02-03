@@ -164,7 +164,7 @@ public class OptionScene extends Scene{
 				{
 					public void handle(KeyEvent e)
 					{
-						if(e.getCode()==Main.getControlCode(1)){
+						if(e.getCode()==Main.getDevControlCodes(0)){
 							if (!Main.dev){
 								Main.console.show();
 							}

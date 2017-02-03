@@ -3,12 +3,14 @@ package graphics;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Arrays;
 
 //import java.awt.Toolkit;
 
 import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
+import utilitiesOption.ControlKey;
 import javafx.scene.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -32,8 +34,11 @@ public class Main extends Application {
 	static boolean escapeOn=false;
 	static boolean fullScreen=false;
 
-	//the first one should be the "escape key"
-	private static KeyCode[] controlsCodes={KeyCode.ESCAPE,KeyCode.F11};
+	//the following list is the default control key
+	private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE)},
+			devControlCodes={new ControlKey("Console", KeyCode.F11)};
+	//the black list is used to prevent the binding of some key 
+	public static final KeyCode[] blackList={KeyCode.ENTER};
 
 	/**
 	 * Just use to launch the application
@@ -54,7 +59,7 @@ public class Main extends Application {
 		//version number
 		version=getVersion();
 		if (dev){
-			Main.version+="/dev-"+System.getProperty("user.name");
+			Main.version+=System.getProperty("user.name");
 		}
 
 		Main.stage=stage;
@@ -141,12 +146,22 @@ public class Main extends Application {
 
 	public static KeyCode getControlCode(int k){
 		if (k<Main.controlsCodes.length){
-			return Main.controlsCodes[k];
+			return Main.controlsCodes[k].getCode();
 		}
 		else{
-			return Main.controlsCodes[0];
+			return Main.controlsCodes[0].getCode();
 		}
 	}
+
+	public static KeyCode getDevControlCodes(int i) {
+		if (i<Main.devControlCodes.length){
+			return Main.devControlCodes[i].getCode();
+		}
+		else{
+			return Main.devControlCodes[0].getCode();
+		}
+	}
+
 
 	public static int getControlCodeLength(){
 		return Main.controlsCodes.length;
@@ -154,14 +169,16 @@ public class Main extends Application {
 
 	public static int setControlCode(int k, KeyCode x){
 		int ret = 1;
-		if (k<Main.controlsCodes.length){
+		// the control exist and the key isn't in the black list
+		if (k<Main.controlsCodes.length && !Arrays.asList(Main.blackList).contains(x)){
 			for (int l=0;l<Main.controlsCodes.length;l++){
-				if (x==Main.controlsCodes[l]){
+				if (x==Main.controlsCodes[l].getCode()){
+					System.out.println("key already binded");
 					ret=2;
 				}
 			}
-			Main.controlsCodes[k]=x;
-			Main.console.print("Key code "+k+" set to "+Main.controlsCodes[k].toString());
+			Main.controlsCodes[k].setCode(x);
+			Main.console.print(Main.controlsCodes[k].getName()+" key set to "+Main.controlsCodes[k].getKeyName());
 		}
 		else{
 			ret=1;
@@ -177,7 +194,7 @@ public class Main extends Application {
 		Main.stage.setHeight(sizeH);
 		Main.console.println("Stage size reseted");
 	}
-	
+
 	public static Stage getStage(){
 		return Main.stage;
 	}
@@ -214,6 +231,8 @@ public class Main extends Application {
 		}
 		return v;
 	}
+
+
 
 
 }

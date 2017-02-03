@@ -70,7 +70,7 @@ public class FieldScene extends Scene {
                         FieldScene.this.escapeOn=false;
                     	
                     }
-                    if(e.getCode()==Main.getControlCode(1)){
+                    if(e.getCode()==Main.getDevControlCodes(0)){
                     	// console
                     	if (!Main.dev){
                     		Main.console.show();

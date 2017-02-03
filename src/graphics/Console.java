@@ -77,7 +77,7 @@ public class Console extends Stage {
 					public void handle(KeyEvent e)
 	                {
 	                	
-		                    if(e.getCode()==Main.getControlCode(1)){
+		                    if(e.getCode()==Main.getDevControlCodes(0)){
 		                    	Main.console.toBack();
 		                    	Main.getStage().toFront();
 		                    }
@@ -102,7 +102,7 @@ public class Console extends Stage {
 					public void handle(KeyEvent e)
 	                {
 	                	//when F11 pressed we move the window to the back
-		                    if(e.getCode()==Main.getControlCode(1)){
+		                    if(e.getCode()==Main.getDevControlCodes(0)){
 		                    	Main.console.toBack();
 		                    	Main.getStage().toFront();
 		                    }

@@ -17,32 +17,36 @@ import utilitiesOption.ControlKey;
 
 public abstract class Config {
 	
-	//the following list is the default control key
-		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE)},
-				devControlCodes={new ControlKey("Console", KeyCode.F11)};
+		//the following list is the default control key
+		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE)};
+		
+		private static ControlKey[]devControlCodes={new ControlKey("Console", KeyCode.F11)};
 		//the black list is used to prevent the binding of some key 
 		public static final KeyCode[] blackList={KeyCode.ENTER};
 		private static String version="v unknowed";
 		//size of the Stage
-		private static double sizeW=800;
-		private static double sizeH=600;
+		private static double sizeW=1000;
+		private static double sizeH=700;
 		static boolean fullScreen=false;
 		public final static boolean inDev=true;
+		public static int[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
 		
 		/**
 		 * Set the configuration to the last one saved during the latest session
 		 */
 		public static void set(){
-			Main.console.println("Started Project Arena "+Config.getVersion());
-			Main.console.println("Retrieving configuration ...");
+			
+			Main.console.println("Loading configuration ...");
 			// update version from README.md file
 			setVersion();
 			//retrive the last config
 			if (Config.inDev){
-			//save();
+				Main.console.println("Development mode enable, config.ser file overwriten");
+				save();
+			} else{
+				Main.console.println("Retrieving configuration ...");
+				retrieve();
 			}
-			retrieve();
-			
 			Main.console.println("Config loaded");
 		}
 		
@@ -120,6 +124,24 @@ public abstract class Config {
 				return devControlCodes[0].getCode();
 			}
 		}
+		
+		public static ControlKey getControl(int k){
+			if (k<controlsCodes.length){
+				return controlsCodes[k];
+			}
+			else{
+				return controlsCodes[0];
+			}
+		}
+
+		public static ControlKey getDevControl(int i) {
+			if (i<devControlCodes.length){
+				return devControlCodes[i];
+			}
+			else{
+				return devControlCodes[0];
+			}
+		}
 
 
 		public static int getControlCodeLength(){
@@ -137,7 +159,7 @@ public abstract class Config {
 					}
 				}
 				controlsCodes[k].setCode(x);
-				Main.console.print(controlsCodes[k].getName()+" key set to "+controlsCodes[k].getKeyName());
+				Main.console.println(controlsCodes[k].getName()+" key set to "+controlsCodes[k].getKeyName());
 			}
 			else{
 				ret=1;
@@ -200,11 +222,10 @@ public abstract class Config {
 			Config.sizeH=result.getsizeH();
 			Config.sizeW=result.getsizeW();
 			
-			Main.console.println(Double.valueOf(result.getsizeH()).toString()+Double.valueOf(result.getsizeW()).toString());
-			
 			} catch (FileNotFoundException e1) {
 				// the config.ser file is missing, so we create it
 				try {
+					Main.console.println("config.ser file is missing, switching to default configuration");
 					FileOutputStream fos = new FileOutputStream("./config.ser");
 					fos.close();
 				} catch (IOException e) {

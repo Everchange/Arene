@@ -13,7 +13,7 @@ import ressources.Config;
 
 public class KeyBindingButton extends Button{
 
-	private static double buttonW=80,buttonH=25,spaceBetween=10,xOffset=50;
+	private static double buttonW=80,buttonH=25,spaceBetween=10,xOffset=(Config.getSizeW()*3/8)-(buttonW+15);
 	static final String waitTxt="> ? <";
 
 
@@ -26,7 +26,7 @@ public class KeyBindingButton extends Button{
 	public KeyBindingButton(int k){
 
 		super();
-		this.setText(Config.getControlCode(k).getName());
+		this.setText(Config.getControl(k).getKeyName());
 
 		this.relocate(xOffset, spaceBetween*(k+1)+buttonH*k);
 		this.setPrefSize(buttonW, buttonH);
@@ -52,7 +52,7 @@ public class KeyBindingButton extends Button{
 							//just not to trigger the event
 							e.consume();
 							//we reset the text
-							KeyBindingButton.this.setText(Config.getControlCode(k).getName());
+							KeyBindingButton.this.setText(Config.getControl(k).getName());
 							// we remove the focus from the button
 							OptionScene.removeFocus();
 						}
@@ -112,4 +112,38 @@ public class KeyBindingButton extends Button{
 	public static void setxOffset(double xOffset) {
 		KeyBindingButton.xOffset = xOffset;
 	}
+	
+
+
+	/**
+	 * @return the buttonW
+	 */
+	public static double getButtonW() {
+		return buttonW;
+	}
+
+
+	/**
+	 * @return the buttonH
+	 */
+	public static double getButtonH() {
+		return buttonH;
+	}
+
+
+	/**
+	 * @return the spaceBetween
+	 */
+	public static double getSpaceBetween() {
+		return spaceBetween;
+	}
+
+
+	/**
+	 * @return the xOffset
+	 */
+	public static double getxOffset() {
+		return xOffset;
+	}
+
 }

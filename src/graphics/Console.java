@@ -1,6 +1,11 @@
 package graphics;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import InputOutputFile.ExportText;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -54,7 +59,7 @@ public class Console extends Stage {
 		
 		Group root = new Group();
 		
-		Text heading =new Text("Project arena (V"+Config.getVersion()+")");
+		Text heading =new Text("Log");
 		
 		heading.relocate((int)(size[0]/2-heading.getBoundsInLocal().getWidth()/2), 10);
 		
@@ -173,8 +178,10 @@ public class Console extends Stage {
 	                    		Main.resetSize();
 	                    		break;
 	                    	case("export"):
-	                    		
-	                    		//Console.this.println("Console log exported",Color.GREEN);
+	                    		//export the console to a file 
+	                    		//the number is the  number of milliseconds since January 1, 1970, 00:00:00 GMT.
+	                    		if (new ExportText("Log "+Long.valueOf(new Date().getTime()).toString(),Console.this.output).getSuccess());{
+	                    		Console.this.println("Console log exported",Color.GREEN);}
 	                    		break;
 	                    	case("clear"):
 	                    		//we clear the TextAea

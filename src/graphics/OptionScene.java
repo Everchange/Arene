@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import utilitiesOption.KeyBinding;
+import utilitiesOption.*;
 import ressources.Config;
 
 public class OptionScene extends Scene{
@@ -21,7 +21,8 @@ public class OptionScene extends Scene{
 	private int buttonHeight=(int)(40), buttonGap=10;
 	/*//keySet is used as a security that will disable all the buttons when the player want to reset a key
 	private static boolean keySet=false;*/
-	private static KeyBinding kB=new KeyBinding();
+	private static ControlsOption cO=new ControlsOption();
+	private static GraphicsOption gO= new GraphicsOption();
 
 	/**
 	 * Creation of the option scene
@@ -29,6 +30,17 @@ public class OptionScene extends Scene{
 	public OptionScene(){
 
 		super(root);
+		
+		root.setOnKeyPressed(
+	        	new EventHandler<KeyEvent>()
+	            {
+	                public void handle(KeyEvent e)
+	                {
+	                    if(e.getCode()==Config.getControlCode(0)){
+	                    	Main.setScene(1, false);
+	                    }
+	                }
+	        });
 
 		buttons.resizeRelocate(0, 0, (int)(Config.getSizeW()/4), Config.getSizeH());
 		Rectangle panel = new Rectangle(0,0,(int)(Config.getSizeW()/4),Config.getSizeH());
@@ -105,7 +117,7 @@ public class OptionScene extends Scene{
 				OptionScene.options.getChildren().add(panel);
 				
 				//ad to the option group
-				OptionScene.options.getChildren().add(kB);
+				OptionScene.options.getChildren().add(cO);
 				
 			}
 		});
@@ -139,7 +151,18 @@ public class OptionScene extends Scene{
 
 			@Override
 			public void handle(ActionEvent event) {
-
+				
+				//we remove everything 
+				OptionScene.options.getChildren().clear();
+				
+				//background
+				Rectangle panel = new Rectangle(0,0,(int)(Config.getSizeW()*3/4),Config.getSizeH());
+				panel.setFill(Color.LIGHTSKYBLUE);
+				OptionScene.options.getChildren().add(panel);
+				
+				//ad to the option group
+				OptionScene.options.getChildren().add(gO);
+				
 			}
 		});
 
@@ -165,7 +188,7 @@ public class OptionScene extends Scene{
 				{
 					public void handle(KeyEvent e)
 					{
-						if(e.getCode()==Config.getDevControlCode(0)){
+						if(e.getCode()==Config.getDevControl(0).getCode()){
 							if (!Config.inDev){
 								Main.console.show();
 							}

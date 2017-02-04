@@ -3,6 +3,8 @@ package graphics;
 
 
 
+import InputOutputFile.ExportText;
+
 //import java.awt.Toolkit;
 
 import character.ArenaCharacter;
@@ -48,11 +50,12 @@ public class Main extends Application {
 		Config.set();
 		//version number
 		if (Config.inDev){
-			Config.updateVersion(System.getProperty("user.name"));
+			Config.updateVersion("-"+System.getProperty("user.name"));
 		}
+		
 
 		Main.stage=stage;
-
+		
 
 		fieldScene = new FieldScene();
 		Main.scene[0]=new HomeScene();
@@ -104,6 +107,9 @@ public class Main extends Application {
 
 		// ouvrir le rideau
 		stage.show();
+		
+		//We inform the dev that the application is launched
+		Main.console.println("Started Project Arena "+Config.getVersion());
 		
 
 	}

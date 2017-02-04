@@ -19,8 +19,6 @@ public class Main extends Application {
 
 	/*static double sizeW=Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	static double sizeH=Toolkit.getDefaultToolkit().getScreenSize().getHeight();*/
-	static double sizeW=800;
-	static double sizeH=600;
 	private static Stage stage; 
 	static Scene[] scene=new Scene[4];
 	static FieldScene fieldScene;
@@ -154,9 +152,5 @@ public class Main extends Application {
 		Config.save();
 		System.exit(0);
 	}
-	
-
-
-
 
 }

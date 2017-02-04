@@ -60,8 +60,8 @@ public class ArenaCharacter extends CS {
         });
 		
 		ret.setOnMouseClicked(evt -> {
-			//if this is the lrft button
-			
+			//we always display the GUI
+
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
 			
         	

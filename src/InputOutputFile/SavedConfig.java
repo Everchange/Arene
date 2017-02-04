@@ -17,7 +17,6 @@ public class SavedConfig implements Serializable {
 	private ControlKey[] controlsCodes=Config.getControlsCodes();
 	//the black list is used to prevent the binding of some key 
 	private double sizeW=Config.getSizeW(),sizeH=Config.getSizeH();
-	
 
 	/**
 	 * 

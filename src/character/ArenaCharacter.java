@@ -53,16 +53,20 @@ public class ArenaCharacter extends CS {
 		ret.setOnMouseEntered(evt -> {
 			// implement quick view here
         	System.out.println("Name of the overflown character : "+this.name);
+        	((FieldScene) Main.getScene(1)).displayCharacterGUIHov(new CharacterGUIHov(this));
         });
 		
 		ret.setOnMouseExited(evt -> {
-        	System.out.println("(mouse exited)");
+			((FieldScene) Main.getScene(1)).removeCharacterGUIHov();
+        	
         });
 		
 		ret.setOnMouseClicked(evt -> {
 			//we always display the GUI
 
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
+				System.out.println("full GUI");
+				evt.consume();
 			
         	
         });
@@ -74,6 +78,10 @@ public class ArenaCharacter extends CS {
 	
 	public int[] getPosition(){
 		return this.position;
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 
 }

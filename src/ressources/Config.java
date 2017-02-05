@@ -1,5 +1,6 @@
 package ressources;
 
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +48,15 @@ public abstract class Config {
 				Main.console.println("Retrieving configuration ...");
 				retrieve();
 			}
+			
+			//we now set up the maximum size of the window
+			int[] maxSize={(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()};
+			for (int k=0 ; k<stageResolution.length ; k++){
+				if (maxSize[0]<stageResolution[k][0] || maxSize[1]<stageResolution[k][1]){
+					stageResolution[k]=new int[] {0,0};
+				}
+			}
+			
 			Main.console.println("Config loaded");
 		}
 		

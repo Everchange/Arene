@@ -2,8 +2,10 @@ package graphics;
 
 import character.ArenaCharacter;
 import character.CharacterGUI;
+import character.CharacterGUIHov;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,7 +21,7 @@ public class FieldScene extends Scene {
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
 	private Group characterGp=new Group();
-	private CharacterGUI characterGUIGroup=new CharacterGUI();
+	private Group characterGUIGroup=new CharacterGUI();
 	
 	
 	/**
@@ -121,6 +123,7 @@ public class FieldScene extends Scene {
 		if(!this.characterGUIGroup.getChildren().isEmpty()){
 			//if there was something displayed as a GUI before, we delete it
 			this.characterGUIGroup.getChildren().clear();
+			System.out.println("clear GUI");
 		}
 		//we set the new element to display
 		this.characterGUIGroup=cG;
@@ -129,12 +132,40 @@ public class FieldScene extends Scene {
         //just to be sure that the GUI is in front of everything
 		this.characterGUIGroup.toFront();
 		this.setOnMouseClicked(evt->{
+			System.out.println(evt.getTarget().getClass().getPackage());
 			//if the target is not a character
-			if (evt.getButton().equals(MouseButton.PRIMARY) && evt.getTarget().getClass()==javafx.scene.canvas.Canvas.class){
+			if (evt.getButton().equals(MouseButton.PRIMARY) &&( evt.getTarget().getClass()==javafx.scene.canvas.Canvas.class || evt.getTarget().getClass().getPackage()==this.getClass().getPackage())){
 				//we clean the group
 				this.characterGUIGroup.getChildren().clear();
 			}
 		});
+	}
+
+
+	public void displayCharacterGUIHov(CharacterGUIHov cGH) {
+		if(!this.characterGUIGroup.getChildren().isEmpty()){
+			//if there was something displayed as a GUI before, we delete it
+			this.characterGUIGroup.getChildren().clear();
+		}
+		//we set the new element to display
+		this.characterGUIGroup=cGH;
+
+        FieldScene.root.getChildren().add(this.characterGUIGroup);
+        //just to be sure that the GUI is in front of everything
+		this.characterGUIGroup.toFront();
+		
+	}
+	
+	public void removeCharacterGUIHov(){
+		// when the mouse exit the character we remove the display
+		for (Node n : this.characterGUIGroup.getChildren()){
+			try{
+				CharacterGUIHov t =((CharacterGUIHov) n);
+				this.getCharacterGroup().getChildren().remove(n);
+			}catch (Exception e){
+			}
+			
+		}
 	}
 	
 }

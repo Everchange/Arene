@@ -1,10 +1,5 @@
 package graphics;
 
-
-
-
-import InputOutputFile.ExportText;
-
 //import java.awt.Toolkit;
 
 import character.ArenaCharacter;

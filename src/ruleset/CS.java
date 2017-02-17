@@ -22,11 +22,7 @@ public class CS {
 	protected boolean enTenaille = false;
 	protected Random RNG;
 	protected Talent talents;
-	public int DEFENSIVE = 1;
-	public int DEFENSIVE_ATMALUS;
-	public int CHARGE = 2;
-	public int CHARGE_ARREMOVAL = -2;
-	public int DEFENSIVE_ARBONUS = 2;
+
 	
 	int[] RACIALBONUS1 = {1,0};
 	int[] RACIALBONUS2 = {2,2};
@@ -98,6 +94,12 @@ public class CS {
 		
 	}
 	
+	public Weapon getWeapon() {
+		
+		return this.arme;
+		
+	}
+	
 	public int getVitesse() {
 		
 		return this.vitesse[0];
@@ -115,5 +117,54 @@ public class CS {
 		return (RNG.nextInt(20)+1+this.initiativeBonus);
 		
 	}
+	
+	public boolean possedeTalent(int talentID) {
+		
+		return this.talents.possedeTalent(talentID);
+		
+	}
+	
+	public int getFeinteBonus() {
+		
+		return this.feinteBonus;
+		
+	}
+	
+	public int getFeinteDebuff() {
+		
+		return this.feinteDebufff;
+		
+	}
+	
+	public int[] getMods() {
+		
+		return this.mods;
+		
+	}
+	
+	public int getBBA() {
+		
+		return this.BBA;
+		
+	}
+	
+	public int getRacialHatred() {
+		
+		return this.racialHatred;
+		
+	}
+	
+	public int[] getRacialHatredBonus() {
+		
+		return this.racialHatredbonus;
+		
+	}
+	
+	public int getReductionDegats() {
+		
+		return this.reductionDegats;
+		
+	}
+	
 
 }

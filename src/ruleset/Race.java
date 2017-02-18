@@ -6,6 +6,7 @@ public class Race {
 	private String nom;
 	private int[] mods;
 	private int[] celerite;
+	private int raceID;
 	private static final String[] noms={"Humain","Elfe","Nain","Orque","Gnome","Zombie","Halfelin","Homme lézard", "Elfe noir", "Squelette", "Gobelin", "Hobgobelin"};
 	// pour les modificateurs la premiere valeur correspond à l'indice du bonus, la deuxième du malus
 	private int[][] modificateurs={{0,0},{1,2},{2,1},{0,3},{3,0},{0,1},{1,0},{2,3},{3,2},{0,2},{2,0},{0,0}};
@@ -16,6 +17,13 @@ public class Race {
 		this.nom = noms[pRace];
 		this.mods = modificateurs[pRace];
 		this.celerite = vitesses[pRace];
+		this.raceID = pRace;
+		
+	}
+	
+	public int getRaceID() {
+		
+		return this.raceID;
 		
 	}
 	
@@ -52,7 +60,7 @@ public class Race {
 	public static double[] getRaceSize(int index){
 		switch(index){
 		case(0):
-			return new double[] {0.5,1.8};
+			return new double[] {0.4,1.5};
 		default:
 			return new double[] {1,1};
 		}

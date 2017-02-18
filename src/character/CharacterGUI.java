@@ -16,7 +16,7 @@ public class CharacterGUI extends Group {
 	public CharacterGUI() {
 		
 	}
-	public CharacterGUI(String name, int[] position) {
+	public CharacterGUI(String name, double[] position) {
 		
 		this.relocate(position[0]+20, position[1]+20);
 		

@@ -45,7 +45,6 @@ public abstract class Config {
 				Main.console.println("Development mode enable, config.ser file overwriten");
 				save();
 			} else{
-				Main.console.println("Retrieving configuration ...");
 				retrieve();
 			}
 			
@@ -251,7 +250,6 @@ public abstract class Config {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Main.console.println(Config.controlsCodes[0].toString());
 		}
 		
 		public static double getSizeW(){

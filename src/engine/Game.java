@@ -16,7 +16,7 @@ public class Game {
 		
 		for (int i = 0; i < nombreJoueurs ; i++) {
 			
-			//this.players[i] = new ArenaCharacter(playerList[i], names[i], imgPaths[i], positions[i]);
+			this.players[i] = new ArenaCharacter(playerList[i], names[i], imgPaths[i], positions[i]);
 			
 		}
 		

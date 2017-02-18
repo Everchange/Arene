@@ -17,14 +17,11 @@ public class ArenaCharacter {
 	
 	private Image img;
 	private String name;
-
 	private double[] position;
 	private int fieldId=-1;
 	private double[] size;
 	private ImageView representationOnField;
 	private boolean isMovable=false;
-
-	private int[] position;
 	private int pvCurrent;
 	private int initiative;
 	private CS characterSheet;
@@ -51,7 +48,6 @@ public class ArenaCharacter {
 	 * 				character menu 
 	 * @param imgName path to the character's image
 	 */
-
 	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath,double[] position) {
 		//CS wait =new CS(att, armr, raceIndex);
 		this.position=position;
@@ -75,40 +71,6 @@ public class ArenaCharacter {
 		
 		
 		this.createRepresentation(this.img);
-  }
-
-//	public ArenaCharacter(int[] att, int armr, int ra, int arm, int armrenchant, int armenchant, int rH, int[] tal,String name,String imgPath,int[] position) {
-//		
-//		super(att, armr, ra, arm, armrenchant, armenchant, rH, tal);
-//		
-//		this.position=position;
-//		this.name=name;
-//		this.initiative = this.rollInitiative();
-//		this.pvCurrent = this.pvMax;
-//		
-//		try{
-//			double[] size=ruleset.Race.getRaceSize(ra);
-//			//path 
-//			this.img=new Image(imgPath,size[0],size[1],true,true);
-//		}catch(NullPointerException e){
-//			//if the specified image doesn't exist
-//			this.img=new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"));
-//			System.out.println("set to default");
-//		}catch(IllegalArgumentException e){
-//			//if the specified path is incorrect
-//			this.img=new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"));
-//			
-//		}
-//	}
-	
-	public ArenaCharacter (CS character, String name, String imgPath, int[] position) {
-		
-		this.characterSheet = character;
-		this.position=position;
-		this.name=name;
-		this.initiative = character.rollInitiative();
-		this.pvCurrent = character.getPVMax();
-		
 	}
 	
 	/**
@@ -168,17 +130,13 @@ public class ArenaCharacter {
 		return this.position;
 	}
 	
-
 	public double getx() {
-
 		
 		return this.position[0];
 		
 	}
 	
-
 	public double gety() {
-
 		
 		return this.position[1];
 		
@@ -187,6 +145,7 @@ public class ArenaCharacter {
 	public String getName(){
 		return this.name;
 	}
+	
 
 	public boolean feinte(ArenaCharacter ennemy) {
 		
@@ -216,7 +175,7 @@ public class ArenaCharacter {
 		
 	public void attack(ArenaCharacter ennemy, int special){
 		
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel li√© √† la haine raciale
+		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel liÈ ‡ la haine raciale
 		bonustouchercirconstanciel -= (special == DEFENSIVE)? this.DEFENSIVE_ATMALUS : 0;
 		bonustouchercirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 0 : 2 : 0;
 		
@@ -228,15 +187,15 @@ public class ArenaCharacter {
 			this.characterSheet.getArmor().tempbonus(DEFENSIVE_ARBONUS);
 		
 		bonusdegatscirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 2 : 0 : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre √† l'ennemi les d√©g√¢ts inflig√©s par l'attaque (0 si elle a √©chou√©)
+		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre ‡ l'ennemi les dÈg‚ts infligÈs par l'attaque (0 si elle a ÈchouÈ)
 		
 	}
 		
 	public void attack(ArenaCharacter ennemy){
 			
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel li√© √† la haine raciale
+		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel liÈ ‡ la haine raciale
 		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre √† l'ennemi les d√©g√¢ts inflig√©s par l'attaque (0 si elle a √©chou√©)
+		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre ‡ l'ennemi les dÈg‚ts infligÈs par l'attaque (0 si elle a ÈchouÈ)
 		
 	}
 	

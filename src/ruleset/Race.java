@@ -60,7 +60,7 @@ public class Race {
 	public static double[] getRaceSize(int index){
 		switch(index){
 		case(0):
-			return new double[] {0.5,1.8};
+			return new double[] {0.4,1.5};
 		default:
 			return new double[] {1,1};
 		}

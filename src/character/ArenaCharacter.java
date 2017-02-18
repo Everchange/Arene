@@ -8,13 +8,22 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import ressources.Beacon;
+import ressources.Config;
 import ruleset.CS;
+import ruleset.Race;
 
 public class ArenaCharacter {
 
 	
 	private Image img;
 	private String name;
+
+	private double[] position;
+	private int fieldId=-1;
+	private double[] size;
+	private ImageView representationOnField;
+	private boolean isMovable=false;
+
 	private int[] position;
 	private int pvCurrent;
 	private int initiative;
@@ -42,6 +51,32 @@ public class ArenaCharacter {
 	 * 				character menu 
 	 * @param imgName path to the character's image
 	 */
+
+	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath,double[] position) {
+		//CS wait =new CS(att, armr, raceIndex);
+		this.position=position;
+		this.name=name;
+		
+		
+		int alpha=150;
+		this.size=new double[] {Race.getRaceSize(raceIndex)[0]*alpha,Race.getRaceSize(raceIndex)[1]*alpha};
+		
+		try{
+			//path 
+			this.img=new Image(imgPath,this.size[0],this.size[1],true,true);
+		}catch(Exception e){
+			//if the specified image doesn't exist
+			this.img=new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"),this.size[0],this.size[1],false,true);
+			System.out.println(this.name+"'s representation set to default");
+		}
+		
+		//this.initiative = Character.rollInitiative();
+		//this.pvCurrent = character.getPVMax();
+		
+		
+		this.createRepresentation(this.img);
+  }
+
 //	public ArenaCharacter(int[] att, int armr, int ra, int arm, int armrenchant, int armenchant, int rH, int[] tal,String name,String imgPath,int[] position) {
 //		
 //		super(att, armr, ra, arm, armrenchant, armenchant, rH, tal);
@@ -74,19 +109,16 @@ public class ArenaCharacter {
 		this.initiative = character.rollInitiative();
 		this.pvCurrent = character.getPVMax();
 		
-		
 	}
 	
 	/**
-	 * Returns a character image that can be displayed on the field
-	 * 
-	 * @return ImageView object
+	 * create an object that can be display on the field
+	 * @param img
 	 */
-	public ImageView getRepresentationOnField(){
+	private void createRepresentation(Image img){
 		ImageView ret=new ImageView(this.img);
 		ret.setOnMouseEntered(evt -> {
 			// implement quick view here
-        	System.out.println("Name of the overflown character : "+this.name);
         	((FieldScene) Main.getScene(1)).displayCharacterGUIHov(new CharacterGUIHov(this));
         });
 		
@@ -96,31 +128,57 @@ public class ArenaCharacter {
         });
 		
 		ret.setOnMouseClicked(evt -> {
+			evt.consume();
 			//we always display the GUI
-
+			if (evt.getButton()==MouseButton.PRIMARY){
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
 				System.out.println("full GUI");
-				evt.consume();
+			}
+			if (evt.getButton()==MouseButton.SECONDARY){
+				//we remove any GUI displayed for the character
+				((FieldScene) Main.getScene(1)).removeCharacterGUI();
+				//the character can move
+				this.unlockMovement();
+				//draw path and other ...
+				double[] middle={this.position[0]+this.size[0]/2,this.position[1]+this.size[1]/2};
+				((FieldScene) Main.getScene(1)).drawPath(middle,this,new double[] {evt.getSceneX(),evt.getSceneY()});
+				//just to be sure that nothing unexpected occurs
+				
+			}
 			
         	
         });
 		
-		return ret;
+		this.representationOnField=ret;
 		
 		
 	}
 	
-	public int[] getPosition(){
+	
+	/**
+	 * Returns a character image that can be displayed on the field
+	 * 
+	 * @return ImageView object
+	 */
+	public ImageView getRepresentationOnField(){
+		return this.representationOnField;
+	}
+	
+	public double[] getPosition(){
 		return this.position;
 	}
 	
-	public int getx() {
+
+	public double getx() {
+
 		
 		return this.position[0];
 		
 	}
 	
-	public int gety() {
+
+	public double gety() {
+
 		
 		return this.position[1];
 		
@@ -129,7 +187,7 @@ public class ArenaCharacter {
 	public String getName(){
 		return this.name;
 	}
-	
+
 	public boolean feinte(ArenaCharacter ennemy) {
 		
 		if (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_FEINTE)) {
@@ -158,7 +216,7 @@ public class ArenaCharacter {
 		
 	public void attack(ArenaCharacter ennemy, int special){
 		
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel liÈ ‡ la haine raciale
+		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel li√© √† la haine raciale
 		bonustouchercirconstanciel -= (special == DEFENSIVE)? this.DEFENSIVE_ATMALUS : 0;
 		bonustouchercirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 0 : 2 : 0;
 		
@@ -170,15 +228,15 @@ public class ArenaCharacter {
 			this.characterSheet.getArmor().tempbonus(DEFENSIVE_ARBONUS);
 		
 		bonusdegatscirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 2 : 0 : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre ‡ l'ennemi les dÈg‚ts infligÈs par l'attaque (0 si elle a ÈchouÈ)
+		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre √† l'ennemi les d√©g√¢ts inflig√©s par l'attaque (0 si elle a √©chou√©)
 		
 	}
 		
 	public void attack(ArenaCharacter ennemy){
 			
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel liÈ ‡ la haine raciale
+		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel li√© √† la haine raciale
 		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre ‡ l'ennemi les dÈg‚ts infligÈs par l'attaque (0 si elle a ÈchouÈ)
+		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre √† l'ennemi les d√©g√¢ts inflig√©s par l'attaque (0 si elle a √©chou√©)
 		
 	}
 	
@@ -213,5 +271,54 @@ public class ArenaCharacter {
 		return this.initiative;
 		
 	}
-
+	
+	public double[] getSize(){
+		return this.size;
+	}
+	public boolean isMovable(){
+		return this.isMovable;
+	}
+	
+	public int getFieldId(){
+		return this.fieldId;
+	}
+	
+	public void setFieldId(int pId){
+		this.fieldId=pId;
+	}
+	
+	public void setCoord(double x, double y){
+		this.position=new double[] {x,y};
+	}
+	
+	public void lockMovement(){
+		this.isMovable=false;
+	}
+	
+	public void unlockMovement(){
+		this.isMovable=true;
+	}
+	
+	public boolean relocate(double x, double y){
+		// if the character can be moved
+		if (this.isMovable){
+			if(((x+this.size[0]/2)<Config.getSizeW()&& (y+this.size[1]/2)<Config.getSizeH())
+					&&(((x-this.size[0]/2)>0&& (y-this.size[1]/2)>0))){
+				
+				//we move the representation of the character to the given coordinates
+				this.representationOnField.relocate(x-this.size[0]/2, y-this.size[1]/2);
+				// /2 because this is centered on the representation
+				System.out.println((this.size[1])+", y="+y);
+				System.out.println(Config.getSizeH());
+				// and the character can no longer move
+				this.lockMovement();
+				this.position=new double[] {x-this.size[0]/2, y-this.size[1]/2};
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	
 }

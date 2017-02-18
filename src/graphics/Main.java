@@ -65,8 +65,8 @@ public class Main extends Application {
 		}
 
 		//test pour un perso
-		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"test","testpath",new int[] {50,50});
-		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new int[] {300,50});
+		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"test","testpath",new double[] {50,50});
+		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new double[] {300,50});
 
 		((FieldScene) Main.scene[1]).addCharacterToField(test,test.getPosition());
 		((FieldScene) Main.scene[1]).addCharacterToField(testB,testB.getPosition());
@@ -76,10 +76,9 @@ public class Main extends Application {
 		stage.setWidth(Config.getSizeW());
 		stage.setHeight(Config.getSizeH());
 		
+		
 		//the stage is not resizable if it's a release
-		if (!Config.inDev){
-			stage.setResizable(false);
-		}
+		stage.setResizable(Config.inDev);
 		//ajout de la scene de base
 		Main.setScene(0,false);
 		// met un titre dans la fenêtre
@@ -128,7 +127,10 @@ public class Main extends Application {
 	}
 
 	public static Scene getScene(int k){
-		return Main.scene[k];
+		if (k<scene.length){
+			return Main.scene[k];
+		}
+		return null;
 	}
 
 	public static double getH(){

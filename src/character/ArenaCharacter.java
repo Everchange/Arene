@@ -54,8 +54,11 @@ public class ArenaCharacter {
 		this.name=name;
 		
 		
-		int alpha=150;
+		double alpha=Math.sqrt(Config.getSizeH())*5;//sqrt because it's a surface
+		System.out.println(alpha);
 		this.size=new double[] {Race.getRaceSize(raceIndex)[0]*alpha,Race.getRaceSize(raceIndex)[1]*alpha};
+		
+		
 		
 		try{
 			//path 
@@ -93,8 +96,7 @@ public class ArenaCharacter {
 			evt.consume();
 			//we always display the GUI
 			if (evt.getButton()==MouseButton.PRIMARY){
-				((FieldScene) Main.getScene(1)).displayCharacterGUI(new CharacterGUI(this.name,this.position));
-				System.out.println("full GUI");
+				((FieldScene) Main.getScene(1)).displayCharacterGUI(this);
 			}
 			if (evt.getButton()==MouseButton.SECONDARY){
 				//we remove any GUI displayed for the character
@@ -267,8 +269,6 @@ public class ArenaCharacter {
 				//we move the representation of the character to the given coordinates
 				this.representationOnField.relocate(x-this.size[0]/2, y-this.size[1]/2);
 				// /2 because this is centered on the representation
-				System.out.println((this.size[1])+", y="+y);
-				System.out.println(Config.getSizeH());
 				// and the character can no longer move
 				this.lockMovement();
 				this.position=new double[] {x-this.size[0]/2, y-this.size[1]/2};

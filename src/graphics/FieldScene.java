@@ -23,7 +23,7 @@ public class FieldScene extends Scene {
 	private boolean escapeOn=false;
 	private static Menu menu=new Menu();
 	private Group characterGp=new Group();
-	private Group characterGUIGroup=new CharacterGUI();
+	private CharacterGUI characterGUIGroup=new CharacterGUI();
 	private Group characterGUIHOVGroup=new Group();
 	private Group pathGroup=new Group();
 	private ArrayList<ArenaCharacter> charac = new ArrayList<ArenaCharacter>();
@@ -67,8 +67,6 @@ public class FieldScene extends Scene {
 					public void handle(KeyEvent e)
 					{
 						if(e.getCode()==Config.getControlCode(0) && !FieldScene.this.escapeOn){
-							// we reset the character GUI
-							FieldScene.this.characterGUIGroup.getChildren().clear();
 							//if menu off and escape pressed
 							FieldScene.root.getChildren().add(FieldScene.menu.getMenuGroup());
 							FieldScene.this.escapeOn=true;
@@ -93,7 +91,9 @@ public class FieldScene extends Scene {
 		canvas.toBack();
 		//just to be sure that canvas is the back ground
 
-
+		this.characterGUIGroup.center();
+		FieldScene.root.getChildren().add(characterGUIGroup);
+		
 	}
 
 
@@ -127,16 +127,10 @@ public class FieldScene extends Scene {
 		charact.setFieldId(this.characterGp.getChildren().size()-1);
 	}
 
-	public void displayCharacterGUI(CharacterGUI cG){
-		if(!this.characterGUIGroup.getChildren().isEmpty()){
-			//if there was something displayed as a GUI before, we delete it
-			this.characterGUIGroup.getChildren().clear();
-			System.out.println("clear GUI");
-		}
+	public void displayCharacterGUI(ArenaCharacter ac){
 		//we set the new element to display
-		this.characterGUIGroup=cG;
+		this.characterGUIGroup.setCharacterToDisplay(ac);
 
-		FieldScene.root.getChildren().add(this.characterGUIGroup);
 		//just to be sure that the GUI is in front of everything
 		this.characterGUIGroup.toFront();
 		this.setOnMouseClicked(evt->{
@@ -144,7 +138,7 @@ public class FieldScene extends Scene {
 			//if the target is not a character
 			if (evt.getButton().equals(MouseButton.PRIMARY) &&( evt.getTarget().getClass()==javafx.scene.canvas.Canvas.class || evt.getTarget().getClass().getPackage()==this.getClass().getPackage())){
 				//we clean the group
-				this.characterGUIGroup.getChildren().clear();
+				this.characterGUIGroup.reset();
 			}
 		});
 	}
@@ -190,7 +184,6 @@ public class FieldScene extends Scene {
 		});
 		this.setOnMouseClicked(evt->{
 			//relocate the character if we right click to an other location
-			System.out.println(evt.getButton());
 			if (evt.getButton()==MouseButton.SECONDARY){
 				//we relocate the character
 				if (aC.relocate(evt.getSceneX(), evt.getSceneY())){
@@ -208,7 +201,7 @@ public class FieldScene extends Scene {
 	}
 
 	public void removeCharacterGUI(){
-		this.characterGUIGroup.getChildren().clear();
+		FieldScene.root.getChildren().remove(this.characterGUIGroup);
 	}
 	
 	public int targetChar(String name){

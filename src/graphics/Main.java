@@ -51,7 +51,7 @@ public class Main extends Application {
 
 		Main.stage=stage;
 		
-
+		//create the scenes
 		fieldScene = new FieldScene();
 		Main.scene[0]=new HomeScene();
 		Main.scene[1]=fieldScene;
@@ -85,7 +85,9 @@ public class Main extends Application {
 		stage.setTitle("Project Arena "+Config.getVersion());
 		//full screen mode
 		stage.setFullScreen(Config.isFullScreen());
-		//stage.initStyle(StageStyle.UNDECORATED);
+		
+		//we remove the borders
+		stage.initStyle(StageStyle.UNDECORATED);
 
 
 
@@ -104,6 +106,7 @@ public class Main extends Application {
 		
 		//We inform the dev that the application is launched
 		Main.console.println("Started Project Arena "+Config.getVersion());
+		
 		
 
 	}

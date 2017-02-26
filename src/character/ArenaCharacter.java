@@ -55,7 +55,6 @@ public class ArenaCharacter {
 		
 		
 		double alpha=Math.sqrt(Config.getSizeH())*5;//sqrt because it's a surface
-		System.out.println(alpha);
 		this.size=new double[] {Race.getRaceSize(raceIndex)[0]*alpha,Race.getRaceSize(raceIndex)[1]*alpha};
 		
 		
@@ -66,7 +65,7 @@ public class ArenaCharacter {
 		}catch(Exception e){
 			//if the specified image doesn't exist
 			this.img=new Image(Beacon.class.getResourceAsStream("defaultCharacter.png"),this.size[0],this.size[1],false,true);
-			System.out.println(this.name+"'s representation set to default");
+			Main.console.println(this.name+"'s representation set to default");
 		}
 		
 		//this.initiative = Character.rollInitiative();
@@ -99,8 +98,6 @@ public class ArenaCharacter {
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(this);
 			}
 			if (evt.getButton()==MouseButton.SECONDARY){
-				//we remove any GUI displayed for the character
-				((FieldScene) Main.getScene(1)).removeCharacterGUI();
 				//the character can move
 				this.unlockMovement();
 				//draw path and other ...
@@ -259,25 +256,43 @@ public class ArenaCharacter {
 	public void unlockMovement(){
 		this.isMovable=true;
 	}
-	
+
 	public boolean relocate(double x, double y){
 		// if the character can be moved
 		if (this.isMovable){
-			if(((x+this.size[0]/2)<Config.getSizeW()&& (y+this.size[1]/2)<Config.getSizeH())
-					&&(((x-this.size[0]/2)>0&& (y-this.size[1]/2)>0))){
-				
-				//we move the representation of the character to the given coordinates
-				this.representationOnField.relocate(x-this.size[0]/2, y-this.size[1]/2);
-				// /2 because this is centered on the representation
-				// and the character can no longer move
-				this.lockMovement();
-				this.position=new double[] {x-this.size[0]/2, y-this.size[1]/2};
-				return true;
+
+			double targetX=x-this.size[0]/2, targetY=y-this.size[1]/2;
+
+			// if the given coordinates will place the character outside of the window
+			if(targetX<0){
+				//too far away (left)
+				targetX=0;
 			}
+			if (x+this.size[0]>Config.getSizeW()){
+				//too far away (right)
+				targetX=Config.getSizeW()-this.size[0];
+			}
+			if (targetY<0){
+				//too high
+				targetY=0;
+			}
+			if (y+this.size[1]/2>Config.getSizeH()){
+				//too low
+				targetY=Config.getSizeH()-this.size[1];
+			}
+			
+			//we move the representation of the character to the given coordinates
+			this.representationOnField.relocate(targetX, targetY);
+			// /2 because this is centered on the representation
+			// and the character can no longer move
+			this.lockMovement();
+			this.position=new double[] {targetX, targetY};
+			return true;
+
 		}
 		return false;
 	}
-	
+
 	
 	
 }

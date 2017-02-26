@@ -164,12 +164,13 @@ public class FieldScene extends Scene {
 	}
 
 	public void drawPath(double[] startCoord, ArenaCharacter aC, double[]  startMouseCoord){
-		System.out.println("path from ("+startCoord[0]+","+startCoord[1]+")");
-		
+		//just to be sure that there is no path already drawed 
 		this.pathGroup.getChildren().clear();
+		//first line
 		Line sPath= new Line(startCoord[0],startCoord[1],startMouseCoord[0],startMouseCoord[1]);
 		sPath.setStroke(Color.RED);
 		this.pathGroup.getChildren().add(sPath);
+		//the path is the first element that is display
 		this.pathGroup.toFront();
 		
 		this.setOnMouseMoved(evt->{

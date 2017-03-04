@@ -17,7 +17,7 @@ public class Main extends Application {
 	/*static double sizeW=Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	static double sizeH=Toolkit.getDefaultToolkit().getScreenSize().getHeight();*/
 	private static Stage stage; 
-	static Scene[] scene=new Scene[4];
+	private static ArenaScene[] scene=new ArenaScene[4];
 	static FieldScene fieldScene;
 	// even if the dev mode is not enable, we create a console
 	public static final Console console=new Console();
@@ -104,9 +104,6 @@ public class Main extends Application {
 		// ouvrir le rideau
 		stage.show();
 		
-		//We inform the dev that the application is launched
-		Main.console.println("Started Project Arena "+Config.getVersion());
-		
 		
 
 	}
@@ -157,6 +154,15 @@ public class Main extends Application {
 	public static void quit(){
 		Config.save();
 		System.exit(0);
+	}
+
+
+	public static void updateLang() {
+		//update evrything
+		for (int k=0; k<Main.scene.length;k++){
+			Main.scene[k].updateLang();
+		}
+		Main.console.println("Language changed for : "+Config.arenaText.getLang());
 	}
 
 }

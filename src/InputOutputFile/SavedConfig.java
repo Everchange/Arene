@@ -17,6 +17,8 @@ public class SavedConfig implements Serializable {
 	private ControlKey[] controlsCodes=Config.getControlsCodes();
 	//the black list is used to prevent the binding of some key 
 	private double sizeW=Config.getSizeW(),sizeH=Config.getSizeH();
+	//the latest language used
+	private String lang=Config.arenaText.getLang();
 
 	/**
 	 * 
@@ -41,6 +43,10 @@ public class SavedConfig implements Serializable {
 	public double getsizeW() {
 		// TODO Auto-generated method stub
 		return this.sizeW;
+	}
+	
+	public String getLang(){
+		return this.lang;
 	}
 
 }

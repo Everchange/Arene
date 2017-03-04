@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import InputOutputFile.SavedConfig;
+import graphics.HomeScene;
 import graphics.Main;
 import javafx.scene.input.KeyCode;
 import utilitiesOption.ControlKey;
@@ -31,6 +32,7 @@ public abstract class Config {
 		static boolean fullScreen=false;
 		public final static boolean inDev=true;
 		public static int[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
+		public static ArenaText arenaText = new ArenaText("English");
 		
 		/**
 		 * Set the configuration to the last one saved during the latest session
@@ -230,6 +232,8 @@ public abstract class Config {
 			Config.controlsCodes=result.getControlsCodes();
 			Config.sizeH=result.getsizeH();
 			Config.sizeW=result.getsizeW();
+			//set the language
+			Config.arenaText=new ArenaText(result.getLang());
 			
 			} catch (FileNotFoundException e1) {
 				// the config.ser file is missing, so we create it
@@ -262,6 +266,12 @@ public abstract class Config {
 		
 		public static boolean isFullScreen(){
 			return Config.fullScreen;
+		}
+		
+		public static void updateLang(String pLang){
+			//change the language
+			arenaText.setLang(pLang);
+			Main.updateLang();
 		}
 
 }

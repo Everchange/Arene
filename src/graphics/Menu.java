@@ -37,7 +37,7 @@ public class Menu {
 
 
 		//back to field button
-		bBack.setText("Back to game");
+		bBack.setText(Config.arenaText.backBt());
 		bBack.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du second
 		bBack.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-80);
@@ -67,7 +67,7 @@ public class Menu {
 
 		//Option button
 
-		bOption.setText("Option");
+		bOption.setText(Config.arenaText.optionBt());
 		bOption.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bOption.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-40);
@@ -95,7 +95,7 @@ public class Menu {
 
 		//button to create a new character
 
-		bCreate.setText("Create character");
+		bCreate.setText(Config.arenaText.newCharacterBt());
 		bCreate.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bCreate.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter);
@@ -125,7 +125,7 @@ public class Menu {
 
 		//Restart the game
 
-		bRestart.setText("Restart");
+		bRestart.setText(Config.arenaText.restartBt());
 		bRestart.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bRestart.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter+40);
@@ -153,7 +153,7 @@ public class Menu {
 
 		//(Rage)Quit button
 
-		bQuit.setText("Quit");
+		bQuit.setText(Config.arenaText.quitBt());
 		bQuit.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit bien placé
 		//NB: les coordonée sont fonction du groupe menuGroup
@@ -194,6 +194,15 @@ public class Menu {
 	 */
 	public Group getMenuGroup(){
 		return this.menuGroup;
+	}
+	
+	public void updateLang(){
+		bBack.setText(Config.arenaText.backBt());
+		bQuit.setText(Config.arenaText.quitBt());
+		bRestart.setText(Config.arenaText.restartBt());
+		bOption.setText(Config.arenaText.optionBt());
+		bCreate.setText(Config.arenaText.newCharacterBt());
+		
 	}
 
 }

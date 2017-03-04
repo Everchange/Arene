@@ -92,18 +92,19 @@ public class ArenaCharacter {
         });
 		
 		ret.setOnMouseClicked(evt -> {
-			evt.consume();
 			//we always display the GUI
 			if (evt.getButton()==MouseButton.PRIMARY){
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(this);
+				evt.consume();
 			}
-			if (evt.getButton()==MouseButton.SECONDARY){
+			if (evt.getButton()==MouseButton.SECONDARY && !FieldScene.drawPath){
 				//the character can move
 				this.unlockMovement();
 				//draw path and other ...
 				double[] middle={this.position[0]+this.size[0]/2,this.position[1]+this.size[1]/2};
 				((FieldScene) Main.getScene(1)).drawPath(middle,this,new double[] {evt.getSceneX(),evt.getSceneY()});
 				//just to be sure that nothing unexpected occurs
+				evt.consume();
 				
 			}
 			
@@ -291,6 +292,19 @@ public class ArenaCharacter {
 
 		}
 		return false;
+	}
+	
+	// just to handle an relocate with an array as parameter
+	public boolean relocate (double[] pos){
+		return relocate(pos[0],pos[1]);
+	}
+	
+	public double[] getCenter(){
+		return new double[] {this.position[0]+this.size[0]/2,this.position[1]+this.size[1]/2};
+	}
+	
+	public void toFront(){
+		this.representationOnField.toFront();
 	}
 
 	

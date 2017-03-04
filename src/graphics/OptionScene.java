@@ -9,13 +9,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import utilitiesOption.*;
 import ressources.Config;
 
-public class OptionScene extends Scene{
+public class OptionScene extends ArenaScene{
 
 	private static Group root=new Group(), buttons=new Group(), options=new Group();
-	private Button bBack = new Button(),bGraphics=new Button(), bControls =new Button();
+	private Button bBack = new Button(),bGraphics=new Button(), bControls =new Button(),
+			bLanguage=new Button();
 	private int buttonWidth=(int)(Config.getSizeW()/4-20);
 	//-20 to let a little space between the end of the button and the border
 	private int buttonHeight=(int)(40), buttonGap=10;
@@ -54,7 +56,7 @@ public class OptionScene extends Scene{
 
 		//(Rage)Quit button
 
-		bBack.setText("back");
+		bBack.setText(Config.arenaText.backBt());
 		bBack.setPrefWidth(buttonWidth);
 		bBack.setPrefHeight(buttonHeight);
 		// ajout des coordonnées pour que le bouton soit bien placé
@@ -179,6 +181,54 @@ public class OptionScene extends Scene{
 		});
 
 		OptionScene.buttons.getChildren().add(this.bGraphics);
+		
+		
+		
+		//graphics
+		bLanguage.setText("Language");
+		bLanguage.setPrefWidth(buttonWidth);
+		bLanguage.setPrefHeight(buttonHeight);
+				// ajout des coordonnées pour que le bouton soit bien placé
+				//NB: les coordonée sont fonction du groupe menuGroup
+
+
+
+		bLanguage.relocate(10,3*buttonHeight+4*buttonGap);
+				//defines the action when the button is pressed
+		bLanguage.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						
+						//we remove everything 
+						OptionScene.options.getChildren().clear();
+						
+						//background
+						Rectangle panel = new Rectangle(0,0,(int)(Config.getSizeW()*3/4),Config.getSizeH());
+						panel.setFill(Color.LIGHTSKYBLUE);
+						Text lang=new Text("Current language : "+Config.arenaText.getLang());
+						lang.relocate(10,15);
+						
+						OptionScene.options.getChildren().addAll(panel,lang);
+						
+						
+					}
+				});
+				
+
+				// When select and enter pressed
+		bLanguage.setOnKeyPressed(new EventHandler<KeyEvent>()
+				{
+					public void handle(KeyEvent e)
+					{
+						if(e.getCode()==KeyCode.ENTER){
+							bLanguage.fire();
+						}
+
+					}
+				});
+
+		OptionScene.buttons.getChildren().add(this.bLanguage);
 
 
 
@@ -205,6 +255,11 @@ public class OptionScene extends Scene{
 
 	public static void removeFocus(){
 		OptionScene.root.requestFocus();
+	}
+	
+	@Override
+	public void updateLang(){
+		
 	}
 
 

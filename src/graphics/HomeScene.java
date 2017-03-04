@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import ressources.Config;
 
-public class HomeScene extends Scene{
+public class HomeScene extends ArenaScene{
 	
 	private Scene scene;
 	private static Group root=new Group();
@@ -21,7 +21,7 @@ public class HomeScene extends Scene{
 	public HomeScene(){
 		super(root);
 		
-		bStart.setText("Start");
+		bStart.setText(Config.arenaText.startBt());
         bStart.setPrefWidth(100);
         // ajout des coordonnées pour que le bouton soit bien placé
         //NB: les coordonée sont fonction du groupe menuGroup
@@ -75,5 +75,10 @@ public class HomeScene extends Scene{
 	 */
 	public Scene getScene(){
 		return this.scene;
+	}
+	
+	@Override
+	public void updateLang(){
+		bStart.setText(Config.arenaText.startBt());
 	}
 }

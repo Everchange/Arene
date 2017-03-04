@@ -18,15 +18,16 @@ import javafx.scene.shape.Line;
 import ressources.Beacon;
 import ressources.Config;
 
-public class FieldScene extends Scene {
+public class FieldScene extends ArenaScene {
 	private static Group root=new Group();
 	private boolean escapeOn=false;
-	private static Menu menu=new Menu();
+	private Menu menu;
 	private Group characterGp=new Group();
 	private CharacterGUI characterGUIGroup=new CharacterGUI();
 	private Group characterGUIHOVGroup=new Group();
 	private Group pathGroup=new Group();
 	private ArrayList<ArenaCharacter> charac = new ArrayList<ArenaCharacter>();
+	public static boolean drawPath=false;
 
 
 	/**
@@ -35,6 +36,8 @@ public class FieldScene extends Scene {
 	public FieldScene(){
 
 		super(root);
+		
+		this.menu=new Menu();
 
 		Canvas canvas =new Canvas(735,600);
 		canvas.setLayoutX(0);
@@ -68,12 +71,12 @@ public class FieldScene extends Scene {
 					{
 						if(e.getCode()==Config.getControlCode(0) && !FieldScene.this.escapeOn){
 							//if menu off and escape pressed
-							FieldScene.root.getChildren().add(FieldScene.menu.getMenuGroup());
+							FieldScene.root.getChildren().add(FieldScene.this.menu.getMenuGroup());
 							FieldScene.this.escapeOn=true;
 						}
 						else if(e.getCode()==Config.getControlCode(0) && FieldScene.this.escapeOn){
 							// if escape pressed and menu on
-							FieldScene.root.getChildren().remove(FieldScene.menu.getMenuGroup());
+							FieldScene.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
 							FieldScene.this.escapeOn=false;
 
 						}
@@ -101,7 +104,7 @@ public class FieldScene extends Scene {
 	 * Removes the escape menu node of the scene
 	 */
 	public void closeMenu(){
-		FieldScene.root.getChildren().remove(FieldScene.menu.getMenuGroup());
+		FieldScene.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
 		this.escapeOn=false;
 	}
 	/**
@@ -124,7 +127,7 @@ public class FieldScene extends Scene {
 		this.characterGp.getChildren().get(this.characterGp.getChildren().size()-1).relocate(coords[0], coords[1]);
 		// we make sure that the character is in front of the field background
 		this.characterGp.toFront();
-		charact.setFieldId(this.characterGp.getChildren().size()-1);
+		charact.setFieldId(this.characterGp.getChildren().indexOf(charact));
 	}
 
 	public void displayCharacterGUI(ArenaCharacter ac){
@@ -164,10 +167,14 @@ public class FieldScene extends Scene {
 	}
 
 	public void drawPath(double[] startCoord, ArenaCharacter aC, double[]  startMouseCoord){
-		//just to be sure that there is no path already drawed 
+		FieldScene.drawPath=true;
+		
+		//we set the GUI character to the selected one
+		this.displayCharacterGUI(aC);
+		//just to be sure that there is no path already drawn
 		this.pathGroup.getChildren().clear();
 		//first line
-		Line sPath= new Line(startCoord[0],startCoord[1],startMouseCoord[0],startMouseCoord[1]);
+		Line sPath= new Line(startCoord[0],startCoord[1],startMouseCoord[0]-1,startMouseCoord[1]-1);
 		sPath.setStroke(Color.RED);
 		this.pathGroup.getChildren().add(sPath);
 		//the path is the first element that is display
@@ -175,7 +182,8 @@ public class FieldScene extends Scene {
 		
 		this.setOnMouseMoved(evt->{
 			this.pathGroup.getChildren().clear();
-			Line path= new Line(startCoord[0],startCoord[1],evt.getSceneX(),evt.getSceneY());
+			//-1 to prevent some graphical bugs
+			Line path= new Line(startCoord[0],startCoord[1],evt.getSceneX()-1,evt.getSceneY()-1);
 			//color of the line that represent the path
 			path.setStroke(Color.RED);
 			//add the line to a group that is displayed on the field
@@ -187,8 +195,22 @@ public class FieldScene extends Scene {
 			//relocate the character if we right click to an other location
 			if (evt.getButton()==MouseButton.SECONDARY){
 				//we relocate the character
-				if (aC.relocate(evt.getSceneX(), evt.getSceneY())){
+				
+				double[] newPos={evt.getSceneX(), evt.getSceneY()};
+				System.out.println(evt.getTarget());
+				
+				
+				if (isCharacter(evt.getSceneX(), evt.getSceneY(),aC)){
+					//if there is a character at the given position
+					newPos=getCharac(evt.getSceneX(), evt.getSceneY(),aC).getCenter();
+					//we center the two characters
+					newPos[1]+=getCharac(evt.getSceneX(), evt.getSceneY(),aC).getSize()[1]/2;
+				}
+				
+				
+				if (aC.relocate(newPos)){
 					this.pathGroup.getChildren().clear();
+					aC.toFront();
 					this.setOnMouseMoved(null);
 				}
 			}
@@ -198,6 +220,8 @@ public class FieldScene extends Scene {
 				this.setOnMouseMoved(null);
 				aC.lockMovement();
 			}
+			
+			FieldScene.drawPath=false;
 		});
 	}
 
@@ -227,6 +251,83 @@ public class FieldScene extends Scene {
 	
 	public ArrayList<ArenaCharacter> getCharOnField(){
 		return this.charac;
+	}
+	
+	/**
+	 * return true if there is a character on the given coordinates
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean isCharacter(double x, double y){
+		for (int k =0 ; k<this.charac.size(); k++){
+			ArenaCharacter aC=this.charac.get(k);
+			//if a character is on this position
+			if ((x>aC.getPosition()[0] && x<aC.getPosition()[0]+aC.getSize()[0]) && (y>aC.getPosition()[1] && y<aC.getPosition()[1]+aC.getSize()[1])){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * return true if there is a character on the given coordinates with escluding a character
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean isCharacter(double x, double y,ArenaCharacter pAC){
+		for (int k =0 ; k<this.charac.size(); k++){
+			ArenaCharacter aC=this.charac.get(k);
+			//if a character is on this position
+			if (((x>aC.getPosition()[0] && x<aC.getPosition()[0]+aC.getSize()[0]) &&
+					(y>aC.getPosition()[1] && y<aC.getPosition()[1]+aC.getSize()[1]))&& !aC.equals(pAC)){
+				System.out.println(x+" in ["+aC.getPosition()[0]+","+(aC.getPosition()[0]+aC.getSize()[0])+"]");
+				System.out.println(y+" in ["+aC.getPosition()[1]+","+(aC.getPosition()[1]+aC.getSize()[1])+"]");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * return the character at the given coordinates
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public ArenaCharacter getCharac(double x, double y){
+		for (int k =0 ; k<this.charac.size(); k++){
+			//if a character is on this position
+			if ((x>this.charac.get(k).getPosition()[0] && x<this.charac.get(k).getPosition()[0]+this.charac.get(k).getSize()[0]) 
+					&& (y>this.charac.get(k).getPosition()[1] && y<this.charac.get(k).getPosition()[1]+this.charac.get(k).getSize()[1])){
+				return this.charac.get(k);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * return the character at the given coordinates that is not pAc
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public ArenaCharacter getCharac(double x, double y,ArenaCharacter pAc){
+		for (int k =0 ; k<this.charac.size(); k++){
+			//if a character is on this position
+			if (((x>this.charac.get(k).getPosition()[0] && x<this.charac.get(k).getPosition()[0]+this.charac.get(k).getSize()[0]) 
+					&& (y>this.charac.get(k).getPosition()[1] && y<this.charac.get(k).getPosition()[1]+this.charac.get(k).getSize()[1]))
+					&& !this.charac.get(k).equals(pAc)){
+				return this.charac.get(k);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public void updateLang(){
+		this.menu.updateLang();
 	}
 
 }

@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import ressources.Config;
 
-public class CharacterCreationScene extends Scene {
+public class CharacterCreationScene extends ArenaScene {
 	
 	private static Group root=new Group();
 	
@@ -17,6 +17,11 @@ public class CharacterCreationScene extends Scene {
 		bg.setFill(Color.BLACK);
 		
 		root.getChildren().add(bg);
+	}
+	
+	@Override
+	public void updateLang(){
+		
 	}
 
 }

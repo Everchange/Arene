@@ -255,6 +255,9 @@ public class Console extends Stage {
 							if (enteredCommand.startsWith("target")){
 								discriminant="target";
 							}
+							if (enteredCommand.startsWith("lang")){
+								discriminant="lang";
+							}
 							if(enteredCommand.startsWith("scene")){
 								if (enteredCommand.length()>7){
 									if(enteredCommand.contains("option")){
@@ -367,17 +370,13 @@ public class Console extends Stage {
 							// we try to cast the probable scene number 
 							try{
 								num=Character.getNumericValue(numC);
-								System.out.println(num);
 							}catch(ClassCastException exception){
 								// if the char is not a number
 								Console.this.println("Invalid scene number",Color.RED);
 							}
-							if (num<Main.scene.length){
-								Main.setScene(num,true);
-							}
-							else{
-								Console.this.println("Scene number to hight, must be between 0 and "+(Main.scene.length-1),Color.RED);
-							}
+							
+							Main.setScene(num,true);
+							
 
 							sucess=true;
 							break;
@@ -391,6 +390,12 @@ public class Console extends Stage {
 								}
 							sucess=true;
 							break;
+							
+							case("lang"):
+								if (enteredCommand.contains(" ")){
+								Config.updateLang(enteredCommand.split(" ")[1]);
+								}
+								break;
 							
 							default:
 								break;

@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 import graphics.Main;
 
 public class ArenaText {
@@ -21,8 +22,6 @@ public class ArenaText {
 
 		setLang(pLang);
 		retrieve();
-
-
 
 	}
 
@@ -47,7 +46,7 @@ public class ArenaText {
 
 	}
 
-	public void retrieve(){
+	public void retrieve()  {
 
 		ArrayList<Integer> contentB=new ArrayList<Integer>();
 
@@ -57,12 +56,12 @@ public class ArenaText {
 		/*try{
 			filR=new FileReader()
 		}catch(FileNotFoundException e){
-			filR=new FileReader("./ressources/"+this.lang+".lang");
+			filR=new FileReader("./resources/"+this.lang+".lang");
 		}*/ //for resources pack 
 		
 		
 		try{
-			filR=new FileReader("./ressources/"+this.lang.toLowerCase()+".lang");
+			filR=new FileReader("./resources/"+this.lang.toLowerCase()+".lang");
 			bufR = new BufferedReader(filR);
 
 			int byteR=0;
@@ -79,7 +78,9 @@ public class ArenaText {
 			
 
 		}catch(FileNotFoundException e){
-			System.out.println("File missing");
+			
+			System.out.println("The "+this.lang.toLowerCase()+".lang file is missing");
+			System.exit(0);
 		} catch (IOException e) {
 			System.out.println("Can't read the file");
 		}
@@ -123,5 +124,13 @@ public class ArenaText {
 	
 	public String quitBt(){
 		return this.text.get(5);
+	}
+	
+	public String languageBt(){
+		return this.text.get(6);
+	}
+
+	public String graphicsBt() {
+		return this.text.get(7);
 	}
 }

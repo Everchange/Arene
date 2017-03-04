@@ -1,29 +1,29 @@
+package ressources;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CreateLangFile {
+public abstract class CreateLangFile {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void create() {
+		String[] content ={"Start","Back","Options","Create character","Restart","Quit",
+				"Language","Graphics"};
+		
 		BufferedWriter bufW;
 		FileWriter filW ;
 		try{
-			filW=new FileWriter("./english.lang");
+			filW=new FileWriter("./resources/english.lang");
 			bufW = new BufferedWriter(filW);
 			
-			bufW.write("Start");
-			bufW.write(29);
-			bufW.write("Back");
-			bufW.write(29);
-			bufW.write("Options");
-			bufW.write(29);
-			bufW.write("Create character");
-			bufW.write(29);
-			bufW.write("Restart");
-			bufW.write(29);
-			bufW.write("Quit");
+			for (int k=0 ;k<content.length ; k++){
+				bufW.write(content[k]);
+				if (k!=content.length-1){
+				bufW.write(29);
+				}
+			}
+
 			
 			bufW.close();
 			filW.close();

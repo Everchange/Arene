@@ -6,6 +6,7 @@ import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
 import ressources.Config;
+import ressources.CreateLangFile;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -42,6 +43,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
+		//CreateLangFile.create();
+		
 		Config.set();
 		//version number
 		if (Config.inDev){
@@ -52,9 +55,9 @@ public class Main extends Application {
 		Main.stage=stage;
 		
 		//create the scenes
-		fieldScene = new FieldScene();
+		
 		Main.scene[0]=new HomeScene();
-		Main.scene[1]=fieldScene;
+		Main.scene[1]=new FieldScene();
 		Main.scene[2]=new CharacterCreationScene();
 		Main.scene[3]=new OptionScene();
 

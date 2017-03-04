@@ -139,7 +139,7 @@ public class OptionScene extends ArenaScene{
 		OptionScene.buttons.getChildren().add(this.bControls);
 
 		//graphics
-		bGraphics.setText("Graphics");
+		bGraphics.setText(Config.arenaText.graphicsBt());
 		bGraphics.setPrefWidth(buttonWidth);
 		bGraphics.setPrefHeight(buttonHeight);
 		// ajout des coordonnées pour que le bouton soit bien placé
@@ -185,7 +185,7 @@ public class OptionScene extends ArenaScene{
 		
 		
 		//graphics
-		bLanguage.setText("Language");
+		bLanguage.setText(Config.arenaText.languageBt());
 		bLanguage.setPrefWidth(buttonWidth);
 		bLanguage.setPrefHeight(buttonHeight);
 				// ajout des coordonnées pour que le bouton soit bien placé

@@ -12,7 +12,9 @@ import graphics.Main;
 public class ArenaText {
 
 	private String lang = "English";
-	private final String[] langs={"Français","English"};
+	private static final String[] langs={"Français","English"};
+	public static final int  startBt=0,backBt=1,optionBt=2,newCharacterBt=3,restartBt=4,quitBt=5,languageBt=6,
+			graphicsBt=7,controlsBt=8;
 
 	private ArrayList<String> text=new ArrayList<String>();
 	
@@ -29,21 +31,25 @@ public class ArenaText {
 		return this.lang;
 	}
 
-	public void setLang(String pLang){
+	public boolean setLang(String pLang){
 		for (String lang : langs){
 			//System.out.println(lang.replaceAll("[^\\p{L}\\p{Z}]");
 			if (lang.toLowerCase().equals(pLang) || lang.toLowerCase().contains(pLang)){
 				if (!(this.lang.toLowerCase().equals(pLang) || this.lang.toLowerCase().contains(pLang))){
 					this.lang=lang;
 					retrieve();
+					
+					//update language 
+					Main.updateLang();
+					return true;
 				}
 				else{
 					Main.console.println("Language already set to : "+this.lang);
+					return false;
 				}
-				return;
 			}
 		}
-
+		return false;
 	}
 
 	public void retrieve()  {
@@ -99,38 +105,26 @@ public class ArenaText {
 			
 		}
 		
+		
+		//if there is something missing
+		boolean test=false;
+		if (this.text.size()!=CreateLangFile.content.length && this.lang=="English" && !test){
+			test=true;
+			//we recreate the ".lang" file
+			CreateLangFile.create();
+			retrieve();
+			System.out.println("lang file recreated due to an incoherence (origin : ArenaText)");
+		}
 
 	}
 	
-	public String startBt(){
-		return this.text.get(0);
-	}
-	
-	public String backBt(){
-		return this.text.get(1);
-	}
-	
-	public String optionBt(){
-		return this.text.get(2);
-	}
-	
-	public String newCharacterBt(){
-		return this.text.get(3);
-	}
-	
-	public String restartBt(){
-		return this.text.get(4);
-	}
-	
-	public String quitBt(){
-		return this.text.get(5);
-	}
-	
-	public String languageBt(){
-		return this.text.get(6);
+	public String getText(int index){
+		if (index>-1 && index<this.text.size()){
+		return this.text.get(index);
+		}
+		System.out.println("Tried to get an text from ArenaText wich is out of range : "+index
+				+" (max : "+(this.text.size()-1)+")");
+		return "ERR .lang file";
 	}
 
-	public String graphicsBt() {
-		return this.text.get(7);
-	}
 }

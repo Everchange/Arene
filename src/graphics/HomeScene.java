@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import ressources.ArenaText;
 import ressources.Config;
 
 public class HomeScene extends ArenaScene{
@@ -21,7 +22,7 @@ public class HomeScene extends ArenaScene{
 	public HomeScene(){
 		super(root);
 		
-		bStart.setText(Config.arenaText.startBt());
+		bStart.setText(Config.arenaText.getText(ArenaText.startBt));
         bStart.setPrefWidth(100);
         // ajout des coordonnées pour que le bouton soit bien placé
         //NB: les coordonée sont fonction du groupe menuGroup
@@ -79,6 +80,6 @@ public class HomeScene extends ArenaScene{
 	
 	@Override
 	public void updateLang(){
-		bStart.setText(Config.arenaText.startBt());
+		bStart.setText(Config.arenaText.getText(ArenaText.startBt));
 	}
 }

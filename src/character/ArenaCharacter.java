@@ -282,6 +282,29 @@ public class ArenaCharacter {
 				targetY=Config.getSizeH()-this.size[1];
 			}
 			
+			if ((x>Config.getSizeW()/2-250 && x<Config.getSizeW()/2+250) && y+this.size[1]>Config.getSizeH()-100){
+				targetY=Config.getSizeH()-100-this.size[1];
+				
+			}
+			
+			//rewrite the following code to solve a bug when the character are both near a border and an other
+			//character
+			/*
+			if (targetX!=x || targetY!=y){
+				//if we change the targeted position we check if there is a character at the given coordinate
+				for (int k=0; k<((FieldScene)Main.getScene(1)).getCharOnField().size();k++){
+					ArenaCharacter aC=((FieldScene)Main.getScene(1)).getCharOnField().get(k);
+					if (targetX>aC.getPosition()[0] && targetX<aC.getPosition()[0]+aC.getSize()[0]){
+					if (targetY<aC.getPosition()[0]+aC.getSize()[1]*(3/4)&& targetY<aC.getPosition()[0]+aC.getSize()[1]/4){
+						//if there is a character
+						return false;
+					}
+					}
+				}
+			}
+			*/
+			
+			
 			//we move the representation of the character to the given coordinates
 			this.representationOnField.relocate(targetX, targetY);
 			// /2 because this is centered on the representation

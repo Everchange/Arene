@@ -6,13 +6,14 @@ import character.ArenaCharacter;
 import javafx.application.*;
 import javafx.stage.*;
 import ressources.Config;
-import ressources.CreateLangFile;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 
 
 public class Main extends Application {
+	
+	//a problem may occurs with paths to resources when the application is compiled
 
 
 	/*static double sizeW=Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -43,7 +44,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		//CreateLangFile.create();
 		
 		Config.set();
 		//version number
@@ -70,10 +70,12 @@ public class Main extends Application {
 		//test pour un perso
 		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"test","testpath",new double[] {50,50});
 		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new double[] {300,50});
+		//ArenaCharacter testC=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"testter","testpath",new double[] {350,250});
 
-		((FieldScene) Main.scene[1]).addCharacterToField(test,test.getPosition());
-		((FieldScene) Main.scene[1]).addCharacterToField(testB,testB.getPosition());
-
+		((FieldScene) Main.scene[1]).addCharacterToField(test);
+		((FieldScene) Main.scene[1]).addCharacterToField(testB);
+		//((FieldScene) Main.scene[1]).addCharacterToField(testC);
+		
 		// définit la largeur et la hauteur de la fenêtre
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre
 		stage.setWidth(Config.getSizeW());

@@ -3,7 +3,6 @@ package graphics;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -11,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import utilitiesOption.*;
+import ressources.ArenaText;
 import ressources.Config;
 
 public class OptionScene extends ArenaScene{
@@ -56,7 +56,7 @@ public class OptionScene extends ArenaScene{
 
 		//(Rage)Quit button
 
-		bBack.setText(Config.arenaText.backBt());
+		bBack.setText(Config.arenaText.getText(ArenaText.backBt));
 		bBack.setPrefWidth(buttonWidth);
 		bBack.setPrefHeight(buttonHeight);
 		// ajout des coordonnées pour que le bouton soit bien placé
@@ -95,7 +95,7 @@ public class OptionScene extends ArenaScene{
 
 		//the following button allows to enter the menu where we can change the controls
 
-		bControls.setText("controls");
+		bControls.setText(Config.arenaText.getText(ArenaText.controlsBt));
 		bControls.setPrefWidth(buttonWidth);
 		bControls.setPrefHeight(buttonHeight);
 		// ajout des coordonnées pour que le bouton soit bien placé
@@ -139,7 +139,7 @@ public class OptionScene extends ArenaScene{
 		OptionScene.buttons.getChildren().add(this.bControls);
 
 		//graphics
-		bGraphics.setText(Config.arenaText.graphicsBt());
+		bGraphics.setText(Config.arenaText.getText(ArenaText.graphicsBt));
 		bGraphics.setPrefWidth(buttonWidth);
 		bGraphics.setPrefHeight(buttonHeight);
 		// ajout des coordonnées pour que le bouton soit bien placé
@@ -185,7 +185,7 @@ public class OptionScene extends ArenaScene{
 		
 		
 		//graphics
-		bLanguage.setText(Config.arenaText.languageBt());
+		bLanguage.setText(Config.arenaText.getText(ArenaText.languageBt));
 		bLanguage.setPrefWidth(buttonWidth);
 		bLanguage.setPrefHeight(buttonHeight);
 				// ajout des coordonnées pour que le bouton soit bien placé
@@ -259,7 +259,9 @@ public class OptionScene extends ArenaScene{
 	
 	@Override
 	public void updateLang(){
-		
+		bLanguage.setText(Config.arenaText.getText(ArenaText.languageBt));
+		bGraphics.setText(Config.arenaText.getText(ArenaText.graphicsBt));
+		bBack.setText(Config.arenaText.getText(ArenaText.backBt));
 	}
 
 

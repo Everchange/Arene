@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import InputOutputFile.ExportText;
+import character.ArenaCharacter;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -25,13 +26,15 @@ public class Console extends Stage {
 	private static int[] size={800,500};
 	private TextFlow output=new TextFlow();
 	private TextField entry=new TextField();
-	private static final String[] command={"quit","clear","scene","export","reset_size","target","help"};
+	private static final String[] command={"clear","export","lang","quit","reset_size","scene","target","help"};
 	// please note that the "help" name must always be at the end of this array !!!
-	private static final String[] commandLegend={"Close the game","Clear the console (delete all the text (can't be undone))",
-			"change the scene of the main window (stage) to a specified number.\n\tSyntax : "
-					+ "scene <number> or scene <name of the scene>",
+	private static final String[] commandLegend={"Clear the console (delete all the text (can't be undone))",
 					"Export the content of console into a .txt file",
+					"Change the language \n\tSyntax : lang <language's name written in this language>",
+					"Close the game",
 					"Reset the size of the window to the default width and lenght",
+					"change the scene of the main window (stage) to a specified number.\n\tSyntax : "
+							+ "scene <number> or scene <name of the scene>",
 					"Target the character with the given name.\n\tSyntax :"
 							+"target <character's name>",
 	"display a help (could be use like this : help <command's first word>)"};
@@ -39,6 +42,7 @@ public class Console extends Stage {
 	private int tab=0;
 	private static ArrayList<String> history = new ArrayList<String>();
 	private int historyIndex=-1;
+	private String[] sceneName={"option","start","field","charcrea"};
 
 	/*I use the ScrollPane as the text area cannot contain colored text
 	 * So I used this ScrollPane with a TextFlow
@@ -175,8 +179,8 @@ public class Console extends Stage {
 							}
 							
 							if (entry.getText().startsWith("scene") && !stop){
-								//help autocompletion
-								entry.setText("scene "+(tab%4));
+								//scene autocompletion
+								entry.setText("scene "+sceneName[tab%4]);
 							}
 
 
@@ -249,9 +253,6 @@ public class Console extends Stage {
 							if (enteredCommand.startsWith("help")){
 								discriminant="help";
 							}
-							if (enteredCommand.startsWith("export")){
-								discriminant="export";
-							}
 							if (enteredCommand.startsWith("target")){
 								discriminant="target";
 							}
@@ -260,20 +261,20 @@ public class Console extends Stage {
 							}
 							if(enteredCommand.startsWith("scene")){
 								if (enteredCommand.length()>7){
-									if(enteredCommand.contains("option")){
+									if(enteredCommand.contains(sceneName[0])){
 										enteredCommand="scene 3";
 										discriminant="scene";
 
 									}
-									if(enteredCommand.contains("start")){
+									if(enteredCommand.contains(sceneName[1])){
 										enteredCommand="scene 0";
 										discriminant="scene";
 									}
-									if(enteredCommand.contains("field")){
+									if(enteredCommand.contains(sceneName[2])){
 										enteredCommand="scene 1";
 										discriminant="scene";
 									}
-									if(enteredCommand.contains("charcrea")){
+									if(enteredCommand.contains(sceneName[3])){
 										enteredCommand="scene 2";
 										discriminant="scene";
 									}
@@ -297,14 +298,19 @@ public class Console extends Stage {
 									}
 								}
 							}
-							if(enteredCommand.contentEquals("clear") || enteredCommand.contentEquals("quit") ||enteredCommand.contentEquals("reset_size")){
+							if(enteredCommand.contentEquals("clear") 
+									|| enteredCommand.contentEquals("quit") 
+									|| enteredCommand.contentEquals("reset_size")
+									|| enteredCommand.contentEquals("export")){
+								
 								discriminant=enteredCommand;
+								
 							}
 
 							//switch that execute the command
 							switch(discriminant){
 							case("false"):
-								//the command doesn't match any knowned command
+								//the command doesn't match any known command
 								Console.this.println("Unknow command",Color.RED);
 							break;
 							case("reset_size"):
@@ -382,9 +388,13 @@ public class Console extends Stage {
 							break;
 							
 							case("target"):
+								
 								try{
+									
+									int index=((FieldScene)Main.getScene(1)).targetChar(enteredCommand.split(" ")[1]);
+									
 									Main.console.println("Index of the targeted character : "
-											+((FieldScene)Main.getScene(1)).targetChar(enteredCommand.split(" ")[1]));
+											+index);
 								}catch(Exception ex){
 									ex.printStackTrace();
 								}
@@ -393,7 +403,9 @@ public class Console extends Stage {
 							
 							case("lang"):
 								if (enteredCommand.contains(" ")){
-								Config.updateLang(enteredCommand.split(" ")[1]);
+								if(Config.updateLang(enteredCommand.split(" ")[1])){
+									sucess=true;
+								};
 								}
 								break;
 							
@@ -493,5 +505,9 @@ public class Console extends Stage {
 	 */
 	public TextField getEntry(){
 		return this.entry;
+	}
+	
+	public void targetAction(ArenaCharacter aC,String action){
+		
 	}
 }

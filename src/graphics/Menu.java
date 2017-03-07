@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import ressources.ArenaText;
 import ressources.Config;
 
 public class Menu {
@@ -37,7 +38,7 @@ public class Menu {
 
 
 		//back to field button
-		bBack.setText(Config.arenaText.backBt());
+		bBack.setText(Config.arenaText.getText(ArenaText.backBt));
 		bBack.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du second
 		bBack.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-80);
@@ -67,7 +68,7 @@ public class Menu {
 
 		//Option button
 
-		bOption.setText(Config.arenaText.optionBt());
+		bOption.setText(Config.arenaText.getText(ArenaText.optionBt));
 		bOption.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bOption.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter-40);
@@ -95,7 +96,7 @@ public class Menu {
 
 		//button to create a new character
 
-		bCreate.setText(Config.arenaText.newCharacterBt());
+		bCreate.setText(Config.arenaText.getText(ArenaText.newCharacterBt));
 		bCreate.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bCreate.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter);
@@ -125,7 +126,7 @@ public class Menu {
 
 		//Restart the game
 
-		bRestart.setText(Config.arenaText.restartBt());
+		bRestart.setText(Config.arenaText.getText(ArenaText.restartBt));
 		bRestart.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit en dessous du premier
 		bRestart.relocate((int)(Config.getSizeW()/2-(buttonWidth/2)), buttonsCenter+40);
@@ -153,7 +154,7 @@ public class Menu {
 
 		//(Rage)Quit button
 
-		bQuit.setText(Config.arenaText.quitBt());
+		bQuit.setText(Config.arenaText.getText(ArenaText.quitBt));
 		bQuit.setPrefWidth(buttonWidth);
 		// ajout des coordonnées pour que le bouton soit bien placé
 		//NB: les coordonée sont fonction du groupe menuGroup
@@ -197,11 +198,11 @@ public class Menu {
 	}
 	
 	public void updateLang(){
-		bBack.setText(Config.arenaText.backBt());
-		bQuit.setText(Config.arenaText.quitBt());
-		bRestart.setText(Config.arenaText.restartBt());
-		bOption.setText(Config.arenaText.optionBt());
-		bCreate.setText(Config.arenaText.newCharacterBt());
+		bBack.setText(Config.arenaText.getText(ArenaText.backBt));
+		bQuit.setText(Config.arenaText.getText(ArenaText.quitBt));
+		bRestart.setText(Config.arenaText.getText(ArenaText.restartBt));
+		bOption.setText(Config.arenaText.getText(ArenaText.optionBt));
+		bCreate.setText(Config.arenaText.getText(ArenaText.newCharacterBt));
 		
 	}
 

@@ -7,7 +7,6 @@ import character.CharacterGUI;
 import character.CharacterGUIHov;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -118,6 +117,7 @@ public class FieldScene extends ArenaScene {
 	 * Allows to add a character on the field
 	 * 
 	 * @param charact an ArenaCharacter object to display
+	 * @param coords the coordinates of the charater
 	 */
 	public void addCharacterToField(ArenaCharacter charact,double[] coords){
 		this.charac.add(charact);
@@ -128,6 +128,15 @@ public class FieldScene extends ArenaScene {
 		// we make sure that the character is in front of the field background
 		this.characterGp.toFront();
 		charact.setFieldId(this.characterGp.getChildren().indexOf(charact));
+	}
+	
+	/**
+	 * Allows to add a character on the field
+	 * 
+	 * @param charact an ArenaCharacter object to display
+	 */
+	public void addCharacterToField(ArenaCharacter charact){
+		addCharacterToField(charact,charact.getPosition());
 	}
 
 	public void displayCharacterGUI(ArenaCharacter ac){
@@ -197,7 +206,6 @@ public class FieldScene extends ArenaScene {
 				//we relocate the character
 				
 				double[] newPos={evt.getSceneX(), evt.getSceneY()};
-				System.out.println(evt.getTarget());
 				
 				
 				if (isCharacter(evt.getSceneX(), evt.getSceneY(),aC)){

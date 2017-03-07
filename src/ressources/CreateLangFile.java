@@ -6,10 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public abstract class CreateLangFile {
+	
+	public static final String[] content ={"Start","Back","Options","Create character","Restart","Quit",
+			"Language","Graphics","Controls"};
 
 	public static void create() {
 		String[] content ={"Start","Back","Options","Create character","Restart","Quit",
-				"Language","Graphics"};
+				"Language","Graphics","Controls"};
 		
 		BufferedWriter bufW;
 		FileWriter filW ;

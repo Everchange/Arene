@@ -12,7 +12,6 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import InputOutputFile.SavedConfig;
-import graphics.HomeScene;
 import graphics.Main;
 import javafx.scene.input.KeyCode;
 import utilitiesOption.ControlKey;
@@ -268,10 +267,9 @@ public abstract class Config {
 			return Config.fullScreen;
 		}
 		
-		public static void updateLang(String pLang){
+		public static boolean updateLang(String pLang){
 			//change the language
-			arenaText.setLang(pLang);
-			Main.updateLang();
+			return arenaText.setLang(pLang);
 		}
 
 }

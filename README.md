@@ -3,6 +3,12 @@
 
 **V 0.4.5/dev**
 
+###Presentation
+
+Arene is a multiplayer game based on 1v1 combats, written in java.
+
+Please note that this game is currently in development. 
+
 
 ###On the subject of Main.console.print/println
 

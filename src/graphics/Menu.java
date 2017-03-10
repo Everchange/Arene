@@ -47,7 +47,7 @@ public class Menu {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Main.fieldScene.closeMenu();
+				((FieldScene) Main.getScene(Main.fieldSIndex)).closeMenu();
 			}
 		});
 		// When select and enter pressed

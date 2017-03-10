@@ -287,23 +287,6 @@ public class ArenaCharacter {
 				
 			}
 			
-			//rewrite the following code to solve a bug when the character are both near a border and an other
-			//character
-			/*
-			if (targetX!=x || targetY!=y){
-				//if we change the targeted position we check if there is a character at the given coordinate
-				for (int k=0; k<((FieldScene)Main.getScene(1)).getCharOnField().size();k++){
-					ArenaCharacter aC=((FieldScene)Main.getScene(1)).getCharOnField().get(k);
-					if (targetX>aC.getPosition()[0] && targetX<aC.getPosition()[0]+aC.getSize()[0]){
-					if (targetY<aC.getPosition()[0]+aC.getSize()[1]*(3/4)&& targetY<aC.getPosition()[0]+aC.getSize()[1]/4){
-						//if there is a character
-						return false;
-					}
-					}
-				}
-			}
-			*/
-			
 			
 			//we move the representation of the character to the given coordinates
 			this.representationOnField.relocate(targetX, targetY);
@@ -319,6 +302,10 @@ public class ArenaCharacter {
 	
 	// just to handle an relocate with an array as parameter
 	public boolean relocate (double[] pos){
+		if (pos==null){
+			//override the relocate method
+			return true;
+		}
 		return relocate(pos[0],pos[1]);
 	}
 	

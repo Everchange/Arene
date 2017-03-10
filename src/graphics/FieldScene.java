@@ -210,10 +210,19 @@ public class FieldScene extends ArenaScene {
 				
 				if (isCharacter(evt.getSceneX(), evt.getSceneY(),aC)){
 					//if there is a character at the given position
-					newPos=getCharac(evt.getSceneX(), evt.getSceneY(),aC).getCenter();
+					ArenaCharacter onLocation=getCharac(evt.getSceneX(), evt.getSceneY(),aC);
+					newPos=onLocation.getCenter();
+					//next condition : bug fix when we want to relocate a character next to an other which result
+					//in moving the character that we to relocate outside of the bounds or behind the bottom GUI 
+					if ((aC.getSize()[1]+newPos[1]>Config.getSizeH())||((newPos[0]>Config.getSizeW()/2-250 && newPos[0]<Config.getSizeW()/2+250) && newPos[1]+aC.getSize()[1]>Config.getSizeH()-100)){
+						// out of bounds									//next to the menu of the character (the bottom GUI)
+						newPos=null;
+					}else{
 					//we center the two characters
 					newPos[1]+=getCharac(evt.getSceneX(), evt.getSceneY(),aC).getSize()[1]/2;
+					}
 				}
+				
 				
 				
 				if (aC.relocate(newPos)){
@@ -290,8 +299,8 @@ public class FieldScene extends ArenaScene {
 			//if a character is on this position
 			if (((x>aC.getPosition()[0] && x<aC.getPosition()[0]+aC.getSize()[0]) &&
 					(y>aC.getPosition()[1] && y<aC.getPosition()[1]+aC.getSize()[1]))&& !aC.equals(pAC)){
-				System.out.println(x+" in ["+aC.getPosition()[0]+","+(aC.getPosition()[0]+aC.getSize()[0])+"]");
-				System.out.println(y+" in ["+aC.getPosition()[1]+","+(aC.getPosition()[1]+aC.getSize()[1])+"]");
+				//System.out.println(x+" in ["+aC.getPosition()[0]+","+(aC.getPosition()[0]+aC.getSize()[0])+"]");
+				//System.out.println(y+" in ["+aC.getPosition()[1]+","+(aC.getPosition()[1]+aC.getSize()[1])+"]");
 				return true;
 			}
 		}
@@ -337,5 +346,26 @@ public class FieldScene extends ArenaScene {
 	public void updateLang(){
 		this.menu.updateLang();
 	}
+
+/*
+	public boolean testOutOfBounds(ArenaCharacter aCMoving,double targetX, double targetY){
+		//if we change the targeted position we check if there is a character at the given coordinate
+		for (int k=0; k<charac.size();k++){
+			ArenaCharacter aC=charac.get(k);
+			if(!this.equals(aC)){
+				if (targetX>aC.getPosition()[0] && targetX<aC.getPosition()[0]+aC.getSize()[0]){
+					if (targetY>aC.getPosition()[1]&& targetY<aC.getPosition()[1]+aC.getSize()[1]){
+						//if there is a character
+						if (aC.getPosition()[1]+aC.getSize()[1]/2+aCMoving.getSize()[1]>Config.getSizeH()){
+							System.out.println("out of bounds");
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}*/
+
 
 }

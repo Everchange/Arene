@@ -20,7 +20,7 @@ public class Main extends Application {
 	static double sizeH=Toolkit.getDefaultToolkit().getScreenSize().getHeight();*/
 	private static Stage stage; 
 	private static ArenaScene[] scene=new ArenaScene[4];
-	static FieldScene fieldScene;
+	public final static int homeSIndex=0,fieldSIndex=1,CharCreaSIndex=2,optionSIndex=3;
 	// even if the dev mode is not enable, we create a console
 	public static final Console console=new Console();
 	static boolean escapeOn=false;
@@ -43,6 +43,7 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage stage) throws Exception {
+		
 		
 		
 		Config.set();
@@ -163,7 +164,7 @@ public class Main extends Application {
 
 
 	public static void updateLang() {
-		//update evrything
+		//update everything
 		for (int k=0; k<Main.scene.length;k++){
 			Main.scene[k].updateLang();
 		}

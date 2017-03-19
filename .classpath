@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry excluding="graphics/OptionStage.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/java_ee_sdk-7u2/glassfish4/glassfish/modules/javax.json.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

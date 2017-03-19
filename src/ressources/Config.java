@@ -2,36 +2,37 @@ package ressources;
 
 import java.awt.Toolkit;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
-import InputOutputFile.SavedConfig;
+
 import graphics.Main;
 import javafx.scene.input.KeyCode;
 import utilitiesOption.ControlKey;
+
+import javax.json.*;
 
 public abstract class Config {
 	
 		//the following list is the default control key
 		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE)};
 		
-		private static ControlKey[]devControlCodes={new ControlKey("Console", KeyCode.F11)};
+		private static ControlKey[]devControlsCodes={new ControlKey("Console", KeyCode.F11)};
 		//the black list is used to prevent the binding of some key 
 		public static final KeyCode[] blackList={KeyCode.ENTER};
 		private static String version="v unknowed";
-		//size of the Stage
-		private static double sizeW=1000;
-		private static double sizeH=700;
+		//size of the Stage (width,height)
+		private static double[] size={1000,700};
 		static boolean fullScreen=false;
 		public final static boolean inDev=true;
-		public static int[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
+		public static double[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
 		public static ArenaText arenaText = new ArenaText("English");
+		private static final String JSON_FILE="./resources/config.json";
+		private static final int JSON_VERSION=1;
+		private static final String[] JSON_ELEM={"Json version","Controls codes","Language","Size"};
 		
 		/**
 		 * Set the configuration to the last one saved during the latest session
@@ -45,6 +46,7 @@ public abstract class Config {
 			if (Config.inDev){
 				Main.console.println("Development mode enable, config.ser file overwriten");
 				save();
+				retrieve();
 			} else{
 				retrieve();
 			}
@@ -53,7 +55,7 @@ public abstract class Config {
 			int[] maxSize={(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()};
 			for (int k=0 ; k<stageResolution.length ; k++){
 				if (maxSize[0]<stageResolution[k][0] || maxSize[1]<stageResolution[k][1]){
-					stageResolution[k]=new int[] {0,0};
+					stageResolution[k]=new double[] {0,0};
 				}
 			}
 			
@@ -127,11 +129,11 @@ public abstract class Config {
 		}
 
 		public static KeyCode getDevControlCode(int i) {
-			if (i<devControlCodes.length){
-				return devControlCodes[i].getCode();
+			if (i<devControlsCodes.length){
+				return devControlsCodes[i].getCode();
 			}
 			else{
-				return devControlCodes[0].getCode();
+				return devControlsCodes[0].getCode();
 			}
 		}
 		
@@ -145,11 +147,11 @@ public abstract class Config {
 		}
 
 		public static ControlKey getDevControl(int i) {
-			if (i<devControlCodes.length){
-				return devControlCodes[i];
+			if (i<devControlsCodes.length){
+				return devControlsCodes[i];
 			}
 			else{
-				return devControlCodes[0];
+				return devControlsCodes[0];
 			}
 		}
 
@@ -180,7 +182,7 @@ public abstract class Config {
 		
 		public static void resetControls(){
 			controlsCodes[0]=new ControlKey("Escape", KeyCode.ESCAPE);
-			devControlCodes[0]=new ControlKey("Console", KeyCode.F11);
+			devControlsCodes[0]=new ControlKey("Console", KeyCode.F11);
 		}
 		
 		
@@ -193,74 +195,139 @@ public abstract class Config {
 
 
 		/**
-		 * @return the devControlCodes
+		 * @return the devControlsCodes
 		 */
-		public static ControlKey[] getDevControlCodes() {
-			return devControlCodes;
+		public static ControlKey[] getdevControlsCodes() {
+			return devControlsCodes;
 		}
 		
-		
+		/**
+		 * save the config as a Json file
+		 */
 		public static void save(){
-			FileOutputStream fos =null;
+			
+			//we create the skeleton of the json file
+			JsonObject model = Json.createObjectBuilder()
+					.add(JSON_ELEM[0], JSON_VERSION)
+					.add(JSON_ELEM[1], Json.createArrayBuilder()
+							.add(Json.createObjectBuilder()
+									.add("Escape",controlsCodes[0].getKeyName())))
+					.add(JSON_ELEM[2], arenaText.getLang())
+					.add(JSON_ELEM[3], Json.createArrayBuilder()
+							.add(Json.createObjectBuilder()
+									.add("Width",size[0])
+									.add("Height",size[1])))
+					.build();
+			//we write it
 			try {
-				fos = new FileOutputStream("./config.ser");
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			ObjectOutputStream oos;
-			try {
-				if (fos!=null){
-				oos = new ObjectOutputStream(fos);
-				oos.writeObject(new SavedConfig());
-				oos.close();
-				}
+				JsonWriter jsonWriter = Json.createWriter(new FileWriter(JSON_FILE));
+				jsonWriter.writeObject(model);
+				jsonWriter.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				
+				Main.console.println("Unable to write the json file !");;
 			}
 		}
 		
 		public static void retrieve(){
+			// we read the Json file
 			try {
-			FileInputStream fis = new FileInputStream("./config.ser");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			SavedConfig result = (SavedConfig) ois.readObject();
-			ois.close();
-			//we set the config from the saved config.ser file
-			Config.controlsCodes=result.getControlsCodes();
-			Config.sizeH=result.getsizeH();
-			Config.sizeW=result.getsizeW();
-			//set the language
-			Config.arenaText=new ArenaText(result.getLang());
-			
-			} catch (FileNotFoundException e1) {
-				// the config.ser file is missing, so we create it
-				try {
-					Main.console.println("config.ser file is missing, switching to default configuration");
-					FileOutputStream fos = new FileOutputStream("./config.ser");
-					fos.close();
-				} catch (IOException e) {
-					//if an exception occurs, i don't know yet how to solve it :(
-					e.printStackTrace();
+				JsonReader reader = Json.createReader(new FileReader(JSON_FILE));
+				JsonStructure jsonst = reader.read();
+				reader.close();
+				//we retrieve the elements saved
+				navigateJsonTree(jsonst,null);
+				
+			} catch (FileNotFoundException e) {
+				Main.console.println("config.ser file is missing, switching to default configuration");
+				save();
+			}
+		}
+		
+		private static void retrieveElement(JsonValue tree,int k){
+			//k is used to remember which element of the json file we are currently retrieving
+			switch(tree.getValueType()){
+			case STRING :
+				switch(k){
+				case 2:
+					Config.arenaText=new ArenaText(((JsonString)tree).getString());
+					break;
 				}
+				
+				break;
+				
+			case ARRAY:
+				//if it's a list
+				JsonArray array = (JsonArray) tree;
+		         for (JsonValue val : array){
+		        	 navigateJsonArray(val, null,k,0);
+		         
+		         }
+		         break;
+				
 			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}
+		
+		/**
+		 * quick way to retrieve an array of element
+		 * @param tree
+		 */
+		private static void navigateJsonArray(JsonValue tree,String nom ,int k, int index){
+			 switch(tree.getValueType()) {
+		      case OBJECT:
+		    	  //if we just received a list
+		         JsonObject object = (JsonObject) tree;
+		         for (String name : object.keySet()){
+		        	 //we iterate through the list 
+		        	 navigateJsonArray(object.get(name), name,k,index);
+		        	 index++;
+		         }
+		         break;
+		      case STRING :
+		    	  switch(k){
+		    	  case 1: 
+		    		  controlsCodes[index]=new ControlKey(nom, KeyCode.getKeyCode(((JsonString) tree).getString()));
+		    	  }
+		      case NUMBER:
+		    	  switch(k){
+		    	  case 3: 
+		    		  size[index]=((JsonNumber) tree).intValue();
+		    	  }
+		    		   
+			 }
+		}
+		
+		
+		/**
+		 * navigate through the json file
+		 * @param tree
+		 * @param key
+		 */
+		public static void navigateJsonTree(JsonValue tree, String key) {
+			   if (key != null)
+				   //if we haven't reach a known element
+				   for (int k=0  ; k<JSON_ELEM.length ; k++){
+					   if (key.equals(JSON_ELEM[k])){
+						   retrieveElement(tree,k);
+					   }
+				   }
+			   switch(tree.getValueType()) {
+			      case OBJECT:
+			         JsonObject object = (JsonObject) tree;
+			         for (String name : object.keySet())
+			        	 navigateJsonTree(object.get(name), name);
+			         break;
+			         
+			      default :
+			    	  break;
+			   }
 		}
 		
 		public static double getSizeW(){
-			return Config.sizeW;
+			return Config.size[0];
 		}
 		
 		public static double getSizeH(){
-			return Config.sizeH;
+			return Config.size[1];
 		}
 		
 		public static boolean isFullScreen(){

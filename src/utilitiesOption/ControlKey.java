@@ -3,8 +3,6 @@
  */
 package utilitiesOption;
 
-import java.io.Serializable;
-
 import javafx.scene.input.KeyCode;
 
 /**
@@ -13,18 +11,11 @@ import javafx.scene.input.KeyCode;
  *
  *
  */
-public class ControlKey implements Serializable{
-	//implements serializable allows to save the config
+public class ControlKey{	
 	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+	//structure :name of the control,code of the key
 	private String name;
 	private KeyCode code = null;
-	private String keyName = null;
 
 	/**
 	 * 
@@ -34,36 +25,51 @@ public class ControlKey implements Serializable{
 	public ControlKey(String name, KeyCode code) {
 		this.name=name;
 		this.code=code;
-		this.keyName=code.getName();
+	}
+	
+	/**
+	 * 
+	 * @param name the name of the control
+	 * @param keyName the textual name of the key associated with it
+	 */
+	public ControlKey(String name, String keyName) {
+		this.name=name;
+		this.code=KeyCode.getKeyCode(keyName);
 	}
 
 	/**
-	 * @return the code
+	 * @return the code of the key associated with this option
 	 */
 	public KeyCode getCode() {
 		return code;
 	}
 
 	/**
-	 * @param code the code to set
+	 * @param code the Keycode to bind to this option
 	 */
 	public void setCode(KeyCode code) {
 		this.code = code;
-		this.keyName=code.getName();
+	}
+	
+	/**
+	 * @param keyName the name of the key to set
+	 */
+	public void setCode(String keyName) {
+		this.code = KeyCode.getKeyCode(keyName);
 	}
 
 	/**
-	 * @return the name
+	 * @return The name of the associated option
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the keyName
+	 * @return the keyName of the binded key
 	 */
 	public String getKeyName() {
-		return keyName;
+		return this.code.getName();
 	}
 	
 	

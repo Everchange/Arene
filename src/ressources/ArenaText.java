@@ -153,5 +153,11 @@ public class ArenaText {
 				+" (max : "+(this.text.size()-1)+")");
 		return "ERR .lang file";
 	}
+	
+	private static String[] scanLang(){
+		ArrayList<String> lang=new ArrayList<String>();
+		
+		return new String[] {};
+	}
 
 }

@@ -8,9 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
-
+import graphics.Console;
 import graphics.Main;
 import javafx.scene.input.KeyCode;
+import utilitiesOption.BeautifullJson;
 import utilitiesOption.ControlKey;
 
 import javax.json.*;
@@ -18,7 +19,8 @@ import javax.json.*;
 public abstract class Config {
 	
 		//the following list is the default control key
-		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE)};
+		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE),
+				new ControlKey("Chat", KeyCode.T)};
 		
 		private static ControlKey[]devControlsCodes={new ControlKey("Console", KeyCode.F11)};
 		//the black list is used to prevent the binding of some key 
@@ -29,10 +31,12 @@ public abstract class Config {
 		static boolean fullScreen=false;
 		public final static boolean inDev=true;
 		public static double[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
-		public static ArenaText arenaText = new ArenaText("English");
-		private static final String JSON_FILE="./resources/config.json";
+		public static ArenaText arenaText = new ArenaText();
+		//all propertyr in this class
+		public static final String[] property={"fullscreen","size"};
+		private static final String JSON_FILE_PATH="./resources/config.json";
 		private static final int JSON_VERSION=1;
-		private static final String[] JSON_ELEM={"Json version","Controls codes","Language","Size"};
+		private static final String[] JSON_ELEM={"Json version","Controls codes","Language","Size","Full screen"};
 		
 		/**
 		 * Set the configuration to the last one saved during the latest session
@@ -202,36 +206,57 @@ public abstract class Config {
 		}
 		
 		/**
-		 * save the config as a Json file
+		 * save the configuration as a .json file
 		 */
 		public static void save(){
 			
 			//we create the skeleton of the json file
-			JsonObject model = Json.createObjectBuilder()
-					.add(JSON_ELEM[0], JSON_VERSION)
-					.add(JSON_ELEM[1], Json.createArrayBuilder()
-							.add(Json.createObjectBuilder()
-									.add("Escape",controlsCodes[0].getKeyName())))
-					.add(JSON_ELEM[2], arenaText.getLang())
-					.add(JSON_ELEM[3], Json.createArrayBuilder()
-							.add(Json.createObjectBuilder()
-									.add("Width",size[0])
-									.add("Height",size[1])))
-					.build();
+			JsonObjectBuilder model = Json.createObjectBuilder();
+			
+			//JSON version number
+			model.add(JSON_ELEM[0], JSON_VERSION);
+			
+			//control keys
+			JsonObjectBuilder cKArray = Json.createObjectBuilder();
+			for (int k =0 ; k<controlsCodes.length;k++){
+				cKArray.add(controlsCodes[k].getName(),controlsCodes[k].getKeyName());
+			}
+			
+			model.add(JSON_ELEM[1], Json.createArrayBuilder()
+					.add(cKArray));
+			//language
+			model.add(JSON_ELEM[2], arenaText.getLang());
+			//size
+			model.add(JSON_ELEM[3], Json.createArrayBuilder()
+					.add(Json.createObjectBuilder()
+							.add("Width",size[0])
+							.add("Height",size[1])));
+			
+			//full screen
+			model.add(JSON_ELEM[4], fullScreen);
+			
+			//build the json object
+			JsonObject jsonFie= model.build();
 			//we write it
 			try {
-				JsonWriter jsonWriter = Json.createWriter(new FileWriter(JSON_FILE));
-				jsonWriter.writeObject(model);
+				JsonWriter jsonWriter = Json.createWriter(new FileWriter(JSON_FILE_PATH));
+				jsonWriter.writeObject(jsonFie);
 				jsonWriter.close();
 			} catch (IOException e) {
-				Main.console.println("Unable to write the json file !");;
+				Main.console.println("Unable to write the json file !");
+			}
+			
+			try {
+				BeautifullJson.clean(JSON_FILE_PATH);
+			} catch (IOException e) {
+				System.out.println("Unable to clean the .Json file");
 			}
 		}
 		
 		public static void retrieve(){
 			// we read the Json file
 			try {
-				JsonReader reader = Json.createReader(new FileReader(JSON_FILE));
+				JsonReader reader = Json.createReader(new FileReader(JSON_FILE_PATH));
 				JsonStructure jsonst = reader.read();
 				reader.close();
 				//we retrieve the elements saved
@@ -243,6 +268,7 @@ public abstract class Config {
 			}
 		}
 		
+		@SuppressWarnings("incomplete-switch")
 		private static void retrieveElement(JsonValue tree,int k){
 			//k is used to remember which element of the json file we are currently retrieving
 			switch(tree.getValueType()){
@@ -263,6 +289,15 @@ public abstract class Config {
 		         
 		         }
 		         break;
+			case TRUE:
+			case FALSE:
+				switch(k){
+				case 4:
+					System.out.println(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
+					fullScreen=(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
+				}
+				
+				
 				
 			}
 		}
@@ -271,6 +306,7 @@ public abstract class Config {
 		 * quick way to retrieve an array of element
 		 * @param tree
 		 */
+		@SuppressWarnings("incomplete-switch")
 		private static void navigateJsonArray(JsonValue tree,String nom ,int k, int index){
 			 switch(tree.getValueType()) {
 		      case OBJECT:
@@ -338,5 +374,51 @@ public abstract class Config {
 			//change the language
 			return arenaText.setLang(pLang);
 		}
+		public static void setFullScreen(boolean b){
+			fullScreen=b;
+			Main.getStage().setFullScreen(b);
+		}
+		
+		public static void describe(){
+			Main.console.println("State of the config class :");
+			Main.console.println("Version of the application : "+version);
+			Main.console.println("Fullscreen : "+fullScreen);
+			Main.console.println("Size : "+size[0]+" by "+size[1]);
+			Main.console.println("In development : "+inDev);
+			Main.console.println("Current language : "+arenaText.getLang());
+		}
+		
+		public static void changeProperty(String propertyName, String value){
+			switch(propertyName){
+			case "fullscreen":
+				if (value.startsWith("true")||value.startsWith("1")){
+					setFullScreen(true);
+					Main.console.println("Fullscreen set to "+fullScreen);
+				}
+				else if (value.startsWith("false")||value.startsWith("0")){
+					setFullScreen(false);
+					Main.console.println("Fullscreen set to "+fullScreen);
+				}
+				break;
+			default:
+				Main.console.println("Unknowed property");
+			}
+		}
 
+
+		public static void printProperty(String propertyName) {
+			switch(propertyName){
+			case "fullscreen":
+				Main.console.println("Fullscreen : "+fullScreen);
+				break;
+			case "version":
+				Main.console.println("Version of the application : "+version);
+				break;
+			case "inDev":
+				Main.console.println("In development : "+inDev);
+				break;
+			default:
+				Main.console.println("Unknowed property");
+			}
+		}
 }

@@ -3,7 +3,7 @@ package character;
 public class CharacterImport {
 
 	/**
-	 * Retrieves a Character Sheet from a file at the given location
+	 * Retrieves a Character Sheet (json format) from a file at the given location
 	 *  
 	 * @param pathToFile the path to the file
 	 */

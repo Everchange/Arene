@@ -21,6 +21,7 @@ public abstract class Config {
 		//the following list is the default control key
 		private static ControlKey[] controlsCodes={new ControlKey("Escape", KeyCode.ESCAPE),
 				new ControlKey("Chat", KeyCode.T)};
+		public static final int ESCAPE_KEY_INDEX=0;
 		
 		private static ControlKey[]devControlsCodes={new ControlKey("Console", KeyCode.F11)};
 		//the black list is used to prevent the binding of some key 
@@ -32,7 +33,7 @@ public abstract class Config {
 		public final static boolean inDev=true;
 		public static double[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
 		public static ArenaText arenaText = new ArenaText();
-		//all propertyr in this class
+		//all properties in this class
 		public static final String[] property={"fullscreen","size"};
 		private static final String JSON_FILE_PATH="./resources/config.json";
 		private static final int JSON_VERSION=1;
@@ -359,11 +360,21 @@ public abstract class Config {
 		}
 		
 		public static double getSizeW(){
+			if (fullScreen){
+				return Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+			}
+			else{
 			return Config.size[0];
+			}
 		}
 		
 		public static double getSizeH(){
+			if (fullScreen){
+				return Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+			}
+			else{
 			return Config.size[1];
+			}
 		}
 		
 		public static boolean isFullScreen(){
@@ -376,7 +387,15 @@ public abstract class Config {
 		}
 		public static void setFullScreen(boolean b){
 			fullScreen=b;
-			Main.getStage().setFullScreen(b);
+			if(b){
+			Main.resize(new double[]{Toolkit.getDefaultToolkit().getScreenSize().getWidth(),Toolkit.getDefaultToolkit().getScreenSize().getHeight()});
+			Main.getStage().setX(0);
+			Main.getStage().setY(0);
+			}
+			else{
+				Main.resize(size);
+				Main.getStage().centerOnScreen();
+			}
 		}
 		
 		public static void describe(){
@@ -400,6 +419,9 @@ public abstract class Config {
 					Main.console.println("Fullscreen set to "+fullScreen);
 				}
 				break;
+			case "size":
+				setSize(value);
+				break;
 			default:
 				Main.console.println("Unknowed property");
 			}
@@ -419,6 +441,32 @@ public abstract class Config {
 				break;
 			default:
 				Main.console.println("Unknowed property");
+			}
+		}
+		
+		/**
+		 * set the size of the Stage
+		 * @param size
+		 */
+		public static void setSize(double[] size){
+			Config.size=size;
+			Main.resize(size);
+		}
+		
+		/**
+		 * set the size of the Stage when using the console
+		 * @param size
+		 */
+		public static void setSize(String strSize){
+			double[] size={0 , 0};
+			try{
+				size[0]=(Integer.parseInt(strSize.split(",")[0]));
+				size[1]=(Integer.valueOf(strSize.split(",")[1]));
+			}catch (Exception e){
+				Main.console.println("Unable to parse the given string to an double array (Config.setSize)");
+			}
+			if (size[0]!=0){
+				setSize(size);
 			}
 		}
 }

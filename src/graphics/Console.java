@@ -224,10 +224,10 @@ public class Console extends Stage {
 								//!=' ' tor prevent a bug wich would keep cycling between get and set
 								//scene autocompletion
 								if (tab%2==0){
-									entry.setText("config "+"get");
+									entry.setText("config "+"set");
 								}
 								else{
-									entry.setText("config "+"set");
+									entry.setText("config "+"get");
 								}
 							}
 							//if it's the full screeen command

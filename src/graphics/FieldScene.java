@@ -10,6 +10,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
@@ -27,6 +28,7 @@ public class FieldScene extends ArenaScene {
 	private Group pathGroup=new Group();
 	private ArrayList<ArenaCharacter> charac = new ArrayList<ArenaCharacter>();
 	public static boolean drawPath=false;
+	private Group backGround = new Group();
 
 
 	/**
@@ -38,27 +40,22 @@ public class FieldScene extends ArenaScene {
 		
 		this.menu=new Menu();
 
-		Canvas canvas =new Canvas(735,600);
-		canvas.setLayoutX(0);
-		canvas.setLayoutY(0);
-
-
-
 		// load the image for the background
 		Image bg =new Image(Beacon.class.getResourceAsStream("field.png"));
 
-		FieldScene.root.getChildren().add(canvas);
+		//FieldScene.root.getChildren().add(canvas);
 
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.drawImage(bg, 0, 0);
-
-
+		backGround.getChildren().add(new ImageView(bg));
+		FieldScene.root.getChildren().add(backGround);
+		
+		
+		
 		FieldScene.root.getChildren().add(characterGp);
 		characterGp.toFront();
 
 		FieldScene.root.getChildren().add(pathGroup);
 
-		//set background
+		//set background color
 		this.setFill(Color.GREY);
 
 
@@ -68,14 +65,21 @@ public class FieldScene extends ArenaScene {
 				{
 					public void handle(KeyEvent e)
 					{
-						if(e.getCode()==Config.getControlCode(0) && !FieldScene.this.escapeOn){
+						if(e.getCode()==Config.getControlCode(Config.ESCAPE_KEY_INDEX) && !FieldScene.this.escapeOn){
 							//if menu off and escape pressed
 							FieldScene.root.getChildren().add(FieldScene.this.menu.getMenuGroup());
+							FieldScene.this.menu.getMenuGroup().toFront();
 							FieldScene.this.escapeOn=true;
+							//remove the path if there was a path drawn
+							FieldScene.this.pathGroup.getChildren().clear();
+							FieldScene.this.setOnMouseClicked(null);
+							FieldScene.this.setOnMouseMoved(null);
 						}
-						else if(e.getCode()==Config.getControlCode(0) && FieldScene.this.escapeOn){
+						else if(e.getCode()==Config.getControlCode(Config.ESCAPE_KEY_INDEX) && FieldScene.this.escapeOn){
 							// if escape pressed and menu on
+							FieldScene.this.menu.getMenuGroup().toBack();
 							FieldScene.root.getChildren().remove(FieldScene.this.menu.getMenuGroup());
+							
 							FieldScene.this.escapeOn=false;
 
 						}
@@ -90,8 +94,8 @@ public class FieldScene extends ArenaScene {
 					}
 				});
 
-		canvas.toBack();
-		//just to be sure that canvas is the back ground
+		this.backGround.toBack();
+		//just to be sure that the image is in the back ground
 
 		this.characterGUIGroup.center();
 		FieldScene.root.getChildren().add(characterGUIGroup);
@@ -173,6 +177,7 @@ public class FieldScene extends ArenaScene {
 	public void removeCharacterGUIHov(){
 		// when the mouse exit the character we remove the display
 		this.characterGUIHOVGroup.getChildren().clear();
+		this.characterGUIHOVGroup.toBack();
 	}
 
 	public void drawPath(double[] startCoord, ArenaCharacter aC, double[]  startMouseCoord){
@@ -200,6 +205,7 @@ public class FieldScene extends ArenaScene {
 			
 			
 		});
+		
 		this.setOnMouseClicked(evt->{
 			//relocate the character if we right click to an other location
 			if (evt.getButton()==MouseButton.SECONDARY){
@@ -227,6 +233,7 @@ public class FieldScene extends ArenaScene {
 				
 				if (aC.relocate(newPos)){
 					this.pathGroup.getChildren().clear();
+					this.pathGroup.toBack();
 					aC.toFront();
 					this.setOnMouseMoved(null);
 				}
@@ -234,6 +241,7 @@ public class FieldScene extends ArenaScene {
 			else{
 				//if the user doesn't right click again but left click
 				this.pathGroup.getChildren().clear();
+				this.pathGroup.toBack();
 				this.setOnMouseMoved(null);
 				aC.lockMovement();
 			}
@@ -345,6 +353,12 @@ public class FieldScene extends ArenaScene {
 	@Override
 	public void updateLang(){
 		this.menu.updateLang();
+	}
+	@Override
+	public void resize(double[] size){
+		((ImageView)this.backGround.getChildren().get(0)).setFitWidth(size[0]);
+		((ImageView)this.backGround.getChildren().get(0)).setFitHeight(size[1]);
+		this.characterGUIGroup.center();
 	}
 
 /*

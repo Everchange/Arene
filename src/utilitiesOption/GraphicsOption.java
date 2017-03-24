@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import ressources.Config;
 
 /**
- * @author Clément
+ * @author Altaren
  *
  */
 public class GraphicsOption extends Group {
@@ -19,10 +19,10 @@ public class GraphicsOption extends Group {
 		
 		Button switchFullS=new Button();
 		switchFullS.setPrefSize(80, 25);
-		switchFullS.setText(Boolean.toString(Config.isFullScreen()));
+		switchFullS.setText(Boolean.toString(!Config.isFullScreen()));
 		switchFullS.setOnAction(evt->{
 			Config.setFullScreen(!Config.isFullScreen());
-			switchFullS.setText(Boolean.toString(Config.isFullScreen()));
+			switchFullS.setText(Boolean.toString(!Config.isFullScreen()));
 		});
 		switchFullS.relocate(100, 65);
 		

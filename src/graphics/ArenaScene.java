@@ -10,8 +10,8 @@ public class ArenaScene extends Scene{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void updateLang(){
-		
-	}
+	public void updateLang(){}
+	
+	public void resize(double[] size){}
 
 }

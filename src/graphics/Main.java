@@ -89,8 +89,7 @@ public class Main extends Application {
 		Main.setScene(0,false);
 		// met un titre dans la fenêtre
 		stage.setTitle("Project Arena "+Config.getVersion());
-		//full screen mode
-		stage.setFullScreen(Config.isFullScreen());
+		stage.setFullScreen(false);
 		
 		//we remove the borders
 		stage.initStyle(StageStyle.UNDECORATED);
@@ -148,8 +147,8 @@ public class Main extends Application {
 	 * reset the size of the window to the default size
 	 */
 	public static void resetSize(){
-		Main.stage.setWidth(Config.getSizeW());
-		Main.stage.setHeight(Config.getSizeH());
+		Main.stage.setWidth(1000);
+		Main.stage.setHeight(700);
 		Main.console.println("Stage size reseted");
 	}
 
@@ -169,6 +168,14 @@ public class Main extends Application {
 			Main.scene[k].updateLang();
 		}
 		Main.console.println("Language changed for : "+Config.arenaText.getLang());
+	}
+	
+	public static void resize(double[] size){
+		stage.setHeight(size[1]);
+		stage.setWidth(size[0]);
+		for (int k=0; k<Main.scene.length;k++){
+			Main.scene[k].resize(size);
+		}
 	}
 
 }

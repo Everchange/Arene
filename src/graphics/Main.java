@@ -24,6 +24,7 @@ public class Main extends Application {
 	// even if the dev mode is not enable, we create a console
 	public static final Console console=new Console();
 	static boolean escapeOn=false;
+	public static final int FIELD_SCENE=1;
 	
 
 	/**
@@ -68,14 +69,8 @@ public class Main extends Application {
 			console.show();
 		}
 
-		//test pour un perso
-		ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"test","testpath",new double[] {50,50});
-		ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new double[] {300,50});
-		//ArenaCharacter testC=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"testter","testpath",new double[] {350,250});
-
-		((FieldScene) Main.scene[1]).addCharacterToField(test);
-		((FieldScene) Main.scene[1]).addCharacterToField(testB);
-		//((FieldScene) Main.scene[1]).addCharacterToField(testC);
+		
+		
 		
 		// définit la largeur et la hauteur de la fenêtre
 		// en pixels, le (0, 0) se situe en haut à gauche de la fenêtre

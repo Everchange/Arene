@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import graphics.Console;
 import graphics.Main;
 import javafx.scene.input.KeyCode;
 import utilitiesOption.BeautifullJson;
@@ -44,6 +43,7 @@ public abstract class Config {
 		 */
 		public static void set(){
 			
+			
 			Main.console.println("Loading configuration ...");
 			// update version from README.md file
 			setVersion();
@@ -58,11 +58,14 @@ public abstract class Config {
 			
 			//we now set up the maximum size of the window
 			int[] maxSize={(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(),(int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()};
+			System.out.print("Stage resolutions available : ");
 			for (int k=0 ; k<stageResolution.length ; k++){
 				if (maxSize[0]<stageResolution[k][0] || maxSize[1]<stageResolution[k][1]){
 					stageResolution[k]=new double[] {0,0};
 				}
+				System.out.print(stageResolution[k][0]+","+stageResolution[k][1]+"  ");
 			}
+			System.out.println((" "));
 			
 			Main.console.println("Config loaded");
 		}
@@ -294,12 +297,8 @@ public abstract class Config {
 			case FALSE:
 				switch(k){
 				case 4:
-					System.out.println(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
 					fullScreen=(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
 				}
-				
-				
-				
 			}
 		}
 		
@@ -329,7 +328,6 @@ public abstract class Config {
 		    	  case 3: 
 		    		  size[index]=((JsonNumber) tree).intValue();
 		    	  }
-		    		   
 			 }
 		}
 		
@@ -348,6 +346,7 @@ public abstract class Config {
 					   }
 				   }
 			   switch(tree.getValueType()) {
+			   
 			      case OBJECT:
 			         JsonObject object = (JsonObject) tree;
 			         for (String name : object.keySet())

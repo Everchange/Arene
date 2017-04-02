@@ -22,10 +22,12 @@ public class ArenaCharacter {
 	private double[] size;
 	private ImageView representationOnField;
 	private boolean isMovable=false;
-	private int pvCurrent;
+	private int hpCurrent=-1;
+	private int HP;
 	private int initiative;
 	private CS characterSheet;
 	private Random RNG;
+	private boolean enemy;
 	
 	public int DEFENSIVE = 1;
 	public int DEFENSIVE_ATMALUS;
@@ -48,10 +50,12 @@ public class ArenaCharacter {
 	 * 				character menu 
 	 * @param imgName path to the character's image
 	 */
-	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath,double[] position) {
+	public ArenaCharacter(int[] att, int armr, int raceIndex,String name,String imgPath,double[] position,int pHP) {
 		//CS wait =new CS(att, armr, raceIndex);
 		this.position=position;
 		this.name=name;
+		this.HP=pHP;
+		this.hpCurrent=this.HP;
 		
 		
 		double alpha=Math.sqrt(Config.getSizeH())*5;//sqrt because it's a surface
@@ -74,6 +78,7 @@ public class ArenaCharacter {
 		
 		this.createRepresentation(this.img);
 	}
+	
 	
 	/**
 	 * create an object that can be display on the field
@@ -215,7 +220,7 @@ public class ArenaCharacter {
 	public void TakeDamage(int damage) {
 		
 		int damagetaken = Math.max(damage-this.characterSheet.getReductionDegats(), 0);
-		this.pvCurrent -= damagetaken;
+		this.hpCurrent -= damagetaken;
 		
 	}
 	
@@ -240,6 +245,10 @@ public class ArenaCharacter {
 	
 	public int getFieldId(){
 		return this.fieldId;
+	}
+	
+	public int getCurrentHp(){
+		return this.hpCurrent;
 	}
 	
 	public void setFieldId(int pId){
@@ -315,6 +324,22 @@ public class ArenaCharacter {
 	
 	public void toFront(){
 		this.representationOnField.toFront();
+	}
+	
+	public void healF(){
+		this.hpCurrent=this.HP;
+	}
+	
+	public void damage(int dam){
+		this.hpCurrent-=dam;
+	}
+	
+	public String toString(){
+		
+		return "Character name : "+this.name+"\n"
+				+"Field ID : "+this.fieldId+"\n"
+				+"Health points : "+this.hpCurrent+"/"+this.HP+"\n"
+				+"Position : ("+this.position[0]+","+this.position[1]+")\n";
 	}
 
 	

@@ -102,23 +102,18 @@ public class Console extends Stage {
 					@Override
 					public void handle(KeyEvent e)
 					{
-
-						if(e.getCode()==Config.getDevControlCode(0)){
-							Main.console.toBack();
-							Main.getStage().toFront();
-						}
-						else{
 							//if the user try to type something
 							Console.this.entry.requestFocus();
-						}
 					}
 				});
 		
 		this.output.setOnMouseEntered(evt->{
-			this.output.setCursor(this.output.getCursor().TEXT);
+			this.output.getCursor();
+			this.output.setCursor(javafx.scene.Cursor.TEXT);
 		});
 		this.output.setOnMouseExited(evt->{
-			this.output.setCursor(this.output.getCursor().DEFAULT);
+			this.output.getCursor();
+			this.output.setCursor(javafx.scene.Cursor.DEFAULT);
 		});
 		//autoscroll thing
 		this.output.heightProperty().addListener(new ChangeListener<Number>(){
@@ -127,7 +122,7 @@ public class Console extends Stage {
 				Console.this.outputScroll.setVvalue(1.0);
 			}
 			
-		});		
+		});	
 		
 		
 
@@ -144,9 +139,10 @@ public class Console extends Stage {
 					@Override
 					public void handle(KeyEvent e)
 					{
-						//when F11 pressed we move the window to the back
+						
 						if(e.getCode()==Config.getDevControlCode(0)){
 							Main.console.toBack();
+							Console.this.entry.clear();
 							Main.getStage().toFront();
 						}
 
@@ -154,7 +150,6 @@ public class Console extends Stage {
 						if(e.getCode()==KeyCode.TAB){
 							e.consume();
 							boolean stop=false;
-							boolean autoC=false;
 							
 							if (!entry.getText().isEmpty() &&  !entry.getText().contains(" ")){
 								// autocompletion
@@ -162,14 +157,16 @@ public class Console extends Stage {
 									if (command[k].contains(entry.getText()) && !command[k].equals(entry.getText().split(" ")[0])){
 										entry.setText(command[k]);
 										//if it's a success we don't want to overwrite the autocompletion
-										autoC=true;
+										stop=true;
 										break;
 									}
 								}
 							}
 							
 							//if there is nothing or we are already cycling, we print all the command one after each
-							if ((entry.getText().isEmpty() || entry.getText().charAt(entry.getText().length()-1)!=' ') &&  !entry.getText().contains(" ") && !autoC){
+							if ((entry.getText().isEmpty() || entry.getText().charAt(entry.getText().length()-1)!=' ') 
+									&&  !entry.getText().contains(" ") 
+									&& !stop){
 								// empty or no space in the command
 								entry.setText(command[tab%command.length]);
 								// we don't want to execute all the actions
@@ -177,49 +174,58 @@ public class Console extends Stage {
 								
 							}
 							
-							if (autoC){
-								stop =true;
-							}
-							
+							/*
 							if (!entry.getText().isEmpty() &&  !entry.getText().contains(" ")){
 								// autocompletion
 								for (int k = 0; k<command.length ; k++){
 									if (command[k].contains(entry.getText())){
 										entry.setText(command[k]);
-										//break to remove a bug with the config commandf
+										//break to remove a bug with the config commanf
 										break;
 									}
 								}
 								
-							}
+							}*/
 
-							//we count the number of time the tab key have been pressed
-
-
-							if (entry.getText().startsWith("target") && !stop){
+							//"target" command 
+							if (((entry.getText().startsWith("target") 
+										&& entry.getText().split(" ").length==2
+										&& entry.getText().charAt(entry.getText().length()-1)!=' ')
+									||(entry.getText().equals("target ")))
+									&& !stop 
+									){
 								//target autocompletion
 								if (((FieldScene)Main.getScene(1)).getNumberCharOnField()>0){
 									entry.setText("target "+((FieldScene)Main.getScene(1)).getCharName(tab%((FieldScene)Main.getScene(1)).getNumberCharOnField()));
 								}
 								
 							}
-							
+							if (entry.getText().startsWith("target") 
+									&& !stop 
+									&& (entry.getText().split(" ").length==2 
+											&& entry.getText().charAt(entry.getText().length()-1)==' ')
+										||(entry.getText().split(" ").length==3)){
+								String[] com=entry.getText().split(" ");
+								String[] action={"hurt","healf","describe"};
+								entry.setText(com[0]+" "+com[1]+" "+action[tab%action.length]+" ");
+							}
+							//"help" command
 							if (entry.getText().startsWith("help") && !stop){
 								//help autocompletion
 								entry.setText("help "+command[tab%command.length]);
 							}
-							
+							//"scene" command
 							if (entry.getText().startsWith("scene") && !stop){
 								//scene autocompletion
 								entry.setText("scene "+sceneName[tab%4]);
 							}
-							
+							//"lang" command
 							if (entry.getText().startsWith("lang") && !stop){
 								//scene autocompletion
 								entry.setText("lang "+ArenaText.langs[tab%2]);
 							}
 							
-							
+							//"config" command
 							if (entry.getText().startsWith("config") && !stop && entry.getText().length()<11){
 								//!=' ' tor prevent a bug wich would keep cycling between get and set
 								//scene autocompletion
@@ -230,7 +236,7 @@ public class Console extends Stage {
 									entry.setText("config "+"get");
 								}
 							}
-							//if it's the full screeen command
+							//if it's the full screen command
 							if(entry.getText().equals("config set fullscreen ")){
 								entry.setText(entry.getText().split(" ")[0]+" "+entry.getText().split(" ")[1]+" fullscreen "+Boolean.toString(!Config.isFullScreen()));
 								System.out.println(entry.getText());
@@ -240,8 +246,8 @@ public class Console extends Stage {
 							}
 							
 
-
-
+							
+							//we increment the number that counts how many times the tab key have been pressed
 							tab++;
 							//we set the cursor to the end of the line 
 							entry.positionCaret(entry.getText().length());
@@ -369,6 +375,8 @@ public class Console extends Stage {
 									}
 								}
 							}
+							
+							
 							if(enteredCommand.contentEquals("clear") 
 									|| enteredCommand.contentEquals("quit") 
 									|| enteredCommand.contentEquals("reset_size")
@@ -377,6 +385,12 @@ public class Console extends Stage {
 								
 								discriminant=enteredCommand;
 								
+							}
+							
+							//below the previous if to prevent the execution of a useless test
+							if (enteredCommand.contentEquals("exit")){
+								//you're welcome ;)
+								discriminant="quit";
 							}
 
 							//switch that execute the command
@@ -394,7 +408,7 @@ public class Console extends Stage {
 							case("export"):
 								//export the console to a file 
 								//the number is the  number of milliseconds since January 1, 1970, 00:00:00 GMT.
-								if (new ExportText("Log "+Long.valueOf(new Date().getTime()).toString(),Console.this.output).getSuccess());{
+								if (new ExportText("Log "+Long.valueOf(new Date().getTime()).toString(),Console.this.export()).getSuccess());{
 									Console.this.println("Console log exported",Color.GREEN);
 									sucess=true;}
 								break;
@@ -481,17 +495,16 @@ public class Console extends Stage {
 							break;
 							
 							case("target"):
+								if (Config.inDev){
+								String[] command=enteredCommand.split(" ");
+							if(command.length>2){
 								
-								try{
-									
-									int index=((FieldScene)Main.getScene(1)).targetChar(enteredCommand.split(" ")[1]);
-									
-									Main.console.println("Index of the targeted character : "
-											+index);
-								}catch(Exception ex){
-									ex.printStackTrace();
-								}
-							sucess=true;
+								String action="";
+								for (int j=2 ; j<command.length;j++)
+									action+=command[j]+" ";
+								sucess=((FieldScene)Main.getScene(Main.FIELD_SCENE)).targetCharac(command[1],action);
+							}
+								}		
 							break;
 							
 							case("lang"):
@@ -524,16 +537,32 @@ public class Console extends Stage {
 
 		root.getChildren().add(this.entry);
 
-		Scene optionScene =new Scene(root);
+		Scene scene =new Scene(root);
 	
 		
-		optionScene.setOnMouseClicked(evt->{
+		scene.setOnMouseClicked(evt->{
 			//System.out.println(evt.getTarget());
 		});
 
+		scene.setOnKeyPressed(
+				new EventHandler<KeyEvent>()
+				{
+					@Override
+					public void handle(KeyEvent e)
+					{
+						//if we pressed the key to make this stage disappear
+						if(e.getCode()==Config.getDevControlCode(0)){
+							Main.console.toBack();
+							Console.this.entry.clear();
+							Main.getStage().toFront();
+						}
 
-		optionScene.setFill(Color.WHITE);
-		this.setScene(optionScene);
+					}
+				});
+
+
+		scene.setFill(Color.WHITE);
+		this.setScene(scene);
 		this.setHeight(size[1]);
 		this.setWidth(size[0]);
 		this.setOnShown(evt->{
@@ -605,7 +634,14 @@ public class Console extends Stage {
 		return this.entry;
 	}
 	
-	public void targetAction(ArenaCharacter aC,String action){
+	public String export(){
+		String ret="";
 		
+		for (int k=0 ; k<this.output.getChildren().size() ; k++){
+			ret+=this.output.getChildren().get(k).getAccessibleText()+"\n";
+		}
+		
+		ret+="\n\n\n Field Description \n"+((FieldScene)Main.getScene(Main.FIELD_SCENE)).getFieldStateString();
+		return ret;
 	}
 }

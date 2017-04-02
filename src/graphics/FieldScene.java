@@ -131,7 +131,8 @@ public class FieldScene extends ArenaScene {
 		this.characterGp.getChildren().get(this.characterGp.getChildren().size()-1).relocate(coords[0], coords[1]);
 		// we make sure that the character is in front of the field background
 		this.characterGp.toFront();
-		charact.setFieldId(this.characterGp.getChildren().indexOf(charact));
+		//we set the id of the character to the correct one
+		charact.setFieldId(this.charac.indexOf(charact));
 	}
 	
 	/**
@@ -141,6 +142,18 @@ public class FieldScene extends ArenaScene {
 	 */
 	public void addCharacterToField(ArenaCharacter charact){
 		addCharacterToField(charact,charact.getPosition());
+	}
+	
+
+	/**
+	 * Allows to add a list of characters on the field
+	 * 
+	 * @param charact an ArenaCharacter array object to display
+	 */
+	public void addCharacterToField(ArenaCharacter[] charact){
+		for (int k =0 ; k<charact.length;k++){
+		addCharacterToField(charact[k],charact[k].getPosition());
+		}
 	}
 
 	public void displayCharacterGUI(ArenaCharacter ac){
@@ -254,13 +267,72 @@ public class FieldScene extends ArenaScene {
 		FieldScene.root.getChildren().remove(this.characterGUIGroup);
 	}
 	
-	public int targetChar(String name){
+	public int getIndexCharac(String name){
 		for(int k=this.charac.size()-1 ; k>-1 ; k--){
 			if (this.charac.get(k).getName().equals(name)){
 				return k;
 			}
 		}
 		return -1;
+	}
+	
+	/**
+	 * perform the given action on the given character 
+	 * @param ac
+	 * @param actionString
+	 * @return
+	 */
+	public boolean targetCharac(ArenaCharacter ac, String actionString){
+		if (ac==null){
+			return false;
+		}
+		boolean ret=false;
+		String[] action = actionString.split(" ");
+		//if some of the previous elements of the array are almost null
+		int plus=0;//control variable
+		for (int k =0 ; k<action.length ; k++){
+			if(action[k].equals("") && plus+k<action.length){
+				//the element k become the next element not null 
+				while(action[k+plus].equals("") && k+plus+1<action.length){
+					//while the next element is null or the end of the list hasn't been reach
+					plus++;
+				}
+				action[k]=action[k+plus];
+				//we empty the element that is now at the position k
+				action[k+plus]="";
+			}
+		}
+		switch(action[0]){
+		case("healf"):
+			ac.healF();
+			ret=true;
+			break;
+		case("hurt"):
+			if (action.length>1){
+				try{
+				ac.damage(Integer.valueOf(action[1]));
+				this.displayCharacterGUI(ac);
+				ret=true;
+				}catch(NumberFormatException ex){
+					Main.console.println("Error, unable to transform the argument \""+action[1]
+							+"\" into an integer");
+				}
+			}
+		break;
+		case("describe"):
+			Main.console.println(ac.toString());
+			ret=true;
+			break;
+		default :
+			Main.console.println("Unknown action : "+action[0]);
+			break;
+		}
+		this.characterGUIGroup.update();
+		return ret;
+	}
+	
+	public boolean targetCharac(String name, String action){
+		return targetCharac(getCharac(name),action);
 	}
 	
 	public int getNumberCharOnField(){
@@ -274,6 +346,10 @@ public class FieldScene extends ArenaScene {
 		return "";
 	}
 	
+	/**
+	 * return all the characters on the field
+	 * @return
+	 */
 	public ArrayList<ArenaCharacter> getCharOnField(){
 		return this.charac;
 	}
@@ -351,14 +427,55 @@ public class FieldScene extends ArenaScene {
 	}
 	
 	@Override
+	/**
+	 * Update the language in all the components of this scene 
+	 */
 	public void updateLang(){
 		this.menu.updateLang();
 	}
 	@Override
+	/**
+	 * resize the background and recenter the GUI
+	 */
 	public void resize(double[] size){
 		((ImageView)this.backGround.getChildren().get(0)).setFitWidth(size[0]);
 		((ImageView)this.backGround.getChildren().get(0)).setFitHeight(size[1]);
 		this.characterGUIGroup.center();
+	}
+	
+	/**
+	 * Return the character at the given index in the array list if it exists
+	 * @param index 
+	 * @return ArenaCharacter at the given index or a null object 
+	 */
+	public ArenaCharacter getCharac(int index){
+		if (index<this.charac.size()){
+			return this.charac.get(index);
+		}
+		else{
+			return null;
+		}
+	}
+	/**
+	 * Return the character named "name" if it exists
+	 * @param name 	The name of the character
+	 * @return ArenaCharacter at the given index or a null object 
+	 */
+	public ArenaCharacter getCharac(String name){
+		for(int k=this.charac.size()-1 ; k>-1 ; k--){
+			if (this.charac.get(k).getName().equals(name)){
+				return this.charac.get(k);
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * A way to known the composition of the field and to export it in a txt file
+	 * @return a string representation of the field
+	 */
+	public String getFieldStateString(){
+		return " ";
 	}
 
 /*

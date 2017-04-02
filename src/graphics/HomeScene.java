@@ -1,5 +1,6 @@
 package graphics;
 
+import character.ArenaCharacter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -35,6 +36,9 @@ public class HomeScene extends ArenaScene{
  
             @Override
             public void handle(ActionEvent event) {
+            	if (Config.inDev){
+            		HomeScene.createDevScene();
+            	}
                 Main.setScene(1, false);
             }
         });
@@ -67,6 +71,16 @@ public class HomeScene extends ArenaScene{
 		                
 		            }
 		        });
+		
+	}
+	private static void createDevScene() {
+		//test pour un perso
+				ArenaCharacter test=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"test","testpath",new double[] {50,50},20);
+				ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new double[] {300,50},35);
+				//ArenaCharacter testC=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"testter","testpath",new double[] {350,250});
+				
+				((FieldScene) Main.getScene(Main.FIELD_SCENE)).addCharacterToField(new ArenaCharacter[] {test,testB});
+				//((FieldScene) Main.scene[1]).addCharacterToField(testC);
 		
 	}
 	/**

@@ -36,9 +36,9 @@ public class ExportText {
 			writer =new BufferedWriter(fileWriter);
 
 			writer.write(content);
-			System.out.println("write");
 			//if the file was successfully opened
-			if (writer!=null){writer.close();
+			if (writer!=null){
+				writer.close();
 			}
 			if(fileWriter!=null){
 				fileWriter.close();

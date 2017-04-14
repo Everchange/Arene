@@ -10,7 +10,7 @@ public class CS {
 	protected int[] mods = new int[6];
 	protected int BBA=1, reductionDegats;
 	protected int[] vitesse;									// La première valeur est la vitesse, la deuxième un booléen indiquant si les armures réduisent la vitesse ou non
-	protected Weapon arme;
+	protected Weapon[] arme = new Weapon[5];
 	protected Armor armure;
 	protected Race race;
 	protected int pvMax = 10;
@@ -47,7 +47,7 @@ public class CS {
 		this.vitesse = this.armure.getSpeed(this.vitesse);													//On calcule la vitesse après ralentissement ou non de l'armure
 		this.vitesse[0] += (this.talents.possedeTalent(Talent.TALENT_RAPIDITE))? 1 : 0;
 		
-		this.arme = new Weapon(arm, this.BBA, this.mods, armenchant, this.talents);
+		this.arme = new Weapon[] {new Weapon(arm, this.BBA, this.mods, armenchant, this.talents)};
 		
 		this.initiativeBonus = this.mods[1];
 		this.initiativeBonus += (this.talents.possedeTalent(Talent.TALENT_RAPIDITE))? 20 : 0;
@@ -94,9 +94,15 @@ public class CS {
 		
 	}
 	
-	public Weapon getWeapon() {
+	public Weapon[] getWeapon() {
 		
 		return this.arme;
+		
+	}
+	
+	public Weapon getActiveWeapon() {
+		
+		return this.arme[0];
 		
 	}
 	

@@ -262,6 +262,7 @@ public class OptionScene extends ArenaScene{
 		bLanguage.setText(Config.arenaText.getText(ArenaText.languageBt));
 		bGraphics.setText(Config.arenaText.getText(ArenaText.graphicsBt));
 		bBack.setText(Config.arenaText.getText(ArenaText.backBt));
+		bControls.setText(Config.arenaText.getText(ArenaText.controlsBt));
 	}
 
 

@@ -16,7 +16,7 @@ public class ArenaText {
 	public static final int  startBt=0,backBt=1,optionBt=2,newCharacterBt=3,restartBt=4,quitBt=5,languageBt=6,
 			graphicsBt=7,controlsBt=8;
 	private static boolean preventLoop=false;
-	private ArrayList<String> text=new ArrayList<String>();
+	private String[] text=new String[9];
 	
 	/**
 	 * Default language : English
@@ -98,7 +98,6 @@ public class ArenaText {
 
 			bufR.close();
 			filR.close();
-			System.out.println("retrieve lang : "+this.lang);
 
 
 		}catch(FileNotFoundException e){
@@ -108,27 +107,50 @@ public class ArenaText {
 		} catch (IOException e) {
 			System.out.println("Can't read the file");
 		}
-		//remove the old language
-		this.text.clear();
-		//create the new
-		String txt="";
-		for (int k =0 ; k<contentB.size();k++){
+		//create the new elements
+		int brace=0;
+		int index=0;
+		text[index]="";
+		for (int val : contentB){
 			//convert bytes to text
-			if (contentB.get(k)==29 || contentB.get(k)==-1){
-				//if we reach a breakpoint or the end of the bytes array
-				if (!txt.isEmpty()){
-					//if the text array is not empty
-					this.text.add(txt);
+			switch(val){
+			
+			case(123):
+				//if we reach an opening brace
+				brace++;
+				if(brace>1){
+					//if it wasn't an separation brace
+					if(val>31){
+					text[index]+=(char)val;
+					}
 				}
-				//reset the text element
-				txt="";
-			}else{
-				//if there is still something to convert
-				txt+=(char)contentB.get(k).intValue();
+				break;
+			case(125):
+				brace--;
+				if(brace==0 && index<text.length-1){
+					index++;
+					//it's to prevent a bug in which the text was preceded by "null"
+					text[index]="";
+				}else if (brace>0){
+					if(val>31){
+					text[index]+=(char)val;
+					}
+				}
+				break;
+			default:
+				if (brace>0 && val>31){
+					text[index]+=(char)val;
+				}
 			}
-		}
+			
+			
+				//reset the text element
+			
+				//if there is still something to convert
+				
+			}
 
-
+/*
 		//if there is something missing
 		if (this.text.size()!=CreateLangFile.content.length && this.lang=="English" && !preventLoop){
 			preventLoop=true;
@@ -137,7 +159,9 @@ public class ArenaText {
 			retrieve();
 			System.out.println("lang file recreated due to an incoherence (origin : ArenaText)");
 		}
+		*/
 	}
+
 	
 	/**
 	 * Return a text in the current language
@@ -146,11 +170,11 @@ public class ArenaText {
 	 * @return a String (from the beach...)
 	 */
 	public String getText(int index){
-		if (index>-1 && index<this.text.size()){
-			return this.text.get(index);
+		if (index>-1 && index<this.text.length){
+			return this.text[index];
 		}
 		System.out.println("Tried to get an text from ArenaText wich is out of range : "+index
-				+" (max : "+(this.text.size()-1)+")");
+				+" (max : "+(this.text.length-1)+")");
 		return "ERR .lang file";
 	}
 	

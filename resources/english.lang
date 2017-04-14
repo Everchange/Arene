@@ -1,1 +1,10 @@
-StartBackOptionsCreate characterRestartQuitLanguageGraphicsControls
+## Arena text v1.0
+{Start},
+{Back},
+{Options},
+{Create character},
+{Restart},
+{Quit},
+{Language},
+{Graphics},
+{Controls}

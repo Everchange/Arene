@@ -4,10 +4,12 @@ import graphics.FieldScene;
 import graphics.Main;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import ressources.Config;
+import ruleset.Weapon;
 
 /**
  * this class will implement the characeter's GUI when this last is selected
@@ -19,8 +21,10 @@ public class CharacterGUI extends Group {
 
 	private Text txtName = new Text();
 	private Text hp = new Text();
+	private Rectangle life =new Rectangle(270, 13, 217, 14);
 	private Image img;
 	private int charID=-1;
+	private Group actions=new Group();
 
 	public CharacterGUI() {	
 
@@ -48,16 +52,17 @@ public class CharacterGUI extends Group {
 
 		//PV
 		Rectangle caracBg=new Rectangle(240,10,250,20);
-		hp.relocate(250, 10);
+		hp.relocate(250, 11);
+		//rectangle that represents the HP
+		//life.resizeRelocate(240, 10, 250, 20);
+		life.setFill(Color.RED);
 		caracBg.setFill(Color.AQUA);
-		charGUI.getChildren().addAll(caracBg,hp);
+		charGUI.getChildren().addAll(caracBg,life,hp);
 
-		Group actions=new Group();
 		actions.relocate(90, 40);
 		Rectangle actionBg=new Rectangle(0,0,400,50);
 		actionBg.setFill(Color.BISQUE);
-		Text action=new Text("Choix de l'action du personnage \n(attaque,parade,deplacement)");
-		action.relocate(50, 5);
+		Text action=new Text(50, 5,"Choix de l'action du personnage \n(attaque,parade,deplacement)");
 		actions.getChildren().addAll(actionBg,action);
 		charGUI.getChildren().add(actions);
 
@@ -68,9 +73,54 @@ public class CharacterGUI extends Group {
 	}
 
 	public void setCharacterToDisplay(ArenaCharacter ac){
+		if (ac==null){
+			this.reset();
+			return;
+		}
 		this.txtName.setText(ac.getName());
 		this.hp.setText(Integer.toString(ac.getCurrentHp()));
+		this.life.setWidth(217*((double)ac.getCurrentHp()/(double)ac.getHPCount()));
 		this.charID=ac.getFieldId();
+		
+		this.actions.getChildren().clear();
+		Rectangle actionBg=new Rectangle(0,0,400,50);
+		actionBg.setFill(Color.BISQUE);
+		actions.getChildren().add(actionBg);
+		
+		try{
+		for (int k=0; k<ac.getCS().getWeapon().length ; k++){
+			Weapon w=ac.getCS().getWeapon()[k];
+			Rectangle r=new Rectangle(5+k*40,5,40,40);
+			r.setFill(Color.DARKGREY);
+			r.setOnMouseClicked(evt->{
+				if(evt.getButton()==MouseButton.PRIMARY){
+					System.out.println("Attack with"+w.getName()+"from "+ac.getName());
+				}
+				if (evt.getButton()==MouseButton.SECONDARY){
+					System.out.println("Description : bla bla bla");
+					
+				}
+			});
+			Text t=new Text (10+k*40,30,"Hand");
+			actions.getChildren().addAll(r,t);
+		}
+		}catch(NullPointerException e){
+			//actions.getChildren().add(new Text(50, 25,"This character owns no weapon"));
+			Rectangle r=new Rectangle(5,5,40,40);
+			r.setFill(Color.DARKGREY);
+			r.setOnMouseClicked(evt->{
+				if(evt.getButton()==MouseButton.PRIMARY){
+					System.out.println("Attack with the hands from "+ac.getName());
+				}
+				if (evt.getButton()==MouseButton.SECONDARY){
+					System.out.println("Description : the character will attack with its own hands");
+					
+				}
+			});
+			Text t=new Text (10,30,"Hand");
+			actions.getChildren().addAll(r,t);
+		}
+		
 	}
 
 	public void reset(){
@@ -90,6 +140,13 @@ public class CharacterGUI extends Group {
 		if (charID>-1){
 			setCharacterToDisplay(((FieldScene)Main.getScene(Main.FIELD_SCENE)).getCharac(charID));
 		}
+	}
+
+	public boolean isSetToNull() {
+		if(this.charID==-1){
+			return true;
+		}
+		return false;
 	}
 
 }

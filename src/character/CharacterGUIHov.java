@@ -6,6 +6,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class CharacterGUIHov extends Group {
+	
+	private String name;
 
 	public CharacterGUIHov(ArenaCharacter aC) {
 		if (aC.getPosition()[1]-40>0){
@@ -14,8 +16,13 @@ public class CharacterGUIHov extends Group {
 			this.relocate(aC.getPosition()[0], aC.getPosition()[1]+aC.getSize()[1]+5);
 		}
 		
+		this.name=aC.getName();
 		
-		this.getChildren().addAll(new Rectangle(100,35,Color.BISQUE),new Text(40,17,aC.getName()));
+		this.getChildren().addAll(new Rectangle(100,35,Color.BISQUE),new Text(40,17,name));
 	}
-
+	
+	public String getName(){
+		return this.name;
+	}
+	
 }

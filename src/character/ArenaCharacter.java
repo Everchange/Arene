@@ -87,20 +87,26 @@ public class ArenaCharacter {
 	private void createRepresentation(Image img){
 		ImageView ret=new ImageView(this.img);
 		ret.setOnMouseEntered(evt -> {
+			if (!Config.alwaysDisplayNames()){
 			// implement quick view here
-        	((FieldScene) Main.getScene(1)).displayCharacterGUIHov(new CharacterGUIHov(this));
+        	((FieldScene) Main.getScene(1)).displayCharacterGUIHov(this);
+			}
         });
 		
 		ret.setOnMouseExited(evt -> {
+			if (!Config.alwaysDisplayNames()){
 			((FieldScene) Main.getScene(1)).removeCharacterGUIHov();
-        	
+			}
         });
 		
 		ret.setOnMouseClicked(evt -> {
-			//we always display the GUI
+			if (!enemy){
+			//we always display the GUI if it's not an other player
 			if (evt.getButton()==MouseButton.PRIMARY){
+				
 				((FieldScene) Main.getScene(1)).displayCharacterGUI(this);
 				evt.consume();
+				
 			}
 			if (evt.getButton()==MouseButton.SECONDARY && !FieldScene.drawPath){
 				//the character can move
@@ -111,6 +117,7 @@ public class ArenaCharacter {
 				//just to be sure that nothing unexpected occurs
 				evt.consume();
 				
+			}
 			}
 			
         	
@@ -192,7 +199,7 @@ public class ArenaCharacter {
 			this.characterSheet.getArmor().tempbonus(DEFENSIVE_ARBONUS);
 		
 		bonusdegatscirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 2 : 0 : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
+		ennemy.TakeDamage(this.characterSheet.getActiveWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
 		
 	}
 		
@@ -200,7 +207,7 @@ public class ArenaCharacter {
 			
 		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel lié à la haine raciale
 		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;
-		ennemy.TakeDamage(this.characterSheet.getWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
+		ennemy.TakeDamage(this.characterSheet.getActiveWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
 		
 	}
 	
@@ -221,6 +228,10 @@ public class ArenaCharacter {
 		
 		int damagetaken = Math.max(damage-this.characterSheet.getReductionDegats(), 0);
 		this.hpCurrent -= damagetaken;
+		//we kill the character if its life is below or equal to zero
+		if (this.hpCurrent<=0){
+			((FieldScene)Main.getScene(Main.FIELD_SCENE)).removeCharacter(this);
+		}
 		
 	}
 	
@@ -264,7 +275,9 @@ public class ArenaCharacter {
 	}
 	
 	public void unlockMovement(){
-		this.isMovable=true;
+		if (!enemy){
+			this.isMovable=true;
+		}
 	}
 
 	public boolean relocate(double x, double y){
@@ -332,6 +345,9 @@ public class ArenaCharacter {
 	
 	public void damage(int dam){
 		this.hpCurrent-=dam;
+		if (this.hpCurrent<=0){
+			((FieldScene)Main.getScene(Main.FIELD_SCENE)).removeCharacter(this);
+		}
 	}
 	
 	public String toString(){
@@ -340,6 +356,16 @@ public class ArenaCharacter {
 				+"Field ID : "+this.fieldId+"\n"
 				+"Health points : "+this.hpCurrent+"/"+this.HP+"\n"
 				+"Position : ("+this.position[0]+","+this.position[1]+")\n";
+	}
+
+
+	public int getHPCount() {
+		// TODO Auto-generated method stub
+		return this.HP;
+	}
+	
+	public boolean isEnemy(){
+		return this.enemy;
 	}
 
 	

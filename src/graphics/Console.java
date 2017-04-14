@@ -140,7 +140,7 @@ public class Console extends Stage {
 					public void handle(KeyEvent e)
 					{
 						
-						if(e.getCode()==Config.getDevControlCode(0)){
+						if(e.getCode()==Config.getDevControlCode(0)||e.getCode()==Config.getControlCode(Config.ESCAPE_KEY_INDEX)){
 							Main.console.toBack();
 							Console.this.entry.clear();
 							Main.getStage().toFront();
@@ -206,7 +206,7 @@ public class Console extends Stage {
 											&& entry.getText().charAt(entry.getText().length()-1)==' ')
 										||(entry.getText().split(" ").length==3)){
 								String[] com=entry.getText().split(" ");
-								String[] action={"hurt","healf","describe"};
+								String[] action={"hurt","healf","describe","kill"};
 								entry.setText(com[0]+" "+com[1]+" "+action[tab%action.length]+" ");
 							}
 							//"help" command

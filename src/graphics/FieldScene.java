@@ -7,6 +7,7 @@ import character.CharacterGUI;
 import character.CharacterGUIHov;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import ressources.Beacon;
 import ressources.Config;
 
@@ -54,6 +56,8 @@ public class FieldScene extends ArenaScene {
 		characterGp.toFront();
 
 		FieldScene.root.getChildren().add(pathGroup);
+		
+		FieldScene.root.getChildren().add(characterGUIHOVGroup);
 
 		//set background color
 		this.setFill(Color.GREY);
@@ -133,6 +137,10 @@ public class FieldScene extends ArenaScene {
 		this.characterGp.toFront();
 		//we set the id of the character to the correct one
 		charact.setFieldId(this.charac.indexOf(charact));
+		//if the GUI was empty
+		if (this.characterGUIGroup.isSetToNull()){
+			this.characterGUIGroup.setCharacterToDisplay(charact);
+		}
 	}
 	
 	/**
@@ -173,15 +181,14 @@ public class FieldScene extends ArenaScene {
 	}
 
 
-	public void displayCharacterGUIHov(CharacterGUIHov cGH) {
+	public void displayCharacterGUIHov(ArenaCharacter ac) {
 		if(!this.characterGUIHOVGroup.getChildren().isEmpty()){
 			//if there was something displayed as a GUI before, we delete it
 			this.characterGUIHOVGroup.getChildren().clear();
 		}
 		//we set the new element to display
-		this.characterGUIHOVGroup=cGH;
+		this.characterGUIHOVGroup.getChildren().add(new CharacterGUIHov(ac));
 
-		FieldScene.root.getChildren().add(this.characterGUIHOVGroup);
 		//just to be sure that the GUI is in front of everything
 		this.characterGUIHOVGroup.toFront();
 
@@ -322,6 +329,12 @@ public class FieldScene extends ArenaScene {
 		case("describe"):
 			Main.console.println(ac.toString());
 			ret=true;
+			break;
+		case("kill"):
+			Main.console.println("Killed "+ac.getName());
+			ac.damage(ac.getCurrentHp());
+			//we don't want to record this command as it can't be triggered one again
+			ret=false;
 			break;
 		default :
 			Main.console.println("Unknown action : "+action[0]);
@@ -476,6 +489,51 @@ public class FieldScene extends ArenaScene {
 	 */
 	public String getFieldStateString(){
 		return " ";
+	}
+
+
+	public void removeCharacter(ArenaCharacter arenaCharacter) {
+		//we reset the character GUI
+		if (this.charac.size()==1){
+			this.characterGUIGroup.reset();
+		}
+		else{
+			for (ArenaCharacter ac : this.charac){
+				if (!ac.isEnemy()){
+					this.characterGUIGroup.setCharacterToDisplay(ac);
+					break;
+				}
+			}
+		}
+		//the method "toBack" is used to prevent a bug in which a phantom character is left on the field
+		arenaCharacter.getRepresentationOnField().toBack();
+		this.characterGp.getChildren().remove(arenaCharacter.getRepresentationOnField());
+		//update the field
+		this.charac.remove(arenaCharacter);
+		//if the name of this character was displayed
+		if (Config.alwaysDisplayNames()){
+			this.characterGUIHOVGroup.getChildren().clear();
+			this.DisplayAllNames();
+		}
+	}
+
+	/**
+	 * method to display all the character's names
+	 */
+	public void DisplayAllNames() {
+		//clear the group
+		this.characterGUIHOVGroup.getChildren().clear();
+		//add each name tag
+		for (ArenaCharacter ac : this.charac){
+			this.characterGUIHOVGroup.getChildren().add(new CharacterGUIHov(ac));
+		}
+		//just to correct a bug in which we can't see the new name tags 
+		this.characterGUIHOVGroup.toBack();
+		this.characterGUIHOVGroup.toFront();
+		//just o be sure that the menu is still in front of everything
+		if(escapeOn){
+			FieldScene.this.menu.getMenuGroup().toFront();
+		}
 	}
 
 /*

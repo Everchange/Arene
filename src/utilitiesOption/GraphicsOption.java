@@ -35,7 +35,7 @@ public class GraphicsOption extends Group {
 		characName.setText(Boolean.toString(Config.alwaysDisplayNames()));
 		characName.relocate(100, 105);
 		characName.setOnAction(evt->{
-			Config.setAlwayDisplayName(!Config.alwaysDisplayNames());
+			Config.setAlwaysDisplayName(!Config.alwaysDisplayNames());
 			//if the value is not set to true
 			if(Config.alwaysDisplayNames()){
 				((FieldScene) Main.getScene(1)).DisplayAllNames();

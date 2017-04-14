@@ -28,7 +28,7 @@ public abstract class Config {
 		private static String version="v unknowed";
 		//size of the Stage (width,height)
 		private static double[] size={1000,700};
-		private static boolean alwayDisplayNames=false;
+		private static boolean alwaysDisplayNames=false;
 		static boolean fullScreen=false;
 		public final static boolean inDev=true;
 		public static double[][] stageResolution={{720,480},{1024,768},{1600,900},{1920,1080}};
@@ -37,7 +37,7 @@ public abstract class Config {
 		public static final String[] property={"fullscreen","size"};
 		private static final String JSON_FILE_PATH="./resources/config.json";
 		private static final int JSON_VERSION=1;
-		private static final String[] JSON_ELEM={"Json version","Controls codes","Language","Size","Full screen","Alway display names"};
+		private static final String[] JSON_ELEM={"Json version","Controls codes","Language","Size","Full screen","always display names"};
 		
 		/**
 		 * Set the configuration to the last one saved during the latest session
@@ -240,8 +240,8 @@ public abstract class Config {
 			//full screen
 			model.add(JSON_ELEM[4], fullScreen);
 			
-			//alway display names
-			model.add(JSON_ELEM[5], alwayDisplayNames);
+			//always display names
+			model.add(JSON_ELEM[5], alwaysDisplayNames);
 			
 			//build the json object
 			JsonObject jsonFie= model.build();
@@ -304,7 +304,7 @@ public abstract class Config {
 					fullScreen=(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
 					break;
 				case 5:
-					Config.alwayDisplayNames=(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
+					Config.alwaysDisplayNames=(tree.getValueType()==javax.json.JsonValue.ValueType.TRUE);
 					break;
 				}
 			}
@@ -389,11 +389,11 @@ public abstract class Config {
 		}
 		
 		public static boolean alwaysDisplayNames(){
-			return Config.alwayDisplayNames;
+			return Config.alwaysDisplayNames;
 		}
 		
-		public static void setAlwayDisplayName (boolean b){
-			Config.alwayDisplayNames=b;
+		public static void setAlwaysDisplayName (boolean b){
+			Config.alwaysDisplayNames=b;
 		}
 		
 		public static boolean updateLang(String pLang){

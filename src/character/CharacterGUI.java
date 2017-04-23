@@ -2,9 +2,11 @@ package character;
 
 import graphics.FieldScene;
 import graphics.Main;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -87,40 +89,55 @@ public class CharacterGUI extends Group {
 		actionBg.setFill(Color.BISQUE);
 		actions.getChildren().add(actionBg);
 		
-		try{
+		
 		for (int k=0; k<ac.getCS().getWeapon().length ; k++){
 			Weapon w=ac.getCS().getWeapon()[k];
-			Rectangle r=new Rectangle(5+k*40,5,40,40);
-			r.setFill(Color.DARKGREY);
-			r.setOnMouseClicked(evt->{
-				if(evt.getButton()==MouseButton.PRIMARY){
-					System.out.println("Attack with"+w.getName()+"from "+ac.getName());
-				}
-				if (evt.getButton()==MouseButton.SECONDARY){
-					System.out.println("Description : bla bla bla");
-					
-				}
-			});
-			Text t=new Text (10+k*40,30,"Hand");
-			actions.getChildren().addAll(r,t);
+			if(w!=null){
+				Rectangle r=new Rectangle(5+k*(40+5),5,40,40);
+				r.setFill(Color.DARKGREY);
+
+				EventHandler<MouseEvent> cli =new EventHandler<MouseEvent>(){
+					public void handle(MouseEvent evt){
+						if(evt.getButton()==MouseButton.PRIMARY){
+							System.out.println("Attack with "+w.getName()+" from "+ac.getName());
+						}
+						if (evt.getButton()==MouseButton.SECONDARY){
+							System.out.println("Description : bla bla bla");
+						}
+					}
+				};
+
+				r.setOnMouseClicked(cli);
+				Text t=new Text (10+k*(40+5),30,w.getName());
+				t.setOnMouseClicked(cli);
+				actions.getChildren().addAll(r,t);
+			}
 		}
-		}catch(NullPointerException e){
-			//actions.getChildren().add(new Text(50, 25,"This character owns no weapon"));
-			Rectangle r=new Rectangle(5,5,40,40);
-			r.setFill(Color.DARKGREY);
-			r.setOnMouseClicked(evt->{
+
+
+		//actions.getChildren().add(new Text(50, 25,"This character owns no weapon"));
+		Rectangle r=new Rectangle(230,5,40,40);
+		r.setFill(Color.DARKGREY);
+
+
+		EventHandler<MouseEvent> cli =new EventHandler<MouseEvent>(){
+			public void handle(MouseEvent evt){
 				if(evt.getButton()==MouseButton.PRIMARY){
 					System.out.println("Attack with the hands from "+ac.getName());
 				}
 				if (evt.getButton()==MouseButton.SECONDARY){
 					System.out.println("Description : the character will attack with its own hands");
-					
 				}
-			});
-			Text t=new Text (10,30,"Hand");
-			actions.getChildren().addAll(r,t);
-		}
-		
+			}
+		};
+
+		Text t=new Text (235,30,"Hand");
+
+		r.setOnMouseClicked(cli);
+		t.setOnMouseClicked(cli);
+		actions.getChildren().addAll(r,t);
+
+
 	}
 
 	public void reset(){

@@ -27,6 +27,9 @@ public class CS {
 	int[] RACIALBONUS1 = {1,0};
 	int[] RACIALBONUS2 = {2,2};
 	
+	public CS(){
+	}
+	
 	public CS(int[] att, int armr, int ra, int arm, int armrenchant, int armenchant, int rH, int[] tal) {
 		
 		this.attributs = att;
@@ -47,7 +50,8 @@ public class CS {
 		this.vitesse = this.armure.getSpeed(this.vitesse);													//On calcule la vitesse après ralentissement ou non de l'armure
 		this.vitesse[0] += (this.talents.possedeTalent(Talent.TALENT_RAPIDITE))? 1 : 0;
 		
-		this.arme = new Weapon[] {new Weapon(arm, this.BBA, this.mods, armenchant, this.talents)};
+		//this.arme = new Weapon[] {new Weapon(arm, this.BBA, this.mods, armenchant, this.talents)};
+		System.out.println(this.arme[0]);
 		
 		this.initiativeBonus = this.mods[1];
 		this.initiativeBonus += (this.talents.possedeTalent(Talent.TALENT_RAPIDITE))? 20 : 0;

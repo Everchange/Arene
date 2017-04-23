@@ -77,6 +77,8 @@ public class ArenaCharacter {
 		
 		
 		this.createRepresentation(this.img);
+		
+		this.characterSheet=new CS();
 	}
 	
 	

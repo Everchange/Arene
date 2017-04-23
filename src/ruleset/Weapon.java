@@ -24,6 +24,19 @@ public class Weapon {
 	private int[] nombreFaces = {6,12,10,10,8,8,6,6,4,6,8,4};
 	private boolean[] heavys = {true, true, false, false, false, false, false, false, false, false, false, false};
 	
+	public Weapon(){
+		this.bonusDegats=0;
+		this.bonusToucher=0;
+		this.critMultiplicateur=0;
+		this.critRange=0;
+		this.ranged=false;
+		this.nom="Void";
+		this.degats=new Damage(0,0,0);
+		this.heavy=false;
+		this.sneakDamage=0;
+		this.boutPortant=false;
+		}
+	
 	public Weapon(int pos, int bba, int[] mods, int enchant, Talent talents) {
 		
 		this.critMultiplicateur = this.critMultiplicateurs[pos];

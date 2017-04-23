@@ -227,6 +227,7 @@ public class FieldScene extends ArenaScene {
 		});
 		
 		this.setOnMouseClicked(evt->{
+			evt.consume();
 			//relocate the character if we right click to an other location
 			if (evt.getButton()==MouseButton.SECONDARY){
 				//we relocate the character

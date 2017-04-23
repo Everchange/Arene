@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import ressources.ArenaText;
 import ressources.Config;
+import ruleset.Weapon;
 
 public class HomeScene extends ArenaScene{
 	
@@ -79,6 +80,9 @@ public class HomeScene extends ArenaScene{
 				ArenaCharacter testB=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,3,"testbis","testpath",new double[] {300,50},35);
 				ArenaCharacter testT=new ArenaCharacter(new int[]{10,10,10,10,10,10},4,0,"testter","testpath",new double[] {350,250},10);
 				
+				for (int k=0; k<test.getCS().getWeapon().length;k++){
+					test.getCS().getWeapon()[k]=new Weapon();
+				}
 				((FieldScene) Main.getScene(Main.FIELD_SCENE)).addCharacterToField(new ArenaCharacter[] {test,testB,testT});
 				//((FieldScene) Main.scene[1]).addCharacterToField(testC);
 		

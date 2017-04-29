@@ -5,7 +5,7 @@ public class Armor {
 	private int CA, maxDex, dexBonus, weight;
 	private String nom;
 	
-	protected String[] noms = {"Aucune armure", "Armure matelassée", "Armure de cuir", "Armure de peau", "Armure de cuir cloute", "Chemise de mailles", "Cotte de mailles", "Cuirasse", "Armure de plaques"};
+	protected String[] noms = {"Aucune armure", "Armure matelassee", "Armure de cuir", "Armure de peau", "Armure de cuir cloute", "Chemise de mailles", "Cotte de mailles", "Cuirasse", "Armure de plaques"};
 	private int[] CAs = {10,11,12,13,14,15,16,17,18};
 	private int[] mDs = {6,4,4,3,3,2,2,1,0};
 	private int[] weights = {0,0,0,0,1,1,1,2,2};

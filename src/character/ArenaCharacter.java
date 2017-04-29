@@ -29,11 +29,11 @@ public class ArenaCharacter {
 	private Random RNG;
 	private boolean enemy;
 	
-	public int DEFENSIVE = 1;
-	public int DEFENSIVE_ATMALUS;
-	public int CHARGE = 2;
-	public int CHARGE_ARREMOVAL = -2;
-	public int DEFENSIVE_ARBONUS = 2;
+	public static final int DEFENSIVE = 1;
+	public static final int DEFENSIVE_ATMALUS = -1;
+	public static final int CHARGE = 2;
+	public static final int CHARGE_ARREMOVAL = -2;
+	public static final int DEFENSIVE_ARBONUS = 2;
 	
 	/**
 	 * Creates a new character that can be displayed on the field as an image is associated with him.
@@ -190,7 +190,7 @@ public class ArenaCharacter {
 	public void attack(ArenaCharacter ennemy, int special){
 		
 		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel lié à la haine raciale
-		bonustouchercirconstanciel -= (special == DEFENSIVE)? this.DEFENSIVE_ATMALUS : 0;
+		bonustouchercirconstanciel -= (special == DEFENSIVE)? DEFENSIVE_ATMALUS : 0;
 		bonustouchercirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 0 : 2 : 0;
 		
 		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;

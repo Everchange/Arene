@@ -1,6 +1,15 @@
 package ruleset;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Random;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+import graphics.Main;
 
 public class Weapon {
 	
@@ -23,6 +32,8 @@ public class Weapon {
 	private int[] nombreDes = {2,1,1,1,1,1,1,1,1,1,2};
 	private int[] nombreFaces = {6,12,10,10,8,8,6,6,4,6,8,4};
 	private boolean[] heavys = {true, true, false, false, false, false, false, false, false, false, false, false};
+
+	private static final String JSON_FILE_PATH="./resources/armes.json";
 	
 	public Weapon(){
 		this.bonusDegats=0;
@@ -39,15 +50,10 @@ public class Weapon {
 	
 	public Weapon(int pos, int bba, int[] mods, int enchant, Talent talents) {
 		
-		this.critMultiplicateur = this.critMultiplicateurs[pos];
 		this.critMultiplicateur += (talents.possedeTalent(Talent.TALENT_MAITRISE_DU_CRITIQUE))? 1 : 0;
 		
-		this.critRange = this.critRanges[pos];
 		this.critRange += (talents.possedeTalent(Talent.TALENT_SCIENCE_DU_CRITIQUE))? 1 : 0;
-		
-		this.ranged = this.ranges[pos];
-		this.nom = this.nomsArmes[pos];
-		this.heavy = this.heavys[pos];
+
 		this.boutPortant = talents.possedeTalent(Talent.TALENT_TIR_A_BOUT_PORTANT);
 		
 		this.bonusToucher = bba + enchant;
@@ -64,7 +70,25 @@ public class Weapon {
 		this.bonusDegats += (talents.possedeTalent(Talent.TALENT_ARC_COMPOSITE) && this.ranged)? Math.floorDiv(mods[0], 2) : 0;
 		this.bonusDegats += (talents.possedeTalent(Talent.TALENT_TIR_PRECIS) && this.ranged)? 2 : 0;
 		
-		this.degats = new Damage(this.bonusDegats, this.nombreDes[pos], this.nombreFaces[pos]);
+		try {
+			JsonReader reader = Json.createReader(new FileReader(JSON_FILE_PATH));
+			JsonArray jsonar = reader.readArray();
+			reader.close();
+			
+			JsonObject arme = jsonar.getJsonObject(pos);
+			
+			this.critMultiplicateur = arme.getInt("critMultiplicateurs");
+			this.critRange = arme.getInt("critRanges");
+			
+			this.ranged = arme.getBoolean("ranges");
+			this.nom = arme.getString("nom");
+			this.heavy = arme.getBoolean("heavys");
+			
+			this.degats = new Damage(this.bonusDegats, arme.getInt("nombreDes"), arme.getInt("nombreFaces"));
+			
+		} catch (FileNotFoundException e) {
+			Main.console.println("config.ser file is missing, switching to default configuration");
+		}
 		
 	}
 	

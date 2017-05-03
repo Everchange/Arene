@@ -1,0 +1,65 @@
+var armures = [
+{
+	"noms" : "Aucune armure",
+	"CAs" : "10",
+	"mDs" : "6",
+	"weights" : "0"
+}
+
+{
+	"noms" : "Armure matelassee",
+	"CAs" : "11",
+	"mDs" : "4",
+	"weights" : "0"
+}
+
+{
+	"noms" : "Armure de cuir",
+	"CAs" : "12",
+	"mDs" : "4",
+	"weights" : "0"
+}
+
+{
+	"noms" : "Armure de peau",
+	"CAs" : "13",
+	"mDs" : "3",
+	"weights" : "0"
+}
+
+{
+	"noms" : "Armure de cuir cloute",
+	"CAs" : "14",
+	"mDs" : "3",
+	"weights" : "1"
+}
+
+{
+	"noms" : "Chemise de mailles",
+	"CAs" : "15",
+	"mDs" : "2",
+	"weights" : "1"
+}
+
+{
+	"noms" : "Cotte de mailles",
+	"CAs" : "16",
+	"mDs" : "2",
+	"weights" : "1"
+}
+
+{
+	"noms" : "Cuirasse",
+	"CAs" : "17",
+	"mDs" : "1",
+	"weights" : "2"
+}
+
+{
+	"noms" : "Armure de plaques",
+	"CAs" : "18",
+	"mDs" : "0",
+	"weights" : "2"
+}
+
+]

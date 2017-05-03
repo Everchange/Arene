@@ -1,5 +1,15 @@
 package ruleset;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
+import graphics.Main;
+
 public class Armor {
 
 	private int CA, maxDex, dexBonus, weight;
@@ -13,15 +23,30 @@ public class Armor {
 	private int tempBonus = 0;
 	public int TOTALDEF = 4;
 	
+	private static final String JSON_FILE_PATH="./resources/armures.json";
+	
 	public Armor(int modele, int bba, int dxmod, int enchant, Talent talents) {
 		
-		this.CA = CAs[modele]+enchant;
+		try {
+			JsonReader reader = Json.createReader(new FileReader(JSON_FILE_PATH));
+			JsonArray jsonar = reader.readArray();
+			reader.close();
+		
+			JsonObject armure = jsonar.getJsonObject(modele);
+			
+			this.CA = armure.getInt("CAs")+enchant;
+			
+			this.maxDex = armure.getInt("mDs");
+			this.weight = armure.getInt("weights");
+			this.nom = armure.getString("noms");
+			
+		} catch (FileNotFoundException e) {
+			Main.console.println("config.ser file is missing, switching to default configuration");
+		}
+		
 		this.CA += (talents.possedeTalent(Talent.TALENT_BOUCLIER))? 1 : 0;
 		this.CA += (talents.possedeTalent(Talent.TALENT_ESQUIVE))? 1 : 0;
 		this.CA += (talents.possedeTalent(Talent.TALENT_EXPERTISE_AU_COMBAT))? bba : 0;
-		this.maxDex = mDs[modele];
-		this.weight = weights[modele];
-		this.nom = noms[modele];
 
 		this.dexBonus = Math.min(dxmod, this.maxDex);
 		

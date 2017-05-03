@@ -1,0 +1,122 @@
+var armes = [
+{
+	"nom" : "Epee à 2 mains",
+	"nombreDes" : "2",
+	"nombreFaces" : "6",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "2",
+	"ranges" : "false",
+	"heavys" : "true"
+}
+
+{
+	"nom" : "Grande hache",
+	"nombreDes" : "1",
+	"nombreFaces" : "12",
+	"critMultiplicateurs" : 3,
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "true"
+}
+
+{
+	"nom" : "Fléau lourd",
+	"nombreDes" : "1",
+	"nombreFaces" : "10",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "2",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Massue",
+	"nombreDes" : "1",
+	"nombreFaces" : "10",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Epee longue",
+	"nombreDes" : "1",
+	"nombreFaces" : "8",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "2",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Hache d armes",
+	"nombreDes" : "1",
+	"nombreFaces" : "8",
+	"critMultiplicateurs" : 3,
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Epee courte",
+	"nombreDes" : "1",
+	"nombreFaces" : "6",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "2",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Hachette",
+	"nombreDes" : "1",
+	"nombreFaces" : "6",
+	"critMultiplicateurs" : 3,
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Marteau leger",
+	"nombreDes" : "1",
+	"nombreFaces" : "4",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Arc court",
+	"nombreDes" : "1",
+	"nombreFaces" : "6",
+	"critMultiplicateurs" : 3,
+	"critRanges" : "1",
+	"ranges" : "true",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Arc long",
+	"nombreDes" : "1",
+	"nombreFaces" : "8",
+	"critMultiplicateurs" : 3,
+	"critRanges" : "1",
+	"ranges" : "true",
+	"heavys" : "false"
+}
+
+{
+	"nom" : "Griffes",
+	"nombreDes" : "2",
+	"nombreFaces" : "4",
+	"critMultiplicateurs" : "2",
+	"critRanges" : "1",
+	"ranges" : "false",
+	"heavys" : "false"
+}
+
+]

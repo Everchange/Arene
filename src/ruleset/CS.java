@@ -1,6 +1,7 @@
 package ruleset;
 
 import java.util.Random;
+import java.util.Stack;
 
 import character.ArenaCharacter;
 
@@ -18,6 +19,7 @@ public class CS {
 	protected int armeActive = 0;
 	
 	protected Weapon[] arme;
+	protected Damage attaqueSournoise = new Damage(0,1,6,1);
 	protected Armor armure;
 	protected Race race;
 	
@@ -28,8 +30,6 @@ public class CS {
 	
 	protected int racialHatred;
 	protected int[] racialHatredBonus = new int[2];
-	
-	protected boolean enTenaille = false;
 	
 	protected Random RNG;
 	protected Talent talents;
@@ -248,15 +248,33 @@ public class CS {
 		
 	}
 	
-	public int[] rollDamage(int crit) {
+	public Damage[] rollDamage(int crit, ArenaCharacter ennemy) {
 		
-		//Retourne un array {degatsTotaux, bonusDegats, nombreDes, nombreFacesDe1, resultatDe1, nombreFacesDe2, resultatDe2, ... }
+		//Retourne un array qui contient un objet Damage par source de dégâts (un pour l'arme, l'autre pour l'attaque sournoise par ex)
 		
-		int[] degatsArme;	
+		int nombreSourceDegats = 1;
+		Stack<Damage> pile = new Stack<Damage>();
 		
-		degatsArme = this.arme[this.armeActive].getDamage().damage(crit);
+		//On vérifie s'il y a attaque sournoise
+		if (ennemy.enTenaille() && (this.talents.possedeTalent(Talent.TALENT_ATTAQUE_SOURNOISE))) {
+			
+			pile.push(attaqueSournoise);
+			
+		}
 		
-		return degatsArme;
+		this.arme[this.armeActive].getDamage().damage(crit);
+		pile.push(this.arme[this.armeActive].getDamage());
+		
+		Damage[] resultat = new Damage[nombreSourceDegats];
+		
+		
+		for (int i = 0 ; i < nombreSourceDegats ; i++) {
+			
+			resultat[i] = pile.pop();
+			
+		}		
+		
+		return resultat;
 		
 	}
 	

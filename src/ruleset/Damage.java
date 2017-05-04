@@ -4,7 +4,9 @@ import java.util.Random;
 
 public class Damage {
 	
-	private int bonusDegats, nombreDes, nombreFaces, buff, multiplicateur;
+	private int bonusDegats, nombreDes, nombreFaces, buff, multiplicateur, total;
+	private int[] sousTotaux;
+	private int[][] resultat;
 	private Random RNG;
 	
 	public Damage(int b, int nd, int nf, int mult) {
@@ -17,41 +19,50 @@ public class Damage {
 		
 	}
 	
-	public int[] damage(int crit){
+	public void damage(int crit){
 		
 		int multiplicateurEffectif = (this.multiplicateur*crit) + (1-crit);
-		
-		int[] resultat = new int[this.nombreDes*multiplicateurEffectif*2+3];
-		int total = 0;
 		int temp;
-		int j;
 		
-		resultat[1] = (this.bonusDegats+this.buff)*multiplicateurEffectif;
-		total += resultat[1];
+		this.total = 0;
+		this.sousTotaux = new int[multiplicateurEffectif];
+		this.resultat = new int[multiplicateurEffectif][this.nombreDes];
 		
-		resultat[2] = this.nombreDes;
-		
-		for (int i = 0 ; i<this.nombreFaces*multiplicateurEffectif ; i++) {
+		for (int i = 0 ; i < multiplicateurEffectif ; i++) {
 			
-			j = 2*i + 3;
-			temp = RNG.nextInt(this.nombreFaces)+1;
-			resultat[j] = this.nombreFaces;
-			resultat[j+1] = temp;
-			total += temp;
-		
+			for (int j = 0 ; j < this.nombreDes ; j++) {
+				
+				temp = RNG.nextInt(this.nombreFaces)+1;
+				this.resultat[i][j] = temp;
+				this.sousTotaux[i] += temp;
+				this.total += temp;
+				
+			}
+			
+			this.sousTotaux[i] += this.buff+this.bonusDegats;
+			this.total += this.buff+this.bonusDegats;
+			
 		}
-
-		this.buff = 0;
 		
-		resultat[0] = total;
-		
-		return resultat;
+		this.reset();
 		
 	}
 	
 	public void buff (int b) {
 
 		this.buff += b;
+		
+	}
+	
+	public int getTotalDamage() {
+		
+		return this.total;
+		
+	}
+	
+	public void reset() {
+		
+		this.buff = 0;
 		
 	}
 }

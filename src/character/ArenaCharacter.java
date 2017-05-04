@@ -11,6 +11,7 @@ import ressources.Beacon;
 import ressources.Config;
 import ruleset.CS;
 import ruleset.Race;
+import ruleset.Damage;
 
 public class ArenaCharacter {
 
@@ -28,6 +29,7 @@ public class ArenaCharacter {
 	private CS characterSheet;
 	private Random RNG;
 	private boolean enemy;
+	private boolean enTenaille = false;
 	
 	/**
 	 * Creates a new character that can be displayed on the field as an image is associated with him.
@@ -191,9 +193,17 @@ public class ArenaCharacter {
 		if ((res[0]+res[1] >= res[2]) || (res[4] == 1)) {
 			
 			//On calcule les dégâts, et on les applique
-			int degats = this.characterSheet.rollDamage(res[4])[0];
-			degats += res[3];
-			ennemy.TakeDamage(degats);
+			Damage[] degats = this.characterSheet.rollDamage(res[4], ennemy);
+			
+			int degatsInt = 0;
+			
+			for (int i = 0 ; i < degats.length ; i++) {
+				
+				degatsInt += degats[i].getTotalDamage();
+				
+			}
+			
+			ennemy.TakeDamage(degatsInt);
 			
 		}
 		
@@ -363,6 +373,10 @@ public class ArenaCharacter {
 		return this.enemy;
 	}
 
-	
+	public boolean enTenaille() {
+		
+		return this.enTenaille();
+		
+	}
 	
 }

@@ -4,57 +4,46 @@ import java.util.Random;
 
 public class Damage {
 	
-	private int bonus, nombreDes, nombreFaces, buff;
+	private int bonusDegats, nombreDes, nombreFaces, buff, multiplicateur;
 	private Random RNG;
 	
-	public Damage(int b, int nd, int nf) {
+	public Damage(int b, int nd, int nf, int mult) {
 		
-		this.bonus = b;
+		this.bonusDegats = b;
 		this.nombreFaces = nf;
 		this.nombreDes = nd;
 		this.buff = 0;
+		this.multiplicateur = mult;
 		
 	}
 	
-	public int degats() {
+	public int[] damage(int crit){
 		
-		int resultat = 0;
-		for (int i=0 ; i<this.nombreDes ; i++) {
-			
-			resultat += RNG.nextInt(this.nombreFaces)+1;
-			
-		}
-		resultat += this.bonus;
-		resultat += this.buff;
-		this.buff = 0;
-		return resultat;
-				
-	}
-	
-	public int degats_crit() {
+		int multiplicateurEffectif = (this.multiplicateur*crit) + (1-crit);
 		
-		int resultat = 0;
-		for (int i=0 ; i<this.nombreDes ; i++) {
-			
-			resultat += RNG.nextInt(this.nombreFaces)+1;
-			
-		}
-		resultat += this.bonus;
-		resultat += this.buff;
-		return resultat;
-				
-	}
-	
-	public int crit(int multiplicateur){
+		int[] resultat = new int[this.nombreDes*multiplicateurEffectif*2+3];
+		int total = 0;
+		int temp;
+		int j;
 		
-		int resultat = 0;
-		for (int i = 0 ; i<multiplicateur ; i++) {
+		resultat[1] = (this.bonusDegats+this.buff)*multiplicateurEffectif;
+		total += resultat[1];
+		
+		resultat[2] = this.nombreDes;
+		
+		for (int i = 0 ; i<this.nombreFaces*multiplicateurEffectif ; i++) {
 			
-			resultat += this.degats_crit();
-			
+			j = 2*i + 3;
+			temp = RNG.nextInt(this.nombreFaces)+1;
+			resultat[j] = this.nombreFaces;
+			resultat[j+1] = temp;
+			total += temp;
+		
 		}
 
 		this.buff = 0;
+		
+		resultat[0] = total;
 		
 		return resultat;
 		

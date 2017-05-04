@@ -42,7 +42,7 @@ public class Weapon {
 		this.critRange=0;
 		this.ranged=false;
 		this.nom="Void";
-		this.degats=new Damage(0,0,0);
+		this.degats=new Damage(1,1,6,1);
 		this.heavy=false;
 		this.sneakDamage=0;
 		this.boutPortant=false;
@@ -84,10 +84,10 @@ public class Weapon {
 			this.nom = arme.getString("nom");
 			this.heavy = arme.getBoolean("heavys");
 			
-			this.degats = new Damage(this.bonusDegats, arme.getInt("nombreDes"), arme.getInt("nombreFaces"));
+			this.degats = new Damage(this.bonusDegats, arme.getInt("nombreDes"), arme.getInt("nombreFaces"), this.critMultiplicateur);
 			
 		} catch (FileNotFoundException e) {
-			Main.console.println("config.ser file is missing, switching to default configuration");
+			Main.console.println("armes.json file is missing, switching to default configuration");
 		}
 		
 	}
@@ -104,44 +104,29 @@ public class Weapon {
 		
 	}
 	
-	public int attaque(CS ennemy, boolean CaC, int bonustoucher, int bonusdegats, boolean sneaky) {
+	public int getBonusToucher() {
 		
-		boolean[] resultat;
-		resultat = this.jetTouche(ennemy.getArmor(), this.bonusToucher+bonustoucher);
-		
-		this.degats.buff(bonusdegats);
-		
-		if (resultat[0] && !(this.ranged && CaC && !this.boutPortant)) {
-			
-			if (sneaky)
-				sneakDamage = RNG.nextInt(6)+1;
-			else
-				sneakDamage = 0;
-			
-			if (resultat[1])
-				return Math.max(this.degats.crit(this.critMultiplicateur)+sneakDamage, 1);		// Les attaques réussies font un minimum de 1 dégât
-			else
-				return Math.max(this.degats.degats()+sneakDamage,1);
-		}
-		
-		return 0;
+		return this.bonusToucher;
 		
 	}
 	
-	public boolean[] jetTouche(Armor armure, int bonus){
+	public int getBonusDegats() {
 		
-		int resultat = 0;
-		resultat += RNG.nextInt(20)+1;
-		resultat += this.bonusToucher;
-		resultat += bonus;
+		return this.bonusDegats;
 		
-		if (resultat >= 21-this.critRange) {
-			
-			return new boolean[] {true , armure.hit(RNG.nextInt(20)+1 + this.bonusToucher)};
-			
-		}
+	}
+	
+	public int getCritRange() {
 		
-		return new boolean[] {armure.hit(resultat),false};
+		return this.critRange;
 		
-	}		
+	}
+
+	public Damage getDamage() {
+		
+		return this.degats;
+		
+	}
+
+
 }

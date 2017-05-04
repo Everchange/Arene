@@ -29,12 +29,6 @@ public class ArenaCharacter {
 	private Random RNG;
 	private boolean enemy;
 	
-	public static final int DEFENSIVE = 1;
-	public static final int DEFENSIVE_ATMALUS = -1;
-	public static final int CHARGE = 2;
-	public static final int CHARGE_ARREMOVAL = -2;
-	public static final int DEFENSIVE_ARBONUS = 2;
-	
 	/**
 	 * Creates a new character that can be displayed on the field as an image is associated with him.
 	 * 
@@ -189,29 +183,28 @@ public class ArenaCharacter {
 		
 	public void attack(ArenaCharacter ennemy, int special){
 		
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel lié à la haine raciale
-		bonustouchercirconstanciel -= (special == DEFENSIVE)? DEFENSIVE_ATMALUS : 0;
-		bonustouchercirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 0 : 2 : 0;
+		int[] res = this.characterSheet.attaque(ennemy.getCS(), special);
+		// res = {resultatd20, bonusToucher, ennemiCA, bonusDegatsCirconstanciel, crit};
 		
-		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;
 		
-		if (special == CHARGE)
-			this.characterSheet.getArmor().tempbonus(CHARGE_ARREMOVAL);
-		if (special == DEFENSIVE)
-			this.characterSheet.getArmor().tempbonus(DEFENSIVE_ARBONUS);
-		
-		bonusdegatscirconstanciel += (special == CHARGE)? (this.characterSheet.possedeTalent(ruleset.Talent.TALENT_CHARGE_PUISSANTE))? 2 : 0 : 0;
-		ennemy.TakeDamage(this.characterSheet.getActiveWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
-		
-	}
-		
-	public void attack(ArenaCharacter ennemy){
+		// On vérifie si l'attaque touche
+		if ((res[0]+res[1] >= res[2]) || (res[4] == 1)) {
 			
-		int bonustouchercirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[0] : 0;  //bonus de toucher circonstanciel lié à la haine raciale
-		int bonusdegatscirconstanciel = (ennemy.getCS().getRace() == this.characterSheet.getRacialHatred())? this.characterSheet.getRacialHatredBonus()[1] : 0;
-		ennemy.TakeDamage(this.characterSheet.getActiveWeapon().attaque(ennemy.getCS(), this.getCaC(ennemy), bonustouchercirconstanciel, bonusdegatscirconstanciel, (ennemy.getCS().getEnTenaille() && this.characterSheet.possedeTalent(ruleset.Talent.TALENT_ATTAQUE_SOURNOISE))));				//On fait prendre à l'ennemi les dégâts infligés par l'attaque (0 si elle a échoué)
+			//On calcule les dégâts, et on les applique
+			int degats = this.characterSheet.rollDamage(res[4])[0];
+			degats += res[3];
+			ennemy.TakeDamage(degats);
+			
+		}
 		
 	}
+	
+	public void attack(ArenaCharacter ennemy) {
+		
+		this.attack(ennemy, 0);
+		
+	}
+
 	
 	public void endTurn() {
 		

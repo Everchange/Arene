@@ -11,34 +11,33 @@ public class CS {
 	protected int[] attributs = new int[6];
 	protected int[] mods = new int[6];
 	protected int BBA=1, reductionDegats;
+	
 	protected int[] vitesse;									// La première valeur est la vitesse, la deuxième un booléen indiquant si les armures réduisent la vitesse ou non
+	
 	protected int nombreArmes;
 	protected int armeActive = 0;
+	
 	protected Weapon[] arme;
 	protected Armor armure;
 	protected Race race;
+	
 	protected int pvMax = 10;
 	protected int initiativeBonus = 0;
 	protected int feinteBonus = 0;
 	protected int feinteDebufff = 0;
+	
 	protected int racialHatred;
 	protected int[] racialHatredBonus = new int[2];
+	
 	protected boolean enTenaille = false;
+	
 	protected Random RNG;
 	protected Talent talents;
-	
-	public static final int NORMALE = 0;
-	public static final int DEFENSIVE = 1;
-	public static final int DEFENSIVE_ATMALUS = -1;
-	public static final int CHARGE = 2;
-	public static final int CHARGE_ARREMOVAL = -2;
-	public static final int DEFENSIVE_ARBONUS = 2;
 	
 	public static  int[] ARMOR_MODIFS = {0, 2, -2};
 	public static  int[] ATTACK_MODIFS = {0, -1, 2};
 	public static  int[] DAMAGE_MODIFS = {0, 0, 0};
 
-	
 	int[] RACIALBONUS1 = {1,0};
 	int[] RACIALBONUS2 = {2,2};
 	
@@ -132,7 +131,13 @@ public class CS {
 	
 	public Weapon getActiveWeapon() {
 		
-		return this.arme[0];
+		return this.arme[this.armeActive];
+		
+	}
+	
+	public void setActiveWeapon (int rang) {
+		
+		this.armeActive = rang;
 		
 	}
 	
@@ -256,4 +261,6 @@ public class CS {
 	}
 	
 
+
+	
 }

@@ -1,4 +1,6 @@
-var armures = [
+{
+
+"var armures" = [
 {
 	"noms" : "Aucune armure",
 	"CAs" : "10",

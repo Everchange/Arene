@@ -26,6 +26,7 @@ public class Main extends Application {
 	static boolean escapeOn=false;
 	public static final int FIELD_SCENE=1;
 	
+	
 
 	/**
 	 * Just use to launch the application

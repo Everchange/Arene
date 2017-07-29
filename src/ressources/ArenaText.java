@@ -15,7 +15,6 @@ public class ArenaText {
 	public static final String[] langs={"Français","English"};
 	public static final int  startBt=0,backBt=1,optionBt=2,newCharacterBt=3,restartBt=4,quitBt=5,languageBt=6,
 			graphicsBt=7,controlsBt=8;
-	private static boolean preventLoop=false;
 	private String[] text=new String[9];
 	
 	/**
@@ -115,18 +114,23 @@ public class ArenaText {
 			//convert bytes to text
 			switch(val){
 			
+			//oppening brace
 			case(123):
 				//if we reach an opening brace
 				brace++;
+				//we increment the brace counter 
 				if(brace>1){
-					//if it wasn't an separation brace
+					//if it wasn't an separation brace (case brace=1)
+					//allows to have a brace in the text
 					if(val>31){
 					text[index]+=(char)val;
 					}
 				}
 				break;
+			//closing brace
 			case(125):
 				brace--;
+				//if it's a brace that 
 				if(brace==0 && index<text.length-1){
 					index++;
 					//it's to prevent a bug in which the text was preceded by "null"
@@ -138,17 +142,12 @@ public class ArenaText {
 				}
 				break;
 			default:
+				//if we are inside a text element and it's not an ascii serial message
 				if (brace>0 && val>31){
 					text[index]+=(char)val;
 				}
-			}
-			
-			
-				//reset the text element
-			
-				//if there is still something to convert
-				
-			}
+			}	
+		}
 
 /*
 		//if there is something missing

@@ -126,7 +126,7 @@ public class CharacterGUI extends Group {
 					System.out.println("Attack with the hands from "+ac.getName());
 				}
 				if (evt.getButton()==MouseButton.SECONDARY){
-					System.out.println("Description : the character will attack with its own hands");
+					System.out.println("Description : the character will attack with his own hands");
 				}
 			}
 		};

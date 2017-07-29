@@ -18,7 +18,7 @@ public class CS {
 	protected int nombreArmes;
 	protected int armeActive = 0;
 	
-	protected Weapon[] arme;
+	protected Weapon[] arme=new Weapon[5];
 	protected Damage attaqueSournoise = new Damage(0,1,6,1);
 	protected Armor armure;
 	protected Race race;
@@ -40,6 +40,7 @@ public class CS {
 
 	int[] RACIALBONUS1 = {1,0};
 	int[] RACIALBONUS2 = {2,2};
+	private boolean enTenaille;
 	
 	public CS(){
 	}

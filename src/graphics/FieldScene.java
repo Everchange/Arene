@@ -531,7 +531,7 @@ public class FieldScene extends ArenaScene {
 		//just to correct a bug in which we can't see the new name tags 
 		this.characterGUIHOVGroup.toBack();
 		this.characterGUIHOVGroup.toFront();
-		//just o be sure that the menu is still in front of everything
+		//just to be sure that the menu is still in front of everything
 		if(escapeOn){
 			FieldScene.this.menu.getMenuGroup().toFront();
 		}

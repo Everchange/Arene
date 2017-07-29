@@ -409,7 +409,7 @@ public class Console extends Stage {
 								//export the console to a file 
 								//the number is the  number of milliseconds since January 1, 1970, 00:00:00 GMT.
 								if (new ExportText("Log "+Long.valueOf(new Date().getTime()).toString(),Console.this.export()).getSuccess());{
-									Console.this.println("Console log exported",Color.GREEN);
+									Main.console.println("Console log exported");
 									sucess=true;}
 								break;
 								
@@ -486,6 +486,8 @@ public class Console extends Stage {
 							}catch(ClassCastException exception){
 								// if the char is not a number
 								Console.this.println("Invalid scene number",Color.RED);
+								sucess=false;
+								break;
 							}
 							
 							Main.setScene(num,true);
@@ -569,6 +571,23 @@ public class Console extends Stage {
 			this.outputScroll.setVvalue(1.0);
 		});
 
+	}
+	
+	/**
+	 * Display the given string inside the console. This method should be used only to
+	 * display the result of a command
+	 * @param s String to display
+	 * @param b	Boolean "true" if the command was executed properly
+	 */
+	public void cmdResult(String s, Boolean b){
+		this.print("\n Command result : ");
+		if (b){
+			//add a indent to visulalise the text more easily
+			this.println(s.replace("\n", "\n\t"), Color.DARKGREEN);
+		}
+		else{
+			this.println(s.replace("\n", "\n\t"), Color.DARKRED);
+		}
 	}
 
 	/**
